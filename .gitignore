@@ -1,0 +1,21 @@
+# Python compiled byte code
+*.pyc
+
+# SQLite3 database
+*.sqlite3
+
+# Node modules
+node_modules/
+.idea/
+# Bower components
+static/bower_components/
+
+# Uglified JavaScript
+static/dist/
+static/admin/
+static/rest_framework/
+
+# Staticfiles
+staticfiles/
+
+env/

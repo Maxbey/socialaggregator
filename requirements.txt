@@ -1,0 +1,12 @@
+Django
+gunicorn
+dj-database-url
+dj-static
+django-appconf
+django-compressor
+djangorestframework
+drf-nested-routers
+six
+static3
+wsgiref
+django-rest-auth[with_social]

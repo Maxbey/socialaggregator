@@ -1,0 +1,18 @@
+{
+  "name": "socialaggregator",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "bower": "latest",
+    "gulp": "latest",
+    "gulp-ng-annotate": "latest",
+    "gulp-uglify": "latest",
+    "gulp-concat": "latest"
+  }
+}
