@@ -1,0 +1,28 @@
+version: '2'
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    links:
+        - django
+    ports:
+        - "80:80"
+  django:
+    build:
+      context: ./socialaggregator/
+      dockerfile: Dockerfile
+    expose:
+        - "8000"
+    links:
+        - postgres
+    command: sh run.sh
+
+  postgres:
+    image: postgres:9.3
+
+
+  node:
+    build:
+      context: ./node
+      dockerfile: Dockerfile
