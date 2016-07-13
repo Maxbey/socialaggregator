@@ -6,15 +6,13 @@ from django.contrib import admin
 from aggregator.views import TwitterLogin
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('allauth.urls')),
+    url(r'^api/admin/', admin.site.urls),
+    url(r'^api/accounts/', include('allauth.urls')),
 
-    url(r'^auth/', include('rest_auth.urls')),
-    url(r'^auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^api/auth/', include('rest_auth.urls')),
+    url(r'^api/auth/registration/', include('rest_auth.registration.urls')),
 
-    url(r'^auth/email-confirmation/(?P<key>\w{64})/$', ConfirmEmailView.as_view(), name='account_confirm_email'),
+    url(r'^api/auth/email-confirmation/(?P<key>\w{64})/$', ConfirmEmailView.as_view(), name='account_confirm_email'),
 
-    url(r'^auth/twitter/$', TwitterLogin.as_view(), name='twitter_login'),
-
-    url(r'^.*$', 'app.views.home', name='home')
+    url(r'^api/auth/twitter/$', TwitterLogin.as_view(), name='twitter_login')
 ]

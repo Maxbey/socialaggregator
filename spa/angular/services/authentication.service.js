@@ -2,7 +2,7 @@ AppServices.factory('Authentication', ['$http', '$cookies', Authentication]);
 
 function Authentication($http, $cookies) {
 
-    var baseUrl = '/auth/';
+    var baseUrl = 'api/auth/';
 
     return {
         login: login,
