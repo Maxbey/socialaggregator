@@ -1,17 +1,30 @@
 version: '2'
 services:
+  node:
+    build:
+      context: .
+      dockerfile: /node/Dockerfile
+    command: 'sh /usr/src/spa/compile.sh'
+    volumes:
+      - ./spa:/usr/src/spa
   nginx:
     build:
       context: ./nginx
       dockerfile: Dockerfile
     links:
-        - django
+      - django
     ports:
-        - "80:80"
+      - "80:80"
+    volumes:
+      - ./socialaggregator/static:/usr/src/app/static
+      - ./spa:/usr/src/spa
   django:
     build:
       context: ./socialaggregator/
       dockerfile: Dockerfile
+    volumes:
+      - ./spa:/usr/src/spa
+      - ./socialaggregator/static:/usr/src/app/static
     expose:
         - "8000"
     links:
@@ -20,9 +33,3 @@ services:
 
   postgres:
     image: postgres:9.3
-
-
-  node:
-    build:
-      context: ./node
-      dockerfile: Dockerfile

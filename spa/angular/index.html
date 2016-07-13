@@ -4,38 +4,42 @@
     <base href="/">
     <meta charset="UTF-8">
     <title>SocialAggregator</title>
-    {% include 'stylesheets.html' %}
+
+    <link rel="stylesheet" href="spa/bower_components/material-design-lite/material.min.css">
+    <link rel="stylesheet" href="spa/css/style.css">
 </head>
 <body>
+
 <div ng-controller="NavbarController as vm" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
             <span class="mdl-layout-title">SocialAggregator</span>
             <div class="mdl-layout-spacer"></div>
-            {% if not user.is_authenticated %}
             <nav class="mdl-navigation">
                 <a class="mdl-navigation__link" ng-href="login">Login</a>
                 <a class="mdl-navigation__link" ng-href="register">Registration</a>
             </nav>
-            {% endif %}
         </div>
     </header>
-    {% if user.is_authenticated %}
+    <!--
     <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">{{ user.username }}</span>
         <nav class="mdl-navigation">
             <a class="mdl-navigation__link" ng-href="" ng-click="vm.logout()">Logout</a>
         </nav>
     </div>
-    {% endif %}
+    -->
 </div>
 
 
 <main class="mdl-layout mdl-js-layout mdl-color--grey-100 content">
-    {% block content %}
-    {% endblock %}
+    <ng-view></ng-view>
 </main>
 
-{% include 'javascripts.html' %}
+<script src="spa/bower_components/angular/angular.min.js"></script>
+<script src="spa/bower_components/angular-cookies/angular-cookies.min.js"></script>
+<script src="spa/bower_components/angular-route/angular-route.min.js"></script>
+<script src="spa/bower_components/material-design-lite/material.min.js"></script>
+<script src="spa/dist/js/app.js"></script>
 </body>
 </html>

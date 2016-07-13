@@ -26,12 +26,12 @@ App.config([
             .when('/register', {
                 controller: RegisterController,
                 controllerAs: 'vm',
-                templateUrl: 'static/views/authentication/register.html'
+                templateUrl: 'spa/views/authentication/register.html'
             })
             .when('/login', {
                 controller: LoginController,
                 controllerAs: 'vm',
-                templateUrl: 'static/views/authentication/login.html'
+                templateUrl: 'spa/views/authentication/login.html'
             })
             .otherwise('/');
 

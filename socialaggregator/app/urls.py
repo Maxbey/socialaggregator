@@ -7,7 +7,7 @@ from aggregator.views import TwitterLogin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('allauth.account.urls')),
+    url(r'^accounts/', include('allauth.urls')),
 
     url(r'^auth/', include('rest_auth.urls')),
     url(r'^auth/registration/', include('rest_auth.registration.urls')),
