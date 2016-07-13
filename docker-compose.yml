@@ -4,9 +4,9 @@ services:
     build:
       context: .
       dockerfile: /node/Dockerfile
-    command: 'sh /usr/src/spa/compile.sh'
     volumes:
       - ./spa:/usr/src/spa
+    command: 'sh /usr/src/spa/compile.sh'
   nginx:
     build:
       context: ./nginx
