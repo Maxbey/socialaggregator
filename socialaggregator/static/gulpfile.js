@@ -1,7 +1,7 @@
 var gulp = require('gulp'),
     concat = require('gulp-concat');
 
-var appPath = './static/angular/';
+var appPath = './angular/';
 
 gulp.task('js', function () {
 
@@ -12,7 +12,7 @@ gulp.task('js', function () {
         appPath + 'controllers/*.js'
 
     ]).pipe(concat('app.js'))
-        .pipe(gulp.dest('./static/dist/js/'));
+        .pipe(gulp.dest('./dist/js/'));
 });
 
 gulp.task('watch', function () {
