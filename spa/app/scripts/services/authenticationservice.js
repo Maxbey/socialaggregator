@@ -1,7 +1,14 @@
-AppServices.factory('Authentication', ['$http', '$cookies', Authentication]);
+'use strict';
 
-function Authentication($http, $cookies) {
-
+/**
+ * @ngdoc service
+ * @name spaApp.AuthenticationService
+ * @description
+ * # AuthenticationService
+ * Service in the spaApp.
+ */
+angular.module('spaApp')
+  .service('AuthenticationService', function ($http, $cookies) {
     var baseUrl = 'api/auth/';
 
     return {
@@ -10,8 +17,15 @@ function Authentication($http, $cookies) {
         logout: logout,
         afterLogin: afterLogin,
         afterLogout: afterLogout
-
     };
+
+
+    function login(email, password){
+        return $http.post(baseUrl + 'login/', {
+          email: email,
+          password: password
+        });
+    }
 
     function register(email, password1, password2, username) {
         return $http.post(baseUrl + 'registration/', {
@@ -22,15 +36,8 @@ function Authentication($http, $cookies) {
         });
     }
 
-    function login(email, password) {
-        return $http.post(baseUrl + 'login/', {
-            email: email,
-            password: password
-        });
-    }
-
-    function logout() {
-        return $http.post(baseUrl + 'logout/')
+    function logout(){
+        return $http.post(baseUrl + 'logout/');
     }
 
     function afterLogin(response){
@@ -43,4 +50,6 @@ function Authentication($http, $cookies) {
         delete $cookies.token;
     }
 
-}
+
+  });
+

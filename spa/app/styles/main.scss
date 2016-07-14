@@ -1,0 +1,77 @@
+// bower:scss
+// endbower
+
+.LoginForm-inputContainer, .RegisterForm-inputContainer{
+    margin-top: 10px;
+    margin-bottom: 0px;
+    width: 80%;
+    min-width: 300px;
+}
+
+.LoginForm-submit, .RegisterForm-submit{
+    margin-bottom: 40px;
+    margin-left: 0;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.Header {
+  height: 64px;
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.Header-container {
+  height: 100%;
+}
+
+.Header-logo {
+  width: 171px;
+  height: 41px;
+  padding-top: 13px;
+}
+
+.Header-link {
+  text-decoration: none;
+  color: #535362 !important;
+  padding: 0 20px;
+  display: inline-block;
+  transition: 250ms background-color;
+  line-height: 64px;
+}
+
+.Header-link:hover {
+  background-color: #F6F9FA;
+}
+
+.Header-spacer {
+  padding-top: 64px;
+}
+
+.container {
+  background: #FAFAFA;
+}
+
+[ui-view].ng-enter,
+[ui-view].ng-leave {
+  -webkit-transition: opacity ease-in-out 200ms;
+  transition: opacity ease-in-out 200ms;
+}
+
+[ui-view].ng-enter,
+[ui-view].ng-leave.ng-leave-active {
+  opacity: 0;
+}
+
+[ui-view].ng-enter.ng-enter-active {
+  opacity: 1;
+}
+
+// Stop the page jump when transitioning from page to page.
+.Page.ng-leave.ng-leave-active {
+  display: none;
+}
