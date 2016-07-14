@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.vk',
+    'allauth.socialaccount.providers.facebook',
     'rest_auth.registration',
 
     'aggregator'
@@ -145,11 +145,13 @@ STATIC_ROOT = './static/'
 
 from allauth import app_settings
 
+SOCIALACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = 'none'
+SOCIALACCOUNT_EMAIL_VERIFICATION = False
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
