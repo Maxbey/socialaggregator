@@ -8,10 +8,21 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('LoginCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('LoginCtrl', function (AuthenticationService, $log) {
+    var vm = this;
+
+    vm.login = login;
+
+    function login(){
+      AuthenticationService.login(vm.email, vm.password).then(function(response){
+        $log.log(response);
+      });
+    }
+
+
+
+
+
+
+
   });

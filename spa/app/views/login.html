@@ -1,25 +1,25 @@
-<md-content class="Page-container">
-    <div class="Login-formContainer" layout="column" layout-align="center center">
+<md-content class="Page-container" ng-controller="LoginCtrl as vm">
+  <div class="Login-formContainer" layout="column" layout-align="center center">
 
-        <h1 class="md-headline">SocialAggregator</h1>
+    <h1 class="md-headline">Sign In</h1>
 
-        <form ng-submit="vm.login()">
-            <div>
-                <md-input-container class="LoginForm-inputContainer">
-                    <label>Email</label>
-                    <input type="email" ng-model="vm.email">
-                </md-input-container>
-            </div>
+    <form ng-submit="vm.login()">
+      <div>
+        <md-input-container class="LoginForm-inputContainer">
+          <label>Email</label>
+          <input type="email" ng-model="vm.email">
+        </md-input-container>
+      </div>
 
-            <div>
-                <md-input-container class="LoginForm-inputContainer">
-                    <label>Password</label>
-                    <input type="password" ng-model="vm.password">
-                </md-input-container>
-            </div>
+      <div>
+        <md-input-container class="LoginForm-inputContainer">
+          <label>Password</label>
+          <input type="password" ng-model="vm.password">
+        </md-input-container>
+      </div>
 
-            <md-button type="submit" class="LoginForm-submit md-primary md-raised">Log in</md-button>
-        </form>
+      <md-button type="submit" class="LoginForm-submit md-primary md-raised">Sign in</md-button>
+    </form>
 
-    </div>
+  </div>
 </md-content>
