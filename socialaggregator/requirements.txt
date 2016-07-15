@@ -9,4 +9,10 @@ drf-nested-routers
 six
 static3
 wsgiref
-django-rest-auth[with_social]
+
+# version of the django-allauth module is fixed,
+# because in v. >= 0.25.0 occurs a bug that is described here https://github.com/Tivix/django-rest-auth/issues/195
+django-allauth==0.24.1
+
+django-rest-auth
+

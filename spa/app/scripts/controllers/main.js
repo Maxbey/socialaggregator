@@ -8,14 +8,6 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('MainCtrl', function ($auth, $log) {
+  .controller('MainCtrl', function () {
     var vm = this;
-
-    vm.facebook = facebook;
-
-    function facebook() {
-      $auth.authenticate('facebook').then(function(response){
-        $log.log(response);
-      });
-    }
   });
