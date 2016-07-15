@@ -1,9 +1,8 @@
 from app.views import ConfirmEmailView
 
-from allauth.account.views import confirm_email
 from django.conf.urls import url, include
 from django.contrib import admin
-from aggregator.views import TwitterLogin
+from aggregator.views import FacebookLogin
 
 urlpatterns = [
     url(r'^api/admin/', admin.site.urls),
@@ -14,5 +13,5 @@ urlpatterns = [
 
     url(r'^api/auth/email-confirmation/(?P<key>\w{64})/$', ConfirmEmailView.as_view(), name='account_confirm_email'),
 
-    url(r'^api/auth/twitter/$', TwitterLogin.as_view(), name='twitter_login')
+    url(r'^api/auth/facebook/$', FacebookLogin.as_view(), name='fb_login')
 ]

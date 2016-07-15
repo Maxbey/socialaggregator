@@ -1,4 +1,4 @@
-<md-content class="Page-container" ng-controller="LoginCtrl as vm">
+<md-content class="Page-container">
   <div class="Login-formContainer" layout="column" layout-align="center center">
 
     <h1 class="md-headline">Sign In</h1>
@@ -19,7 +19,9 @@
       </div>
 
       <md-button type="submit" class="LoginForm-submit md-primary md-raised">Sign in</md-button>
+      <md-button ng-click="vm.facebookLogin()" class="LoginForm-submit md-primary md-raised">Sign in via Facebook</md-button>
     </form>
+
 
   </div>
 </md-content>

@@ -9,5 +9,5 @@
  */
 angular.module('spaApp')
   .controller('MainCtrl', function () {
-
+    var vm = this;
   });

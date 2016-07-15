@@ -8,11 +8,12 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('AuthenticationService', function ($http, $cookies) {
+  .service('AuthenticationService', function ($http, $cookies, $auth, $log) {
     var baseUrl = 'api/auth/';
 
     return {
         login: login,
+        facebookLogin: facebookLogin,
         register: register,
         logout: logout,
         afterLogin: afterLogin,
@@ -24,6 +25,12 @@ angular.module('spaApp')
         return $http.post(baseUrl + 'login/', {
           email: email,
           password: password
+        });
+    }
+
+    function facebookLogin(){
+        return $auth.authenticate('facebook').then(function(response){
+          return $http.post(baseUrl + 'facebook/', {access_token: response.access_token});
         });
     }
 

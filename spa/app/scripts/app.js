@@ -17,14 +17,15 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngMaterial'
+    'ngMaterial',
+    'satellizer'
   ])
-  .config(function ($routeProvider, $locationProvider, $httpProvider) {
+  .config(function ($routeProvider, $locationProvider, $httpProvider, $authProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
-        controllerAs: 'main'
+        controllerAs: 'vm'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
@@ -34,7 +35,7 @@ angular
       .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl',
-        controllerAs: 'login'
+        controllerAs: 'vm'
       })
       .when('/register', {
         templateUrl: 'views/register.html',
@@ -45,11 +46,21 @@ angular
         redirectTo: '/'
       });
 
-      $locationProvider.html5Mode({
-        enabled: true,
-        requiredBase: false
-      });
+    $locationProvider.html5Mode({
+      enabled: true,
+      requiredBase: false
+    });
 
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+
+    $authProvider.facebook({
+      clientId: '475009766042261',
+      responseType: 'token',
+      scope: ['email'],
+      scopeDelimiter: ',',
+      display: 'popup',
+      type: '2.0',
+      popupOptions: {width: 580, height: 400}
+    });
   });

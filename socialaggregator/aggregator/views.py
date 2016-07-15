@@ -1,11 +1,6 @@
-from allauth.socialaccount.providers.twitter.views import TwitterOAuthAdapter
-from django.shortcuts import render
-from rest_auth.social_serializers import TwitterLoginSerializer
-from rest_auth.views import LoginView
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+from rest_auth.registration.views import SocialLoginView
 
 
-class TwitterLogin(LoginView):
-    serializer_class = TwitterLoginSerializer
-    adapter_class = TwitterOAuthAdapter
-
-
+class FacebookLogin(SocialLoginView):
+    adapter_class = FacebookOAuth2Adapter
