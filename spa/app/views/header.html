@@ -1,0 +1,20 @@
+<md-content class="Page-Container Header" ng-controller="HeaderCtrl as vm">
+
+  <div layout="row">
+    <div flex="90" flex-offset="5" class="Header-container">
+      <div layout="row" layout-align="space-between">
+        <div layout="row" layout-align="center stretch">
+          <a hide-xs class="Header-link md-subhead" ng-href="/">Dashboard</a>
+          <div ng-if="!vm.auth">
+            <a hide-xs class="Header-link md-subhead" ng-href="/login">Sign In</a>
+            <a hide-xs class="Header-link md-subhead" ng-href="/register">Sign Up</a>
+          </div>
+
+        </div>
+        <div ng-if="vm.auth" layout="row" layout-align="right stretch">
+          <md-button md-no-ink class="md-primary">{{ vm.username }}</md-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</md-content>

@@ -1,4 +1,4 @@
-<md-content class="Page-container">
+<md-content class="Page-container" ng-controller="LoginCtrl as vm">
   <div class="Login-formContainer" layout="column" layout-align="center center">
 
     <h1 class="md-headline">Sign In</h1>
@@ -18,8 +18,13 @@
         </md-input-container>
       </div>
 
-      <md-button type="submit" class="LoginForm-submit md-primary md-raised">Sign in</md-button>
+      <div layout="column" layout-align="center center">
+        <md-button type="submit" class="LoginForm-submit md-primary md-raised">Sign in</md-button>
       <md-button ng-click="vm.facebookLogin()" class="LoginForm-submit md-primary md-raised">Sign in via Facebook</md-button>
+      <md-button ng-click="vm.githubLogin()" class="LoginForm-submit md-primary md-raised">Sign in via Github</md-button>
+      <md-button ng-click="vm.twitterLogin()" class="LoginForm-submit md-primary md-raised">Sign in via Twitter</md-button>
+      </div>
+
     </form>
 
 

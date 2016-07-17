@@ -1,64 +1,66 @@
 <!doctype html>
 <html>
 <head>
-    <base href="/">
-    <meta charset="utf-8">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
+  <base href="/">
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css"/>
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
 </head>
 <body ng-app="spaApp">
 <!--[if lte IE 8]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+  your browser</a> to improve your experience.</p>
+<![endif]-->
 
 <!-- Add your site or application content here -->
-<md-content class="Page-Container Header">
-    <div layout="row">
-        <div flex="90" flex-offset="5" class="Header-container">
-            <div layout="row" layout-align="space-between">
-                <div layout="row" layout-align="center stretch">
-                    <a hide-xs class="Header-link md-subhead" ng-href="/">Dashboard</a>
-                    <a hide-xs class="Header-link md-subhead" ng-href="/login">Login</a>
-                    <a hide-xs class="Header-link md-subhead" ng-href="/register">Register</a>
-                </div>
-            </div>
+<div ui-view="header"></div>
+<!--<md-content class="Page-Container Header">
+  <div layout="row">
+    <div flex="90" flex-offset="5" class="Header-container">
+      <div layout="row" layout-align="space-between">
+        <div layout="row" layout-align="center stretch">
+          <a hide-xs class="Header-link md-subhead" ng-href="/">Dashboard</a>
+          <a hide-xs class="Header-link md-subhead" ng-href="/login">Login</a>
+          <a hide-xs class="Header-link md-subhead" ng-href="/register">Register</a>
         </div>
+      </div>
     </div>
-</md-content>
+  </div>
+</md-content>-->
 <div class="Header-spacer"></div>
 
 <div class="container">
-    <div ng-view=""></div>
+  <div ui-view="main"></div>
 </div>
 
 <div class="footer">
-    <div class="container">
+  <div class="container">
 
-    </div>
+  </div>
 </div>
 
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>
-    !function (A, n, g, u, l, a, r) {
-        A.GoogleAnalyticsObject = l, A[l] = A[l] || function () {
-                    (A[l].q = A[l].q || []).push(arguments)
-                }, A[l].l = +new Date, a = n.createElement(g),
-                r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
-    }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+  !function (A, n, g, u, l, a, r) {
+    A.GoogleAnalyticsObject = l, A[l] = A[l] || function () {
+        (A[l].q = A[l].q || []).push(arguments)
+      }, A[l].l = +new Date, a = n.createElement(g),
+      r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+  }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-XXXXX-X');
-    ga('send', 'pageview');
+  ga('create', 'UA-XXXXX-X');
+  ga('send', 'pageview');
 </script>
 
 <!-- build:js(.) scripts/vendor.js -->
@@ -69,11 +71,11 @@
 <script src="/bower_components/angular-cookies/angular-cookies.js"></script>
 <script src="/bower_components/angular-messages/angular-messages.js"></script>
 <script src="/bower_components/angular-resource/angular-resource.js"></script>
-<script src="/bower_components/angular-route/angular-route.js"></script>
 <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="/bower_components/angular-touch/angular-touch.js"></script>
 <script src="/bower_components/angular-material/angular-material.js"></script>
 <script src="/bower_components/satellizer/satellizer.js"></script>
+<script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -89,6 +91,8 @@
 <script src="scripts/services/authentication.service.js"></script>
 <script src="scripts/services/authenticationservice.js"></script>
 <script src="scripts/services/toastservice.js"></script>
+<script src="scripts/controllers/home.js"></script>
+<script src="scripts/controllers/header.js"></script>
 <!-- endbuild -->
 </body>
 </html>

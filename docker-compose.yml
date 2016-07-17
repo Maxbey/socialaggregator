@@ -27,9 +27,4 @@ services:
       - ./socialaggregator/static:/usr/src/app/static
     expose:
         - "8000"
-    links:
-        - postgres
     command: sh run.sh
-
-  postgres:
-    image: postgres:9.3

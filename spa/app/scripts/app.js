@@ -15,35 +15,50 @@ angular
     'ngCookies',
     'ngMessages',
     'ngResource',
-    'ngRoute',
+    'ui.router',
     'ngSanitize',
     'ngMaterial',
     'satellizer'
   ])
-  .config(function ($routeProvider, $locationProvider, $httpProvider, $authProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'vm'
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider) {
+    $urlRouterProvider.otherwise('/');
+    $stateProvider
+      .state('app', {
+        abstract: true,
+        data: {},
+        views: {
+          header: {
+            templateUrl: 'views/header.html'
+          },
+          main: {}
+        }
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
+      .state('app.dashboard', {
+        url: '/',
+        data: {
+          auth: true
+        },
+        views: {
+          'main@': {
+            templateUrl: 'views/main.html'
+          }
+        }
       })
-      .when('/login', {
-        templateUrl: 'views/login.html',
-        controller: 'LoginCtrl',
-        controllerAs: 'vm'
+      .state('app.login', {
+        url: '/login',
+        views: {
+          'main@': {
+            templateUrl: 'views/login.html'
+          }
+        }
       })
-      .when('/register', {
-        templateUrl: 'views/register.html',
-        controller: 'RegisterCtrl',
-        controllerAs: 'register'
-      })
-      .otherwise({
-        redirectTo: '/'
+      .state('app.register', {
+        url: '/register',
+        views: {
+          'main@': {
+            templateUrl: 'views/register.html'
+          }
+        }
       });
 
     $locationProvider.html5Mode({
@@ -56,11 +71,49 @@ angular
 
     $authProvider.facebook({
       clientId: '475009766042261',
-      responseType: 'token',
-      scope: ['email'],
-      scopeDelimiter: ',',
-      display: 'popup',
-      type: '2.0',
-      popupOptions: {width: 580, height: 400}
+      url: '/api/auth/login/social/token/facebook/'
     });
+
+    $authProvider.github({
+      clientId: 'c2ce5010ca8709e82f4d',
+      url: '/api/auth/login/social/token/github/'
+    });
+
+    $authProvider.oauth2({
+      name: 'vk',
+      url: '/api/auth/login/social/token/vk/',
+      redirectUri: window.location.origin + '/',
+      clientId: 5546912,
+      authorizationEndpoint: 'http://oauth.vk.com/authorize',
+      scope: 'friends, photos, email, photo_big',
+      display: 'popup',
+      responseType: 'code',
+      requiredUrlParams: ['response_type', 'client_id', 'redirect_uri', 'display', 'scope', 'v'],
+      scopeDelimiter: ',',
+      v: '5.52'
+    });
+
+    $authProvider.twitter({
+      url: '/api/auth/login/social/token/twitter/',
+      authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
+      redirectUri: window.location.origin,
+      type: '1.0'
+    });
+
+    $authProvider.authToken = 'Token';
+
+    $authProvider.httpInterceptor = function () {
+      return true;
+    }
+  }).run(function ($rootScope, $state, $auth) {
+  var registrationCallback = $rootScope.$on("$stateChangeStart", function (event, toState) {
+    if (toState.data && toState.data.auth) {
+      if (!$auth.isAuthenticated()) {
+        event.preventDefault();
+        return $state.go('app.login');
+      }
+    }
+
   });
+  $rootScope.$on('$destroy', registrationCallback)
+});

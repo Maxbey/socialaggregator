@@ -9,52 +9,58 @@
  */
 angular.module('spaApp')
   .service('AuthenticationService', function ($http, $cookies, $auth, $log) {
-    var baseUrl = 'api/auth/';
+    var baseUrl = 'api/auth/token/';
 
     return {
-        login: login,
-        facebookLogin: facebookLogin,
-        register: register,
-        logout: logout,
-        afterLogin: afterLogin,
-        afterLogout: afterLogout
+      login: login,
+      facebookLogin: facebookLogin,
+      githubLogin: githubLogin,
+      vkLogin: vkLogin,
+      twitterLogin: twitterLogin,
+      register: register,
+      logout: logout,
+      user: user
     };
 
 
-    function login(email, password){
-        return $http.post(baseUrl + 'login/', {
-          email: email,
-          password: password
-        });
+    function login(email, password) {
+      return $http.post(baseUrl + 'login/', {
+        email: email,
+        password: password
+      });
     }
 
-    function facebookLogin(){
-        return $auth.authenticate('facebook').then(function(response){
-          return $http.post(baseUrl + 'facebook/', {access_token: response.access_token});
-        });
+    function facebookLogin() {
+      return $auth.authenticate('facebook');
+    }
+
+    function githubLogin() {
+      return $auth.authenticate('github');
+    }
+
+    function vkLogin() {
+      return $auth.authenticate('vk');
+    }
+
+    function twitterLogin() {
+      return $auth.authenticate('twitter');
     }
 
     function register(email, password1, password2, username) {
-        return $http.post(baseUrl + 'registration/', {
-            username: username,
-            password1: password1,
-            password2: password2,
-            email: email
-        });
+      return $http.post(baseUrl + 'registration/', {
+        username: username,
+        password1: password1,
+        password2: password2,
+        email: email
+      });
     }
 
-    function logout(){
-        return $http.post(baseUrl + 'logout/');
+    function user() {
+      return $http.get('api/auth/user/');
     }
 
-    function afterLogin(response){
-        $http.defaults.headers.common.Authorization = 'Token ' + response.key;
-        $cookies.token = response.key;
-    }
-
-    function afterLogout(){
-        delete $http.defaults.headers.common.Authorization;
-        delete $cookies.token;
+    function logout() {
+      return $auth.logout();
     }
 
 

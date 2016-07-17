@@ -1,6 +1,22 @@
-from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
-from rest_auth.registration.views import SocialLoginView
+import json
+
+from django.contrib.auth import get_user_model
+from rest_framework import generics
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_social_auth.serializers import UserSerializer
 
 
-class FacebookLogin(SocialLoginView):
-    adapter_class = FacebookOAuth2Adapter
+class BaseDetailView(generics.RetrieveAPIView):
+    permission_classes = IsAuthenticated,
+    serializer_class = UserSerializer
+    model = get_user_model()
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class CurrentUser(BaseDetailView):
+    authentication_classes = (TokenAuthentication,)
