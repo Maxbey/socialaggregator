@@ -12,9 +12,12 @@ angular.module('spaApp')
     var vm = this;
 
     vm.auth = false;
+    if ($auth.isAuthenticated()) {
+      AuthenticationService.user().then(function (response) {
+        vm.username = response.data.first_name + ' ' + response.data.last_name;
+        vm.auth = true;
+      });
+    }
 
-    AuthenticationService.user().then(function (response) {
-      vm.username = response.data.first_name + ' ' + response.data.last_name;
-      vm.auth = true;
-    });
+
   });

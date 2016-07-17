@@ -10,8 +10,4 @@
 angular.module('spaApp')
   .controller('MainCtrl', function (AuthenticationService) {
     var vm = this;
-
-    AuthenticationService.user().then(function(r){
-      console.log(r);
-    });
   });
