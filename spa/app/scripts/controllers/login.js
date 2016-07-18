@@ -8,7 +8,7 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('LoginCtrl', function (AuthenticationService, ToastService, $state) {
+  .controller('LoginCtrl', function (AuthenticationService, ToastService, $state, $auth) {
     var vm = this;
 
     vm.login = login;
@@ -18,10 +18,16 @@ angular.module('spaApp')
     vm.twitterLogin = twitterLogin;
 
     function login() {
-      AuthenticationService.login(vm.email, vm.password).then(function (response) {
+      $auth.login({
+        email: vm.email,
+        password: vm.password
+       }).then(function(response){
+        console.log(response);
+        AuthenticationService.afterLogin(response.data.key);
+        $auth.setToken(response.data.key);
         $state.go('app.dashboard');
         ToastService.show('You are successfully logged in');
-      });
+       });
     }
 
     function facebookLogin() {

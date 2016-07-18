@@ -11,3 +11,5 @@ static3
 wsgiref
 
 rest-social-auth
+django-allauth
+django-rest-auth

@@ -69,19 +69,21 @@ angular
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
 
+    $authProvider.loginUrl = '/api/auth/login/';
+
     $authProvider.facebook({
       clientId: '475009766042261',
-      url: '/api/auth/login/social/token/facebook/'
+      url: '/api/social_auth/login/social/token/facebook/'
     });
 
     $authProvider.github({
       clientId: 'c2ce5010ca8709e82f4d',
-      url: '/api/auth/login/social/token/github/'
+      url: '/api/social_auth/login/social/token/github/'
     });
 
     $authProvider.oauth2({
       name: 'vk',
-      url: '/api/auth/login/social/token/vk/',
+      url: '/api/social_auth/login/social/token/vk/',
       redirectUri: window.location.origin + '/',
       clientId: 5546912,
       authorizationEndpoint: 'http://oauth.vk.com/authorize',
@@ -94,7 +96,7 @@ angular
     });
 
     $authProvider.twitter({
-      url: '/api/auth/login/social/token/twitter/',
+      url: '/api/social_auth/login/social/token/twitter/',
       authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
       redirectUri: window.location.origin,
       type: '1.0'

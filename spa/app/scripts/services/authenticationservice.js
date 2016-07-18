@@ -9,7 +9,8 @@
  */
 angular.module('spaApp')
   .service('AuthenticationService', function ($http, $cookies, $auth, $log) {
-    var baseUrl = 'api/auth/token/';
+    var socialBaseUrl = 'api/social_auth/token/';
+    var baseUrl = 'api/auth/';
 
     return {
       login: login,
@@ -19,7 +20,8 @@ angular.module('spaApp')
       twitterLogin: twitterLogin,
       register: register,
       logout: logout,
-      user: user
+      user: user,
+      afterLogin: afterLogin
     };
 
 
@@ -56,11 +58,16 @@ angular.module('spaApp')
     }
 
     function user() {
-      return $http.get('api/auth/user/');
+      return $http.get(baseUrl + 'user/');
     }
 
     function logout() {
+      $http.defaults.headers.common['Authorization'] = undefined;
       return $auth.logout();
+    }
+
+    function afterLogin(token) {
+      $http.defaults.headers.common['Authorization'] = 'Token ' + token;
     }
 
 

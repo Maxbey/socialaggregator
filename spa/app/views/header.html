@@ -13,6 +13,7 @@
         </div>
         <div ng-if="vm.auth" layout="row" layout-align="right stretch">
           <md-button md-no-ink class="md-primary">{{ vm.username }}</md-button>
+          <md-button class="md-primary" ng-click="vm.logout()">Log out</md-button>
         </div>
       </div>
     </div>

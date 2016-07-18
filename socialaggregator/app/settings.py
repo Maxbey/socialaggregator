@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',
     'rest_social_auth',
 
+    'allauth',
+    'allauth.account',
+    'rest_auth',
+
     'aggregator'
 ]
 
@@ -92,6 +96,7 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.github.GithubOAuth2',
     'social.backends.vk.VKOAuth2',
     'social.backends.twitter.TwitterOAuth',
+    'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -145,6 +150,18 @@ SITE_ID = 1
 
 STATIC_URL = '/static/'
 STATIC_ROOT = './static/'
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'maxbeiner@gmail.com'
+EMAIL_HOST_PASSWORD = '65010300707'
 
 SOCIAL_AUTH_FACEBOOK_KEY = '475009766042261'
 SOCIAL_AUTH_FACEBOOK_SECRET = '775a1117b3a8899fe733e32e4448f046'
