@@ -21,7 +21,8 @@ angular.module('spaApp')
       register: register,
       logout: logout,
       user: user,
-      afterLogin: afterLogin
+      afterLogin: afterLogin,
+      username: username
     };
 
 
@@ -68,6 +69,15 @@ angular.module('spaApp')
 
     function afterLogin(token) {
       $http.defaults.headers.common['Authorization'] = 'Token ' + token;
+    }
+
+    function username(user) {
+      var lfname = user.first_name + ' ' + user.last_name;
+
+        if (lfname.length === 1)
+          return user.username;
+
+        return lfname;
     }
 
 

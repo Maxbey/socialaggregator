@@ -59,6 +59,14 @@ angular
             templateUrl: 'views/register.html'
           }
         }
+      })
+      .state('app.profile', {
+        url: '/im',
+        views: {
+          'main@': {
+            templateUrl: 'views/profile.html'
+          }
+        }
       });
 
     $locationProvider.html5Mode({
@@ -104,9 +112,6 @@ angular
 
     $authProvider.authToken = 'Token';
 
-    $authProvider.httpInterceptor = function () {
-      return true;
-    }
   }).run(function ($rootScope, $state, $auth) {
   var registrationCallback = $rootScope.$on("$stateChangeStart", function (event, toState) {
     if (toState.data && toState.data.auth) {

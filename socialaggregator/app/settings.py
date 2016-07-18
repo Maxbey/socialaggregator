@@ -2,26 +2,22 @@ import os
 from environ import environ
 
 env = environ.Env(
-    DEBUG = (bool, True),
-    SECRET_KEY = (str, os.environ['SECRET_KEY']),
-    SOCIAL_AUTH_FACEBOOK_SECRET = (str, os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']),
-    SOCIAL_AUTH_GITHUB_SECRET = (str, os.environ['SOCIAL_AUTH_GITHUB_SECRET']),
-    SOCIAL_AUTH_TWITTER_SECRET = (str, os.environ['SOCIAL_AUTH_TWITTER_SECRET']),
-    SOCIAL_AUTH_VK_OAUTH2_SECRET = (str, os.environ['SOCIAL_AUTH_VK_OAUTH2_SECRET'])
+    DEBUG=(bool, True),
+    SECRET_KEY=(str, os.environ['SECRET_KEY']),
+    SOCIAL_AUTH_FACEBOOK_SECRET=(str, os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']),
+    SOCIAL_AUTH_GITHUB_SECRET=(str, os.environ['SOCIAL_AUTH_GITHUB_SECRET']),
+    SOCIAL_AUTH_TWITTER_SECRET=(str, os.environ['SOCIAL_AUTH_TWITTER_SECRET']),
+    SOCIAL_AUTH_VK_OAUTH2_SECRET=(str, os.environ['SOCIAL_AUTH_VK_OAUTH2_SECRET']),
+    EMAIL_HOST_USER=(str, os.environ['EMAIL_HOST_USER']),
+    EMAIL_HOST_PASSWORD=(str, os.environ['EMAIL_HOST_PASSWORD'])
 )
-
-print env('SECRET_KEY')
-print os.environ['SOCIAL_AUTH_GITHUB_SECRET']
-print os.environ['SOCIAL_AUTH_TWITTER_SECRET']
-print os.environ['SOCIAL_AUTH_VK_OAUTH2_SECRET']
-
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
-#expr
+# expr
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -102,6 +98,18 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details'
+)
+
 WSGI_APPLICATION = 'app.wsgi.application'
 
 # Database
@@ -156,8 +164,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 SOCIAL_AUTH_FACEBOOK_KEY = '475009766042261'
 SOCIAL_AUTH_FACEBOOK_SECRET = env('SOCIAL_AUTH_FACEBOOK_SECRET')
@@ -172,6 +180,3 @@ SOCIAL_AUTH_TWITTER_SECRET = env('SOCIAL_AUTH_TWITTER_SECRET')
 SOCIAL_AUTH_VK_OAUTH2_KEY = '5546912'
 SOCIAL_AUTH_VK_OAUTH2_SECRET = env('SOCIAL_AUTH_VK_OAUTH2_SECRET')
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['friends', 'photos', 'email', 'photo_big']
-
-
-

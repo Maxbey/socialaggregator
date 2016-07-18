@@ -21,12 +21,7 @@ angular.module('spaApp')
 
     if ($auth.isAuthenticated()) {
       AuthenticationService.user().then(function (response) {
-        var lfname = response.data.first_name + ' ' + response.data.last_name;
-
-        if (lfname.length === 1)
-          vm.username = response.data.username;
-        else
-          vm.username = lfname;
+        vm.username = AuthenticationService.username(response.data);
 
         vm.auth = true;
       });
