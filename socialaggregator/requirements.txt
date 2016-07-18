@@ -9,6 +9,7 @@ drf-nested-routers
 six
 static3
 wsgiref
+django-environ
 
 rest-social-auth
 django-allauth

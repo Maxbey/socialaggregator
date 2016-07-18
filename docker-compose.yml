@@ -19,6 +19,12 @@ services:
       - ./socialaggregator/static:/usr/src/app/static
       - ./spa:/usr/src/spa
   django:
+    environment:
+     - SECRET_KEY=${SECRET_KEY}
+     - SOCIAL_AUTH_FACEBOOK_SECRET=${SOCIAL_AUTH_FACEBOOK_SECRET}
+     - SOCIAL_AUTH_GITHUB_SECRET=${SOCIAL_AUTH_GITHUB_SECRET}
+     - SOCIAL_AUTH_VK_OAUTH2_SECRET=${SOCIAL_AUTH_VK_OAUTH2_SECRET}
+     - SOCIAL_AUTH_TWITTER_SECRET=${SOCIAL_AUTH_TWITTER_SECRET}
     build:
       context: ./socialaggregator/
       dockerfile: Dockerfile
