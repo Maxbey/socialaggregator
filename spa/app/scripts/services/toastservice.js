@@ -10,7 +10,7 @@
 angular.module('spaApp')
   .service('ToastService', function ($mdToast) {
     var delay = 3000,
-			position = 'top right',
+			position = 'bottom right',
 			action = 'OK';
 
 		return {

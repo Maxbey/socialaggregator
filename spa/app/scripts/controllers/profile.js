@@ -8,7 +8,7 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('ProfileCtrl', function (AuthenticationService, ToastService) {
+  .controller('ProfileCtrl', function (AuthenticationService, ToastService, UserService) {
     var vm = this;
 
     vm.addFacebook = addFacebook;
@@ -38,6 +38,10 @@ angular.module('spaApp')
     }
 
     AuthenticationService.user().then(function(response){
-      vm.username = AuthenticationService.username(response.data);
+      vm.user = response.data;
+    });
+
+    UserService.accounts().then(function(r){
+      console.log(r);
     });
   });

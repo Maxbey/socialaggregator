@@ -1,7 +1,9 @@
 <md-content class="Page-container" ng-controller="ProfileCtrl as vm">
   <div class="Login-formContainer" layout="column" layout-align="center center">
 
-    <h2 class="md-headline">{{ vm.username }}</h2>
+    <h2 class="md-headline">{{ vm.user.first_name }}  {{ vm.user.last_name }} @{{ vm.user.username }}</h2>
+
+    <md-subheader class="md-primary">{{ vm.user.email }}</md-subheader>
 
     <md-button class="md-primary=" ng-click="vm.addFacebook()">Add facebook account</md-button>
     <md-button class="md-primary=" ng-click="vm.addGithub()">Add github account</md-button>
