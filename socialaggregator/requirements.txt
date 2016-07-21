@@ -14,3 +14,8 @@ django-environ
 rest-social-auth
 django-allauth
 django-rest-auth
+factory_boy
+nose
+django_nose
+django_extensions
+HTTPretty

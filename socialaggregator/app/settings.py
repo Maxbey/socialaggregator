@@ -4,10 +4,12 @@ from environ import environ
 env = environ.Env(
     DEBUG=(bool, True),
     SECRET_KEY=(str, os.environ['SECRET_KEY']),
-    SOCIAL_AUTH_FACEBOOK_SECRET=(str, os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']),
+    SOCIAL_AUTH_FACEBOOK_SECRET=(
+        str, os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']),
     SOCIAL_AUTH_GITHUB_SECRET=(str, os.environ['SOCIAL_AUTH_GITHUB_SECRET']),
     SOCIAL_AUTH_TWITTER_SECRET=(str, os.environ['SOCIAL_AUTH_TWITTER_SECRET']),
-    SOCIAL_AUTH_VK_OAUTH2_SECRET=(str, os.environ['SOCIAL_AUTH_VK_OAUTH2_SECRET']),
+    SOCIAL_AUTH_VK_OAUTH2_SECRET=(
+        str, os.environ['SOCIAL_AUTH_VK_OAUTH2_SECRET']),
     EMAIL_HOST_USER=(str, os.environ['EMAIL_HOST_USER']),
     EMAIL_HOST_PASSWORD=(str, os.environ['EMAIL_HOST_PASSWORD'])
 )
@@ -48,8 +50,12 @@ INSTALLED_APPS = [
     'allauth.account',
     'rest_auth',
 
-    'aggregator'
+    'aggregator',
+    'django_extensions',
+    'django_nose'
 ]
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -167,9 +173,11 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
+SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']
+
 SOCIAL_AUTH_FACEBOOK_KEY = '475009766042261'
 SOCIAL_AUTH_FACEBOOK_SECRET = env('SOCIAL_AUTH_FACEBOOK_SECRET')
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', ]
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_friends', 'public_profile']
 
 SOCIAL_AUTH_GITHUB_KEY = 'c2ce5010ca8709e82f4d'
 SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
@@ -180,3 +188,45 @@ SOCIAL_AUTH_TWITTER_SECRET = env('SOCIAL_AUTH_TWITTER_SECRET')
 SOCIAL_AUTH_VK_OAUTH2_KEY = '5546912'
 SOCIAL_AUTH_VK_OAUTH2_SECRET = env('SOCIAL_AUTH_VK_OAUTH2_SECRET')
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['friends', 'photos', 'email', 'photo_big']
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'standard': {
+            'format': '[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s',
+            'datefmt': '%d/%b/%Y %H:%M:%S'
+        },
+    },
+    'handlers': {
+        'logfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR + '/logfile',
+            'maxBytes': 50000,
+            'backupCount': 2,
+            'formatter': 'standard',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'WARN',
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'app_logger': {
+            'handlers': ['console', 'logfile'],
+            'level': 'DEBUG',
+        },
+    }
+}
