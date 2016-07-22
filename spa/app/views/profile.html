@@ -1,12 +1,56 @@
 <md-content class="Page-container" ng-controller="ProfileCtrl as vm">
   <div class="Login-formContainer" layout="column" layout-align="center center">
 
-    <h2 class="md-headline">{{ vm.username }}</h2>
+    <h2 class="md-headline">{{ vm.user.first_name }}  {{ vm.user.last_name }} @{{ vm.user.username }}</h2>
+
+    <form ng-show="vm.user" ng-submit="vm.update()">
+      <div>
+        <md-input-container class="ProfileForm-inputContainer">
+          <label>Email</label>
+          <input type="email" ng-model="vm.user.email">
+        </md-input-container>
+      </div>
+
+      <div>
+        <md-input-container class="ProfileForm-inputContainer">
+          <label>Username</label>
+          <input type="text" ng-model="vm.user.username">
+        </md-input-container>
+      </div>
+
+      <div>
+        <md-input-container class="ProfileForm-inputContainer">
+          <label>First name</label>
+          <input type="text" ng-model="vm.user.first_name">
+        </md-input-container>
+      </div>
+
+      <div>
+        <md-input-container class="ProfileForm-inputContainer">
+          <label>Last name</label>
+          <input type="text" ng-model="vm.user.last_name">
+        </md-input-container>
+      </div>
+
+      <div layout="column" layout-align="center center">
+        <md-button type="submit" class="ProfileForm-submit md-primary md-raised">Update profile</md-button>
+      </div>
+
+    </form>
+    <h2 class="md-headline">Your social accounts</h2>
+
+    <md-list-item class="md-3-line" ng-repeat="account in vm.accounts">
+        <div class="md-list-item-text" layout="column">
+            <h4>Social service: {{ account.provider }}</h4>
+            <h4>uid: {{ account.uid }}</h4>
+        </div>
+        <md-button class="md-raised" ng-click="vm.removeAccount(account)">Delete</md-button>
+        <md-divider></md-divider>
+    </md-list-item>
 
     <md-button class="md-primary=" ng-click="vm.addFacebook()">Add facebook account</md-button>
     <md-button class="md-primary=" ng-click="vm.addGithub()">Add github account</md-button>
     <md-button class="md-primary=" ng-click="vm.addTwitter()">Add twitter account</md-button>
-
 
   </div>
 </md-content>

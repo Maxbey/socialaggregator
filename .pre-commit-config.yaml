@@ -2,7 +2,6 @@
     sha: v0.5.1
     hooks:
     -   id: trailing-whitespace
-    -   id: flake8
     -   id: autopep8-wrapper
     -   id: check-ast
     -   id: check-docstring-first

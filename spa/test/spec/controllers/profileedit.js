@@ -1,23 +1,23 @@
 'use strict';
 
-describe('Controller: HeaderCtrl', function () {
+describe('Controller: ProfileeditCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('socialaggregatorApp'));
+  beforeEach(module('spaApp'));
 
-  var HeaderCtrl,
+  var ProfileeditCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    HeaderCtrl = $controller('HeaderCtrl', {
+    ProfileeditCtrl = $controller('ProfileeditCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
 
   it('should attach a list of awesomeThings to the scope', function () {
-    expect(HeaderCtrl.awesomeThings.length).toBe(3);
+    expect(ProfileeditCtrl.awesomeThings.length).toBe(3);
   });
 });

@@ -22,8 +22,9 @@ angular
   ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider) {
     $urlRouterProvider.otherwise('/');
+
     $stateProvider
-      .state('app', {
+      .state('enter', {
         abstract: true,
         data: {},
         views: {
@@ -33,18 +34,7 @@ angular
           main: {}
         }
       })
-      .state('app.dashboard', {
-        url: '/',
-        data: {
-          auth: true
-        },
-        views: {
-          'main@': {
-            templateUrl: 'views/main.html'
-          }
-        }
-      })
-      .state('app.login', {
+      .state('enter.login', {
         url: '/login',
         views: {
           'main@': {
@@ -52,11 +42,34 @@ angular
           }
         }
       })
-      .state('app.register', {
+      .state('enter.register', {
         url: '/register',
         views: {
           'main@': {
             templateUrl: 'views/register.html'
+          }
+        }
+      });
+
+
+    $stateProvider
+      .state('app', {
+        abstract: true,
+        data: {
+          auth: true
+        },
+        views: {
+          header: {
+            templateUrl: 'views/header.logged.html'
+          },
+          main: {}
+        }
+      })
+      .state('app.dashboard', {
+        url: '/',
+        views: {
+          'main@': {
+            templateUrl: 'views/main.html'
           }
         }
       })
@@ -81,7 +94,8 @@ angular
 
     $authProvider.facebook({
       clientId: '475009766042261',
-      url: '/api/social_auth/login/social/token/facebook/'
+      url: '/api/social_auth/login/social/token/facebook/',
+      scope: ['email', 'user_friends', 'public_profile'],
     });
 
     $authProvider.github({
@@ -117,7 +131,7 @@ angular
     if (toState.data && toState.data.auth) {
       if (!$auth.isAuthenticated()) {
         event.preventDefault();
-        return $state.go('app.login');
+        return $state.go('enter.login');
       }
     }
 
