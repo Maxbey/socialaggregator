@@ -12,14 +12,19 @@ angular.module('spaApp')
 
     return {
       update: update,
-      accounts: accounts
+      accounts: accounts,
+      removeAccount: removeAccount
     };
 
     function update(user) {
       return $http.put('api/user/', user);
     }
 
-    function accounts(){
+    function accounts() {
       return $http.get('api/social_account/');
+    }
+
+    function removeAccount(accountId) {
+      return $http.delete('/api/social_account/' + accountId + '/')
     }
   });

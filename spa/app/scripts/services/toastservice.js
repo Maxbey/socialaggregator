@@ -52,7 +52,7 @@ angular.module('spaApp')
 						.position(position)
 						.theme('warn')
 						.action(action)
-						.hideDelay(delay)
+						.hideDelay(delay * 3)
 				);
 			}
 		};

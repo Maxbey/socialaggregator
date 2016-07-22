@@ -80,14 +80,6 @@ angular
             templateUrl: 'views/profile.html'
           }
         }
-      })
-      .state('app.profile_edit', {
-        url: '/im/edit',
-        views: {
-          'main@': {
-            templateUrl: 'views/profile.edit.html'
-          }
-        }
       });
 
     $locationProvider.html5Mode({
