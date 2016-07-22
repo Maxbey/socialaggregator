@@ -5,8 +5,9 @@ from aggregator.views import UserViewSet
 from aggregator.views import SocialAuthView
 from aggregator.routers import UserRouter
 from rest_framework.routers import SimpleRouter
-
 from aggregator.views import UserSocialAuthViewSet
+from rest_auth.views import LoginView, LogoutView
+from rest_auth.registration.views import RegisterView
 
 user_router = UserRouter()
 router = SimpleRouter()
@@ -16,8 +17,11 @@ router.register(r'social_account', UserSocialAuthViewSet)
 
 urlpatterns = [
     url(r'^api/admin/', admin.site.urls),
-    url(r'^api/auth/', include('rest_auth.urls')),
-    url(r'^api/auth/registration/', include('rest_auth.registration.urls')),
+
+    url(r'^api/auth/registration/', RegisterView.as_view(), name='register_view'),
+    url(r'^api/auth/login/$', LoginView.as_view(), name='rest_login'),
+    url(r'^api/auth/logout/$', LogoutView.as_view(), name='rest_logout'),
+
     url(r'^api/auth/email-confirmation/(?P<key>\w+)/$',
         confirm_email, name='account_confirm_email'),
 
@@ -26,6 +30,7 @@ urlpatterns = [
         name='login_social_token'),
 
     url(r'^api/', include(user_router.urls)),
-    url(r'^api/', include(router.urls))
+    url(r'^api/', include(router.urls)),
+    url(r'^api/docs/', include('rest_framework_swagger.urls'))
 
 ]

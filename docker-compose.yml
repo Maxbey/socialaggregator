@@ -18,6 +18,7 @@ services:
     volumes:
       - ./socialaggregator/static:/usr/src/app/static
       - ./spa:/usr/src/spa
+      - ./docs/:/usr/src/docs/
   django:
     environment:
      - SECRET_KEY=${SECRET_KEY}

@@ -52,8 +52,15 @@ INSTALLED_APPS = [
 
     'aggregator',
     'django_extensions',
-    'django_nose'
+    'django_nose',
+    'rest_framework_swagger'
 ]
+
+SWAGGER_SETTINGS = {
+    'exclude_url_names': [
+        'login_social_token'
+    ],
+}
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 

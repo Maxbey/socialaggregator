@@ -17,6 +17,9 @@ class AuthByTokenViewSet(GenericViewSet):
 
 
 class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, AuthByTokenViewSet):
+    """
+    Returns Users details in JSON format.
+    """
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
@@ -25,6 +28,9 @@ class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, AuthByToke
 
 
 class UserSocialAuthViewSet(mixins.ListModelMixin, mixins.DestroyModelMixin, AuthByTokenViewSet):
+    """
+    User social accounts viewset.
+    """
     queryset = UserSocialAuth.objects.all()
     serializer_class = UserSocialAuthSerializer
 

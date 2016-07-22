@@ -4,13 +4,11 @@ dj-database-url
 dj-static
 django-appconf
 django-compressor
-djangorestframework
 drf-nested-routers
 six
 static3
 wsgiref
 django-environ
-
 rest-social-auth
 django-allauth
 django-rest-auth
@@ -19,3 +17,7 @@ nose
 django_nose
 django_extensions
 HTTPretty
+# Versions of this modules are fixed, because in djangorestframework >= 3.4.0
+# occurs a bug that it described here https://github.com/tomchristie/django-rest-framework/issues/4265
+djangorestframework==3.3.3
+django-rest-swagger==0.3.8

@@ -1,0 +1,101 @@
+{
+  "swaggerVersion": "1.2",
+  "apis": [
+    {
+      "operations": [
+        {
+          "parameters": [
+            {
+              "paramType": "form",
+              "type": "string",
+              "name": "code",
+              "required": true
+            }
+          ],
+          "nickname": "facebook_auth",
+          "notes": "Implemented by chain django-rest-social-auth -> python-social-auth. Use OAuth2 protocol.",
+          "summary": "Authorization via facebook",
+          "type": "TokenSerializer",
+          "method": "POST"
+        }
+      ],
+      "path": "/api/social_auth/login/social/token/facebook",
+      "description": ""
+    },
+    {
+      "operations": [
+        {
+          "parameters": [
+            {
+              "paramType": "form",
+              "type": "string",
+              "name": "code",
+              "required": true
+            }
+          ],
+          "nickname": "github_auth",
+          "notes": "Implemented by chain django-rest-social-auth -> python-social-auth. Use OAuth2 protocol.",
+          "summary": "Authorization via github",
+          "type": "TokenSerializer",
+          "method": "POST"
+        }
+      ],
+      "path": "/api/social_auth/login/social/token/github",
+      "description": ""
+    },
+    {
+      "operations": [
+        {
+          "parameters": [
+            {
+              "paramType": "form",
+              "type": "string",
+              "name": "oauth_token_secret"
+            },
+            {
+              "paramType": "form",
+              "type": "string",
+              "name": "oauth_token"
+            },
+            {
+              "paramType": "form",
+              "type": "string",
+              "name": "oauth_verifier"
+            }
+          ],
+          "nickname": "twitter_auth",
+          "notes": "Implemented by chain django-rest-social-auth -> python-social-auth. Use OAuth protocol.",
+          "summary": "Authorization via twitter",
+          "type": "TokenSerializer",
+          "method": "POST"
+        }
+      ],
+      "path": "/api/social_auth/login/social/token/twitter",
+      "description": ""
+    }
+  ],
+  "models": {
+    "TokenSerializer": {
+      "required": [
+        "token"
+      ],
+      "id": "TokenSerializer",
+      "properties": {
+        "token": {
+          "description": null,
+          "required": false,
+          "readOnly": true,
+          "type": "string"
+        }
+      }
+    },
+    "WriteTokenSerializer": {
+      "required": [],
+      "id": "WriteTokenSerializer",
+      "properties": {}
+    }
+  },
+  "basePath": "http://socialaggregator.dev",
+  "resourcePath": "/api/social_auth",
+  "apiVersion": ""
+}
