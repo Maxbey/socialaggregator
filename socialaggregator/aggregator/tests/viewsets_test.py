@@ -20,6 +20,10 @@ class BaseViewSetTestCase(APITestCase):
     def get_authorized_client(self, user):
         return get_authorized_client(user)
 
+    def get_authorized_client_with_account(self):
+        account = UserSocialAuthFactory()
+        return self.get_authorized_client(account.user), account
+
     def assert_unauthorized(self, response):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(
@@ -55,9 +59,9 @@ class UserSocialAuthViewSet(BaseViewSetTestCase):
     def setUp(self):
         self.set_model_attributes(['id', 'provider', 'uid', 'user'])
 
-        self.social_account = UserSocialAuthFactory()
-        self.authorized_client = self.get_authorized_client(
-            self.social_account.user)
+        self.first_fixture = self.get_authorized_client_with_account()
+        self.second_fixture = self.get_authorized_client_with_account()
+
         self.url = '/api/social_account/'
 
     def test_unauthorized_attempt_to_retrieve_accounts(self):
@@ -65,13 +69,31 @@ class UserSocialAuthViewSet(BaseViewSetTestCase):
         self.assert_unauthorized(response)
 
     def test_authorized_attempt_to_list_accounts(self):
-        response = self.authorized_client.get(self.url, format='json')
+        response = self.first_fixture[0].get(self.url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
             response.json()[0],
-            dict_from_model(self.social_account,
+            dict_from_model(self.first_fixture[1],
                             self.model_attributes, ['user'])
         )
+
+    def test_list_only_owner_accounts(self):
+        first_user_account = self.first_fixture[0].get(self.url).json()[0]
+        second_user_account = self.second_fixture[0].get(self.url).json()[0]
+
+        self.assertNotEqual(first_user_account, second_user_account)
+
+    def test_destroy_account(self):
+        deletion_url = '/api/social_account/%d/' % self.first_fixture[1].id
+        response = self.first_fixture[0].delete(deletion_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_destroy_not_by_owner(self):
+        deletion_url = '/api/social_account/%d/' % self.second_fixture[1].id
+        response = self.first_fixture[0].delete(deletion_url)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
 class UserViewSetTest(BaseViewSetTestCase):

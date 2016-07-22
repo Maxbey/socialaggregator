@@ -3,7 +3,7 @@ import pprint
 from urllib import urlencode
 
 import httpretty
-from django.contrib.messages import ERROR
+from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 from social.apps.django_app.default.models import UserSocialAuth
@@ -283,6 +283,6 @@ class AccountsBindingTest(APITestCase, SocialTestHelpers):
         authorized_client = get_authorized_client_by_token(
             response.data['token'])
         response = self.login_via_facebook(authorized_client)
-
-        self.assertRaisesMessage(
-            ERROR, 'This facebook account is already in use.')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data, ['This facebook account is already in use.'])
