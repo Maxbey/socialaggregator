@@ -20,9 +20,9 @@
 
       <div layout="column" layout-align="center center">
         <md-button type="submit" class="LoginForm-submit md-primary md-raised">Sign in</md-button>
-      <md-button ng-click="vm.facebookLogin()" class="LoginForm-submit md-primary md-raised">Sign in via Facebook</md-button>
-      <md-button ng-click="vm.githubLogin()" class="LoginForm-submit md-primary md-raised">Sign in via Github</md-button>
-      <md-button ng-click="vm.twitterLogin()" class="LoginForm-submit md-primary md-raised">Sign in via Twitter</md-button>
+      <md-button ng-click="vm.socialLogin('facebook')" class="LoginForm-submit md-primary md-raised">Sign in via Facebook</md-button>
+      <md-button ng-click="vm.socialLogin('github')" class="LoginForm-submit md-primary md-raised">Sign in via Github</md-button>
+      <md-button ng-click="vm.socialLogin('twitter')" class="LoginForm-submit md-primary md-raised">Sign in via Twitter</md-button>
       </div>
 
     </form>

@@ -13,38 +13,21 @@ angular.module('spaApp')
 
     return {
       login: login,
-      facebookLogin: facebookLogin,
-      githubLogin: githubLogin,
-      vkLogin: vkLogin,
-      twitterLogin: twitterLogin,
+      socialLogin: socialLogin,
       register: register,
       logout: logout,
-      user: user,
-      afterLogin: afterLogin
+      user: user
     };
 
+    function socialLogin(provider) {
+      return $auth.authenticate(provider);
+    }
 
     function login(email, password) {
       return $http.post(baseUrl + 'login/', {
         email: email,
         password: password
       });
-    }
-
-    function facebookLogin() {
-      return $auth.authenticate('facebook');
-    }
-
-    function githubLogin() {
-      return $auth.authenticate('github');
-    }
-
-    function vkLogin() {
-      return $auth.authenticate('vk');
-    }
-
-    function twitterLogin() {
-      return $auth.authenticate('twitter');
     }
 
     function register(email, password1, password2, username) {
@@ -63,10 +46,6 @@ angular.module('spaApp')
     function logout() {
       $http.defaults.headers.common['Authorization'] = undefined;
       return $auth.logout();
-    }
-
-    function afterLogin(token) {
-      $http.defaults.headers.common['Authorization'] = 'Token ' + token;
     }
 
   });

@@ -12,47 +12,25 @@ angular.module('spaApp')
     var vm = this;
 
     vm.login = login;
-    vm.facebookLogin = facebookLogin;
-    vm.githubLogin = githubLogin;
-    vm.vkLogin = vkLogin;
-    vm.twitterLogin = twitterLogin;
+    vm.socialLogin = socialLogin;
 
     function login() {
       $auth.login({
         email: vm.email,
         password: vm.password
        }).then(function(response){
-        AuthenticationService.afterLogin(response.data.key);
         $auth.setToken(response.data.key);
         $state.go('app.dashboard');
         ToastService.show('You are successfully logged in');
        });
     }
 
-    function facebookLogin() {
-      AuthenticationService.facebookLogin().then(function () {
+    function socialLogin(provider) {
+      AuthenticationService.socialLogin(provider).then(function(){
         $state.go('app.dashboard');
-        ToastService.show('You are successfully logged in via facebook');
-      });
-    }
-
-    function githubLogin() {
-      AuthenticationService.githubLogin().then(function () {
-        $state.go('app.dashboard');
-        ToastService.show('You are successfully logged in via github');
-      });
-    }
-
-    function vkLogin() {
-      AuthenticationService.vkLogin().then(function () {
-        ToastService.show('You are successfully logged in via Vkontakte');
-      });
-    }
-
-    function twitterLogin() {
-      AuthenticationService.twitterLogin().then(function () {
-        $state.go('app.dashboard');
-        ToastService.show('You are successfully logged in via twitter');
+        ToastService.show('You are successfully logged in via ' + provider);
+      }, function(response){
+        ToastService.error(response.data[0]);
       });
     }
 
