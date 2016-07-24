@@ -16,7 +16,7 @@ user_router.register(r'user', UserViewSet)
 router.register(r'social_account', UserSocialAuthViewSet)
 
 urlpatterns = [
-    url(r'^api/admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
 
     url(r'^api/auth/registration/', RegisterView.as_view(), name='register_view'),
     url(r'^api/auth/login/$', LoginView.as_view(), name='rest_login'),

@@ -1,8 +1,6 @@
 import json
-import pprint
-from urllib import urlencode
-
 import httpretty
+from urllib import urlencode
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
