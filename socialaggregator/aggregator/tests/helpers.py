@@ -27,8 +27,6 @@ def fill_instance(instance, data):
 def dict_from_model(instance, attributes, relations):
     def value(attribute_name):
         attribute = getattr(instance, attribute_name)
-        print attribute
-        print attribute not in relations
 
         return attribute if attribute_name not in relations else attribute.id
 

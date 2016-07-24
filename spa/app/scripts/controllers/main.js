@@ -8,6 +8,5 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('MainCtrl', function (AuthenticationService) {
-    var vm = this;
+  .controller('MainCtrl', function () {
   });

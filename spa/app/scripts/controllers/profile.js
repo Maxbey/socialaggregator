@@ -30,7 +30,7 @@ angular.module('spaApp')
     function addTwitter() {
       AuthenticationService.twitterLogin().then(function(){
         showToast('Twitter');
-      }), errorCallback;
+      }, errorCallback);
     }
 
     function addGithub() {
@@ -44,13 +44,13 @@ angular.module('spaApp')
     }
 
     function update() {
-      UserService.update(vm.user).then(function(response){
+      UserService.update(vm.user).then(function(){
         ToastService.show('Your profile successfully updated');
       });
     }
 
     function removeAccount(account) {
-      UserService.removeAccount(account.id).then(function(r){
+      UserService.removeAccount(account.id).then(function(){
         vm.accounts.splice(vm.accounts.indexOf(account), 1);
         ToastService.show('Account has been successfully removed');
       });

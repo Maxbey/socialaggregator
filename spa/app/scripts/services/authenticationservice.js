@@ -8,8 +8,7 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('AuthenticationService', function ($http, $cookies, $auth, $log) {
-    var socialBaseUrl = 'api/social_auth/token/';
+  .service('AuthenticationService', function ($http, $cookies, $auth) {
     var baseUrl = 'api/auth/';
 
     return {

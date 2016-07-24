@@ -95,7 +95,7 @@ angular
     $authProvider.facebook({
       clientId: '475009766042261',
       url: '/api/social_auth/login/social/token/facebook/',
-      scope: ['email', 'user_friends', 'public_profile'],
+      scope: ['email', 'user_friends', 'public_profile']
     });
 
     $authProvider.github({
