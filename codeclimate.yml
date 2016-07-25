@@ -1,9 +1,0 @@
-engines:
-  duplication:
-    enabled: true
-    exclude_paths:
-      - "spa/test"
-      - "socialaggregator/aggregator/tests"
-      - "spa/gulpfile.js"
-  pep8:
-    enabled: true

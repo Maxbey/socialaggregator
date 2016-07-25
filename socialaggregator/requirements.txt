@@ -19,6 +19,8 @@ django_extensions
 HTTPretty
 coverage
 codeclimate-test-reporter
+raven[django]
+
 
 # Versions of this modules are fixed, because in djangorestframework >= 3.4.0
 # occurs a bug that it described here https://github.com/tomchristie/django-rest-framework/issues/4265

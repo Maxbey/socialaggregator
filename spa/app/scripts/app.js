@@ -18,7 +18,8 @@ angular
     'ui.router',
     'ngSanitize',
     'ngMaterial',
-    'satellizer'
+    'satellizer',
+    'ngRaven'
   ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider) {
     $urlRouterProvider.otherwise('/');
@@ -125,6 +126,8 @@ angular
     });
 
     $authProvider.authToken = 'Token';
+
+    Raven.config('http://public@localhost:9000/2', {}).install();
 
   }).run(function ($rootScope, $state, $auth) {
   var registrationCallback = $rootScope.$on("$stateChangeStart", function (event, toState) {

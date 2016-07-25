@@ -53,13 +53,18 @@ INSTALLED_APPS = [
     'aggregator',
     'django_extensions',
     'django_nose',
-    'rest_framework_swagger'
+    'rest_framework_swagger',
+    'raven.contrib.django.raven_compat'
 ]
 
 SWAGGER_SETTINGS = {
     'exclude_url_names': [
         'login_social_token'
     ],
+}
+
+RAVEN_CONFIG = {
+    'dsn': 'http://public:secret@sentry:9000/2'
 }
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -192,3 +197,47 @@ SOCIAL_AUTH_TWITTER_SECRET = env('SOCIAL_AUTH_TWITTER_SECRET')
 SOCIAL_AUTH_VK_OAUTH2_KEY = '5546912'
 SOCIAL_AUTH_VK_OAUTH2_SECRET = env('SOCIAL_AUTH_VK_OAUTH2_SECRET')
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['friends', 'photos', 'email', 'photo_big']
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s '
+                      '%(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'tags': {'custom-tag': 'x'},
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+    },
+}

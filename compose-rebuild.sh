@@ -1,5 +1,4 @@
 #!/bin/bash
 
-docker-compose down
-docker-compose build
+docker-compose build django
 docker-compose up -d
