@@ -9,6 +9,11 @@ services:
     expose:
       - "9000"
   node:
+    extends:
+      file: docker-compose-abstract.yml
+      service: base
+    environment:
+     - SENTRY_PUBLIC_DSN=${SENTRY_PUBLIC_DSN}
     build:
       context: .
       dockerfile: /node/Dockerfile
@@ -29,8 +34,11 @@ services:
       - ./spa:/usr/src/spa
       - ./docs/:/usr/src/docs/
   django:
+    extends:
+      file: docker-compose-abstract.yml
+      service: base
     environment:
-     - SECRET_KEY=${SECRET_KEY}
+     - SECRET_KEY=somesecretvalue
      - SOCIAL_AUTH_FACEBOOK_SECRET=${SOCIAL_AUTH_FACEBOOK_SECRET}
      - SOCIAL_AUTH_GITHUB_SECRET=${SOCIAL_AUTH_GITHUB_SECRET}
      - SOCIAL_AUTH_VK_OAUTH2_SECRET=${SOCIAL_AUTH_VK_OAUTH2_SECRET}
@@ -38,6 +46,7 @@ services:
      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
      - CODECLIMATE_REPO_TOKEN=${CODECLIMATE_REPO_TOKEN}
+     - SENTRY_PRIVATE_DSN=http://public:secret@sentry:9000/2
     build:
       context: ./socialaggregator/
       dockerfile: Dockerfile

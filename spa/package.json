@@ -2,7 +2,8 @@
   "name": "spa",
   "private": true,
   "scripts": {
-    "compile": "bower install --allow-root && gulp"
+    "compile": "bower install --allow-root && gulp",
+    "config": "gulp config"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
@@ -13,7 +14,6 @@
     "gulp-filter": "^2.0.2",
     "gulp-imagemin": "^2.3.0",
     "gulp-jshint": "^1.11.1",
-    "gulp-karma": "0.0.4",
     "gulp-load-plugins": "^0.10.0",
     "gulp-plumber": "^1.0.1",
     "gulp-minify-css": "^1.2.0",
@@ -30,7 +30,9 @@
     "open": "0.0.5",
     "gulp-sass": "^2.0.4",
     "jshint-stylish": "^1.0.0",
-    "bower": "latest"
+    "bower": "latest",
+    "karma": "0.13",
+    "gulp-ng-constant": "latest"
   },
   "engines": {
     "node": ">=0.10.0"

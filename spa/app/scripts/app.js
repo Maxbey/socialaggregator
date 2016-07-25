@@ -10,6 +10,7 @@
  */
 angular
   .module('spaApp', [
+    'ngConstants',
     'ngAnimate',
     'ngAria',
     'ngCookies',
@@ -21,7 +22,7 @@ angular
     'satellizer',
     'ngRaven'
   ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider, envConfig) {
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
@@ -94,13 +95,13 @@ angular
     $authProvider.loginUrl = '/api/auth/login/';
 
     $authProvider.facebook({
-      clientId: '475009766042261',
+      clientId: envConfig['SOCIAL_AUTH_FACEBOOK_KEY'],
       url: '/api/social_auth/login/social/token/facebook/',
       scope: ['email', 'user_friends', 'public_profile']
     });
 
     $authProvider.github({
-      clientId: 'c2ce5010ca8709e82f4d',
+      clientId: envConfig['SOCIAL_AUTH_GITHUB_KEY'],
       url: '/api/social_auth/login/social/token/github/'
     });
 
@@ -108,7 +109,7 @@ angular
       name: 'vk',
       url: '/api/social_auth/login/social/token/vk/',
       redirectUri: window.location.origin + '/',
-      clientId: 5546912,
+      clientId: envConfig['SOCIAL_AUTH_VK_OAUTH2_KEY'],
       authorizationEndpoint: 'http://oauth.vk.com/authorize',
       scope: 'friends, photos, email, photo_big',
       display: 'popup',
@@ -127,7 +128,7 @@ angular
 
     $authProvider.authToken = 'Token';
 
-    Raven.config('http://public@localhost:9000/2', {}).install();
+    Raven.config(envConfig['SENTRY_PUBLIC_DSN'], {}).install();
 
   }).run(function ($rootScope, $state, $auth) {
   var registrationCallback = $rootScope.$on("$stateChangeStart", function (event, toState) {

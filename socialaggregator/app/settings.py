@@ -1,18 +1,7 @@
 import os
 from environ import environ
 
-env = environ.Env(
-    DEBUG=(bool, True),
-    SECRET_KEY=(str, os.environ['SECRET_KEY']),
-    SOCIAL_AUTH_FACEBOOK_SECRET=(
-        str, os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']),
-    SOCIAL_AUTH_GITHUB_SECRET=(str, os.environ['SOCIAL_AUTH_GITHUB_SECRET']),
-    SOCIAL_AUTH_TWITTER_SECRET=(str, os.environ['SOCIAL_AUTH_TWITTER_SECRET']),
-    SOCIAL_AUTH_VK_OAUTH2_SECRET=(
-        str, os.environ['SOCIAL_AUTH_VK_OAUTH2_SECRET']),
-    EMAIL_HOST_USER=(str, os.environ['EMAIL_HOST_USER']),
-    EMAIL_HOST_PASSWORD=(str, os.environ['EMAIL_HOST_PASSWORD'])
-)
+env = environ.Env()
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -20,10 +9,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # expr
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -64,7 +53,7 @@ SWAGGER_SETTINGS = {
 }
 
 RAVEN_CONFIG = {
-    'dsn': 'http://public:secret@sentry:9000/2'
+    'dsn': env.str('SENTRY_PRIVATE_DSN')
 }
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -179,23 +168,23 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
 
 SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']
 
 SOCIAL_AUTH_FACEBOOK_KEY = '475009766042261'
-SOCIAL_AUTH_FACEBOOK_SECRET = env('SOCIAL_AUTH_FACEBOOK_SECRET')
+SOCIAL_AUTH_FACEBOOK_SECRET = env.str('SOCIAL_AUTH_FACEBOOK_SECRET')
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_friends', 'public_profile']
 
 SOCIAL_AUTH_GITHUB_KEY = 'c2ce5010ca8709e82f4d'
-SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
+SOCIAL_AUTH_GITHUB_SECRET = env.str('SOCIAL_AUTH_GITHUB_SECRET')
 
 SOCIAL_AUTH_TWITTER_KEY = 'ieFDXu3PoDtidWcrs9UZxMO6e'
-SOCIAL_AUTH_TWITTER_SECRET = env('SOCIAL_AUTH_TWITTER_SECRET')
+SOCIAL_AUTH_TWITTER_SECRET = env.str('SOCIAL_AUTH_TWITTER_SECRET')
 
 SOCIAL_AUTH_VK_OAUTH2_KEY = '5546912'
-SOCIAL_AUTH_VK_OAUTH2_SECRET = env('SOCIAL_AUTH_VK_OAUTH2_SECRET')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('SOCIAL_AUTH_VK_OAUTH2_SECRET')
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['friends', 'photos', 'email', 'photo_big']
 
 LOGGING = {

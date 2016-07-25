@@ -8,6 +8,9 @@ var lazypipe = require('lazypipe');
 var rimraf = require('rimraf');
 var wiredep = require('wiredep').stream;
 var runSequence = require('run-sequence');
+var process = require('process');
+
+var gulpNgConstant = require('gulp-ng-constant');
 
 var yeoman = {
   app: require('./bower.json').appPath || 'app',
@@ -54,6 +57,24 @@ var styles = lazypipe()
 ///////////
 // Tasks //
 ///////////
+
+gulp.task('config', function(){
+  var config = {
+    envConfig: {
+      SENTRY_PUBLIC_DSN: process.env.SENTRY_PUBLIC_DSN,
+      SOCIAL_AUTH_FACEBOOK_KEY: process.env.SOCIAL_AUTH_FACEBOOK_KEY,
+      SOCIAL_AUTH_GITHUB_KEY: process.env.SOCIAL_AUTH_GITHUB_KEY,
+      SOCIAL_AUTH_VK_OAUTH2_KEY: process.env.SOCIAL_AUTH_VK_OAUTH2_KEY
+    }
+  };
+
+  return gulpNgConstant({
+    constants: config,
+    stream: true
+  })
+  .pipe(gulp.dest('app/scripts/'));
+
+});
 
 gulp.task('styles', function () {
   return gulp.src(paths.styles)

@@ -1,0 +1,8 @@
+version: '2'
+services:
+  base:
+    build: .
+    environment:
+     - SOCIAL_AUTH_FACEBOOK_KEY=${SOCIAL_AUTH_FACEBOOK_KEY}
+     - SOCIAL_AUTH_GITHUB_KEY=${SOCIAL_AUTH_GITHUB_KEY}
+     - SOCIAL_AUTH_VK_OAUTH2_KEY=${SOCIAL_AUTH_VK_OAUTH2_KEY}
