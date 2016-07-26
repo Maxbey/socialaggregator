@@ -3,4 +3,4 @@ django_nose
 django_extensions
 coverage
 codeclimate-test-reporter
-raven[django]
+raven
