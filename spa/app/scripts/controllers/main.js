@@ -8,5 +8,6 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('MainCtrl', function () {
+  .controller('MainCtrl', function ($raven) {
+    $raven.captureMessage('Hello from angular');
   });

@@ -1,0 +1,20 @@
+Django
+gunicorn
+dj-database-url
+dj-static
+django-appconf
+drf-nested-routers
+six
+static3
+wsgiref
+django-configurations
+rest-social-auth
+django-allauth
+django-rest-auth
+factory_boy
+HTTPretty
+
+# Versions of this modules are fixed, because in djangorestframework >= 3.4.0
+# occurs a bug that it described here https://github.com/tomchristie/django-rest-framework/issues/4265
+djangorestframework==3.3.3
+django-rest-swagger==0.3.8

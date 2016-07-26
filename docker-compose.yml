@@ -38,6 +38,8 @@ services:
       file: docker-compose-abstract.yml
       service: base
     environment:
+     - DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION}
+     - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
      - SECRET_KEY=somesecretvalue
      - SOCIAL_AUTH_FACEBOOK_SECRET=${SOCIAL_AUTH_FACEBOOK_SECRET}
      - SOCIAL_AUTH_GITHUB_SECRET=${SOCIAL_AUTH_GITHUB_SECRET}
