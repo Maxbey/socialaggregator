@@ -45,4 +45,3 @@ services:
       - ./socialaggregator/static:/usr/src/app/static
     expose:
         - "8000"
-    command: sh run.sh

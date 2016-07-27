@@ -89,6 +89,8 @@ angular
       requiredBase: false
     });
 
+    var base = 'https://socaggregator.herokuapp.com';
+
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
 
@@ -96,18 +98,18 @@ angular
 
     $authProvider.facebook({
       clientId: envConfig['SOCIAL_AUTH_FACEBOOK_KEY'],
-      url: '/api/social_auth/login/social/token/facebook/',
+      url: base + '/api/social_auth/login/social/token/facebook/',
       scope: ['email', 'user_friends', 'public_profile']
     });
 
     $authProvider.github({
       clientId: envConfig['SOCIAL_AUTH_GITHUB_KEY'],
-      url: '/api/social_auth/login/social/token/github/'
+      url: base + '/api/social_auth/login/social/token/github/'
     });
 
     $authProvider.oauth2({
       name: 'vk',
-      url: '/api/social_auth/login/social/token/vk/',
+      url: base + '/api/social_auth/login/social/token/vk/',
       redirectUri: window.location.origin + '/',
       clientId: envConfig['SOCIAL_AUTH_VK_OAUTH2_KEY'],
       authorizationEndpoint: 'http://oauth.vk.com/authorize',
@@ -120,7 +122,7 @@ angular
     });
 
     $authProvider.twitter({
-      url: '/api/social_auth/login/social/token/twitter/',
+      url: base + '/api/social_auth/login/social/token/twitter/',
       authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
       redirectUri: window.location.origin,
       type: '1.0'

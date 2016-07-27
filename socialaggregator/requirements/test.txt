@@ -1,3 +1,5 @@
+factory_boy
+HTTPretty
 nose
 django_nose
 django_extensions

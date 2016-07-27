@@ -9,6 +9,11 @@ class Production(EnvWithRealAuth):
     DEBUG = True
     SECRET_KEY = values.SecretValue(environ_prefix='')
 
+    DATABASE_URL = values.DatabaseURLValue(
+        environ_required=True, environ_prefix='')
+
+    DATABASES = DATABASE_URL
+
 
 class Development(LoggingMixin, EnvWithRealAuth):
     DEBUG = True

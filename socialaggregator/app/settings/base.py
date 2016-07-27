@@ -114,7 +114,7 @@ class BaseSettings(Configuration):
     SITE_ID = 1
 
     STATIC_URL = '/static/'
-    STATIC_ROOT = './static/'
+    STATIC_ROOT = 'staticfiles'
 
     ACCOUNT_EMAIL_REQUIRED = True
     ACCOUNT_UNIQUE_EMAIL = True
