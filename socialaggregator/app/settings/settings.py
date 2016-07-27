@@ -14,6 +14,14 @@ class Production(EnvWithRealAuth):
 
     DATABASES = DATABASE_URL
 
+    INSTALLED_APPS = BaseSettings.INSTALLED_APPS + ['corsheaders']
+
+    MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + ['corsheaders.middleware.CorsMiddleware']
+
+    CORS_ORIGIN_WHITELIST = ('socialaggregator.dev', )
+
+    CORS_ALLOW_CREDENTIALS = True
+
 
 class Development(LoggingMixin, EnvWithRealAuth):
     DEBUG = True
