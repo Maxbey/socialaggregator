@@ -1,32 +1,16 @@
-import os
-
 from configurations import values
+
+from .envs import EnvWithRealAuth
 from .base import BaseSettings
 from .mixins import LoggingMixin
 
 
-class Test(BaseSettings):
+class Production(EnvWithRealAuth):
     DEBUG = True
-    SECRET_KEY = 'somesecretvalue'
-
-    INSTALLED_APPS = BaseSettings.INSTALLED_APPS + ['django_nose']
-
-    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-    SOCIAL_AUTH_FACEBOOK_KEY = ''
-    SOCIAL_AUTH_FACEBOOK_SECRET = ''
-
-    SOCIAL_AUTH_GITHUB_KEY = ''
-    SOCIAL_AUTH_GITHUB_SECRET = ''
-
-    SOCIAL_AUTH_TWITTER_KEY = ''
-    SOCIAL_AUTH_TWITTER_SECRET = ''
-
-    SOCIAL_AUTH_VK_OAUTH2_KEY = ''
-    SOCIAL_AUTH_VK_OAUTH2_SECRET = ''
+    SECRET_KEY = values.SecretValue(environ_prefix='')
 
 
-class Development(LoggingMixin, BaseSettings):
+class Development(LoggingMixin, EnvWithRealAuth):
     DEBUG = True
     SECRET_KEY = 'somesecretvalue'
 
@@ -49,14 +33,23 @@ class Development(LoggingMixin, BaseSettings):
 
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-    SOCIAL_AUTH_FACEBOOK_KEY = values.SecretValue(environ_prefix='')
-    SOCIAL_AUTH_FACEBOOK_SECRET = values.SecretValue(environ_prefix='')
 
-    SOCIAL_AUTH_GITHUB_KEY = values.SecretValue(environ_prefix='')
-    SOCIAL_AUTH_GITHUB_SECRET = values.SecretValue(environ_prefix='')
+class Test(BaseSettings):
+    DEBUG = True
+    SECRET_KEY = 'somesecretvalue'
 
-    SOCIAL_AUTH_TWITTER_KEY = values.SecretValue(environ_prefix='')
-    SOCIAL_AUTH_TWITTER_SECRET = values.SecretValue(environ_prefix='')
+    INSTALLED_APPS = BaseSettings.INSTALLED_APPS + ['django_nose']
 
-    SOCIAL_AUTH_VK_OAUTH2_KEY = values.SecretValue(environ_prefix='')
-    SOCIAL_AUTH_VK_OAUTH2_SECRET = values.SecretValue(environ_prefix='')
+    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+    SOCIAL_AUTH_FACEBOOK_KEY = ''
+    SOCIAL_AUTH_FACEBOOK_SECRET = ''
+
+    SOCIAL_AUTH_GITHUB_KEY = ''
+    SOCIAL_AUTH_GITHUB_SECRET = ''
+
+    SOCIAL_AUTH_TWITTER_KEY = ''
+    SOCIAL_AUTH_TWITTER_SECRET = ''
+
+    SOCIAL_AUTH_VK_OAUTH2_KEY = ''
+    SOCIAL_AUTH_VK_OAUTH2_SECRET = ''

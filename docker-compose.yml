@@ -1,19 +1,9 @@
 version: '2'
 services:
-  sentry:
-    build:
-      context: ./sentry
-      dockerfile: Dockerfile
-    ports:
-      - "9000:9000"
-    expose:
-      - "9000"
   node:
     extends:
       file: docker-compose-abstract.yml
       service: base
-    environment:
-     - SENTRY_PUBLIC_DSN=${SENTRY_PUBLIC_DSN}
     build:
       context: .
       dockerfile: /node/Dockerfile
@@ -25,7 +15,6 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     links:
-      - sentry
       - django
     ports:
       - "80:80"
@@ -48,7 +37,6 @@ services:
      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
      - CODECLIMATE_REPO_TOKEN=${CODECLIMATE_REPO_TOKEN}
-     - SENTRY_PRIVATE_DSN=http://public:secret@sentry:9000/2
     build:
       context: ./socialaggregator/
       dockerfile: Dockerfile
