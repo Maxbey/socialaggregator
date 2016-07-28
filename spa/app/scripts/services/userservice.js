@@ -8,7 +8,8 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('UserService', function ($http) {
+  .service('UserService', function ($http, envConfig) {
+    var base = envConfig.BACKEND_HOST;
 
     return {
       update: update,
@@ -17,14 +18,14 @@ angular.module('spaApp')
     };
 
     function update(user) {
-      return $http.put('api/user/', user);
+      return $http.put(base + 'api/user/', user);
     }
 
     function accounts() {
-      return $http.get('api/social_account/');
+      return $http.get(base + 'api/social_account/');
     }
 
     function removeAccount(accountId) {
-      return $http.delete('/api/social_account/' + accountId + '/')
+      return $http.delete(base + '/api/social_account/' + accountId + '/')
     }
   });

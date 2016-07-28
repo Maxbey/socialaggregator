@@ -4,6 +4,8 @@ services:
     extends:
       file: docker-compose-abstract.yml
       service: base
+    environment:
+     - BACKEND_HOST=${BACKEND_HOST}
     build:
       context: .
       dockerfile: /node/Dockerfile

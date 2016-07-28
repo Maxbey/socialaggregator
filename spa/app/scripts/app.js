@@ -89,12 +89,12 @@ angular
       requiredBase: false
     });
 
-    var base = 'https://socaggregator.herokuapp.com';
-
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
 
-    $authProvider.loginUrl = '/api/auth/login/';
+    var base = envConfig.BACKEND_HOST;
+
+    $authProvider.loginUrl = base + '/api/auth/login/';
 
     $authProvider.facebook({
       clientId: envConfig['SOCIAL_AUTH_FACEBOOK_KEY'],
@@ -124,7 +124,7 @@ angular
     $authProvider.twitter({
       url: base + '/api/social_auth/login/social/token/twitter/',
       authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
-      redirectUri: window.location.origin,
+      redirectUri: 'https://socaggregator.herokuapp.com/',
       type: '1.0'
     });
 
