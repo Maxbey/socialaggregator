@@ -1,11 +1,16 @@
+branches:
+  only:
+  - master
+  - develop
+
 sudo: required
 
 language: python
 
 before_install:
-  - cd socialaggregator
-  - pip install -r requirements/base.txt
-  - pip install -r requirements/test.txt
+  - cd socialaggregator/requirements/
+  - bash install.sh
+  - cd ../
 
 script:
   - bash test.sh
