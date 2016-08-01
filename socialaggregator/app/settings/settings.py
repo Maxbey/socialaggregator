@@ -1,4 +1,5 @@
 from configurations import values
+from django.utils.crypto import get_random_string
 
 from .envs import EnvWithRealAuth
 from .base import BaseSettings
@@ -29,7 +30,7 @@ class Production(EnvWithRealAuth):
 
 class Development(LoggingMixin, EnvWithRealAuth):
     DEBUG = True
-    SECRET_KEY = 'somesecretvalue'
+    SECRET_KEY = get_random_string(length=32)
 
     INSTALLED_APPS = BaseSettings.INSTALLED_APPS + [
         'django_extensions',
@@ -53,7 +54,7 @@ class Development(LoggingMixin, EnvWithRealAuth):
 
 class Test(BaseSettings):
     DEBUG = True
-    SECRET_KEY = 'somesecretvalue'
+    SECRET_KEY = get_random_string(length=32)
 
     INSTALLED_APPS = BaseSettings.INSTALLED_APPS + ['django_nose']
 

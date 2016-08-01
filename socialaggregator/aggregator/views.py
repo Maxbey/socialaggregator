@@ -55,20 +55,33 @@ class SocialAuthView(SocialTokenOnlyAuthView):
     redirect_uri = getattr(settings, 'FRONTEND_URI')
 
     def respond_error(self, error):
+        """
+        Redefined method (original in BaseSocialAuthView).
+        Motivation: for more intuitive error handling
+                    using the django rest framework.
+        """
         raise ValidationError(error.message)
 
     @method_decorator(never_cache)
     def post(self, request, *args, **kwargs):
+        """
+        Redefined post endpoint (original in BaseSocialAuthView).
+        Motivation: fixed redirect on invalid uri that occur when
+                    trying to retrieve request token in case of OAuth1.
+        """
         input_data = self.get_serializer_in_data()
         provider_name = self.get_provider_name(input_data)
         if not provider_name:
             return self.respond_error("Provider is not specified")
         self.set_input_data(request, input_data)
         decorate_request(request, provider_name)
+
+        # The fix is to override the redirect uri directly after
+        # the auth provider instance was created.
         self.request.backend.redirect_uri = self.redirect_uri
+
         serializer_in = self.get_serializer_in(data=input_data)
         if self.oauth_v1() and request.backend.OAUTH_TOKEN_PARAMETER_NAME not in input_data:
-            # oauth1 first stage (1st is get request_token, 2nd is get access_token)
             request_token = parse_qs(request.backend.set_unauthorized_token())
             return Response(request_token)
         serializer_in.is_valid(raise_exception=True)
@@ -76,7 +89,7 @@ class SocialAuthView(SocialTokenOnlyAuthView):
             user = self.get_object()
         except (AuthException, HTTPError) as e:
             return self.respond_error(e)
-        if isinstance(user, HttpResponse):  # An error happened and pipeline returned HttpResponse instead of user
+        if isinstance(user, HttpResponse):
             return user
         resp_data = self.get_serializer(instance=user)
         self.do_login(request.backend, user)
