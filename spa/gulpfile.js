@@ -146,7 +146,8 @@ gulp.task('serve:prod', ['build', 'config'], function() {
   $.connect.server({
     root: [yeoman.dist],
     host: '0.0.0.0',
-    port: argv.port
+    port: argv.port,
+    fallback: yeoman.dist + '/index.html'
   });
 });
 
