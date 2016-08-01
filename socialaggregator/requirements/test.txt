@@ -1,3 +1,5 @@
+-r base.txt
+
 factory_boy
 HTTPretty
 nose
@@ -5,4 +7,3 @@ django_nose
 django_extensions
 coverage
 codeclimate-test-reporter
-raven

@@ -6,7 +6,7 @@ from .mixins import LoggingMixin
 
 
 class Production(EnvWithRealAuth):
-    DEBUG = True
+    DEBUG = False
     SECRET_KEY = values.SecretValue(environ_prefix='')
 
     DATABASE_URL = values.DatabaseURLValue(
@@ -18,9 +18,18 @@ class Production(EnvWithRealAuth):
 
     MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + ['corsheaders.middleware.CorsMiddleware']
 
+<<<<<<< HEAD
     CORS_ORIGIN_WHITELIST = ('socialaggregator.surge.sh', )
 
+=======
+>>>>>>> 4503c5d... Tmp.
     CORS_ALLOW_CREDENTIALS = True
+
+    ALLOWED_HOSTS = ['*']
+
+    FRONTEND_URI = values.Value(environ_prefix='', environ_required=True)
+
+    CORS_ORIGIN_ALLOW_ALL = True
 
 
 class Development(LoggingMixin, EnvWithRealAuth):
