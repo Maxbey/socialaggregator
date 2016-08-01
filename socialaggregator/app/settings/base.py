@@ -6,6 +6,8 @@ from configurations import Configuration, values
 class BaseSettings(Configuration):
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+    FRONTEND_URI = values.Value(environ_prefix='', environ_required=True)
+
     ALLOWED_HOSTS = []
 
     SENTRY_PRIVATE_DSN = values.Value(environ_prefix='')

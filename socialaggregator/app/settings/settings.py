@@ -22,8 +22,6 @@ class Production(EnvWithRealAuth):
 
     ALLOWED_HOSTS = ['*']
 
-    FRONTEND_URI = values.Value(environ_prefix='', environ_required=True)
-
     CORS_ORIGIN_ALLOW_ALL = True
 
 
