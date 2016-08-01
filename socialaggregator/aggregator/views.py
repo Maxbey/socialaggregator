@@ -1,13 +1,24 @@
+from urlparse import parse_qs
+
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.http import HttpResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_social_auth.serializers import UserSerializer
 from rest_framework import mixins
-from rest_social_auth.views import SocialTokenOnlyAuthView
+from rest_social_auth.views import SocialTokenOnlyAuthView, decorate_request
+from social.exceptions import AuthException
+from requests.exceptions import HTTPError
+
 from .models import UserSocialAuthSerializer
+
 from social.apps.django_app.default.models import UserSocialAuth
 
 
@@ -41,6 +52,32 @@ class UserSocialAuthViewSet(mixins.ListModelMixin, mixins.DestroyModelMixin, Aut
 
 
 class SocialAuthView(SocialTokenOnlyAuthView):
+    redirect_uri = getattr(settings, 'FRONTEND_URI')
 
     def respond_error(self, error):
         raise ValidationError(error.message)
+
+    @method_decorator(never_cache)
+    def post(self, request, *args, **kwargs):
+        input_data = self.get_serializer_in_data()
+        provider_name = self.get_provider_name(input_data)
+        if not provider_name:
+            return self.respond_error("Provider is not specified")
+        self.set_input_data(request, input_data)
+        decorate_request(request, provider_name)
+        self.request.backend.redirect_uri = self.redirect_uri
+        serializer_in = self.get_serializer_in(data=input_data)
+        if self.oauth_v1() and request.backend.OAUTH_TOKEN_PARAMETER_NAME not in input_data:
+            # oauth1 first stage (1st is get request_token, 2nd is get access_token)
+            request_token = parse_qs(request.backend.set_unauthorized_token())
+            return Response(request_token)
+        serializer_in.is_valid(raise_exception=True)
+        try:
+            user = self.get_object()
+        except (AuthException, HTTPError) as e:
+            return self.respond_error(e)
+        if isinstance(user, HttpResponse):  # An error happened and pipeline returned HttpResponse instead of user
+            return user
+        resp_data = self.get_serializer(instance=user)
+        self.do_login(request.backend, user)
+        return Response(resp_data.data)

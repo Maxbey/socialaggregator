@@ -18,11 +18,6 @@ class Production(EnvWithRealAuth):
 
     MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + ['corsheaders.middleware.CorsMiddleware']
 
-<<<<<<< HEAD
-    CORS_ORIGIN_WHITELIST = ('socialaggregator.surge.sh', )
-
-=======
->>>>>>> 4503c5d... Tmp.
     CORS_ALLOW_CREDENTIALS = True
 
     ALLOWED_HOSTS = ['*']
