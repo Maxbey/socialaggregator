@@ -24,6 +24,7 @@ angular
   ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider, envConfig) {
     $urlRouterProvider.otherwise('/');
+    $httpProvider.defaults.withCredentials = true;
 
     $stateProvider
       .state('enter', {
@@ -89,6 +90,9 @@ angular
       requiredBase: false
     });
 
+    var base = envConfig.BACKEND_HOST;
+
+    $authProvider.withCredentials = true;
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
 

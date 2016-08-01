@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "compile": "bower install --allow-root && gulp",
-    "config": "gulp config"
+    "bower": "bower install --allow-root",
+    "config": "gulp config",
+    "prod": "gulp serve:prod --port $PORT"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
@@ -36,5 +38,8 @@
   },
   "engines": {
     "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "yargs": "^4.8.1"
   }
 }

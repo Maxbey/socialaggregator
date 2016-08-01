@@ -9,6 +9,7 @@ var rimraf = require('rimraf');
 var wiredep = require('wiredep').stream;
 var runSequence = require('run-sequence');
 var process = require('process');
+var argv = require('yargs').argv;
 
 var gulpNgConstant = require('gulp-ng-constant');
 
@@ -141,11 +142,11 @@ gulp.task('serve', function (cb) {
     'watch', cb);
 });
 
-gulp.task('serve:prod', function() {
+gulp.task('serve:prod', ['build', 'config'], function() {
   $.connect.server({
     root: [yeoman.dist],
-    livereload: true,
-    port: 9000
+    host: '0.0.0.0',
+    port: argv.port
   });
 });
 

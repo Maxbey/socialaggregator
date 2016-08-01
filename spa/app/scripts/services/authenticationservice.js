@@ -9,7 +9,7 @@
  */
 angular.module('spaApp')
   .service('AuthenticationService', function ($http, $cookies, $auth, envConfig) {
-    var baseUrl = envConfig.BACKEND_HOST + 'api/auth/';
+    var baseUrl = envConfig.BACKEND_HOST + '/api/auth/';
 
     return {
       login: login,
@@ -40,7 +40,7 @@ angular.module('spaApp')
     }
 
     function user() {
-      return $http.get(envConfig.BACKEND_HOST + 'api/user/');
+      return $http.get(envConfig.BACKEND_HOST + '/api/user/');
     }
 
     function logout() {

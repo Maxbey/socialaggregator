@@ -1,6 +1,5 @@
 .idea/
 socialaggregator/static/
 spa/bower_components/
-spa/dist/
 spa/node_modules/
 .coverage

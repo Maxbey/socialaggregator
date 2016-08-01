@@ -4,14 +4,14 @@ services:
     extends:
       file: docker-compose-abstract.yml
       service: base
-    environment:
-     - BACKEND_HOST=${BACKEND_HOST}
     build:
-      context: .
-      dockerfile: /node/Dockerfile
+      context: ./spa
+      dockerfile: Dockerfile
+    environment:
+     - PORT=9000
+     - BACKEND_HOST=${BACKEND_HOST}
     volumes:
       - ./spa:/usr/src/spa
-    command: 'sh /usr/src/spa/compile.sh'
   nginx:
     build:
       context: ./nginx
@@ -39,6 +39,8 @@ services:
      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
      - CODECLIMATE_REPO_TOKEN=${CODECLIMATE_REPO_TOKEN}
+     - FRONTEND_HOST=socialaggregator.dev
+     - SENTRY_PRIVATE_DSN=public:secret@localhost:9000/2
     build:
       context: ./socialaggregator/
       dockerfile: Dockerfile

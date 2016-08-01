@@ -9,7 +9,7 @@
  */
 angular.module('spaApp')
   .service('UserService', function ($http, envConfig) {
-    var base = envConfig.BACKEND_HOST;
+    var baseUrl = envConfig.BACKEND_HOST + '/api';
 
     return {
       update: update,
@@ -18,14 +18,14 @@ angular.module('spaApp')
     };
 
     function update(user) {
-      return $http.put(base + 'api/user/', user);
+      return $http.put(baseUrl + '/user/', user);
     }
 
     function accounts() {
-      return $http.get(base + 'api/social_account/');
+      return $http.get(baseUrl + '/social_account/');
     }
 
     function removeAccount(accountId) {
-      return $http.delete(base + '/api/social_account/' + accountId + '/')
+      return $http.delete(baseUrl + '/social_account/' + accountId + '/')
     }
   });
