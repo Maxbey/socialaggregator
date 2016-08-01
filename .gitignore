@@ -2,4 +2,5 @@
 socialaggregator/static/
 spa/bower_components/
 spa/node_modules/
+spa/dist
 .coverage
