@@ -9,7 +9,7 @@ services:
       dockerfile: Dockerfile
     environment:
      - PORT=9000
-     - BACKEND_HOST=${BACKEND_HOST}
+     - BACKEND_HOST=http://api.socialaggregator.dev
     volumes:
       - ./spa:/usr/src/spa
   nginx:
@@ -38,8 +38,8 @@ services:
      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
      - CODECLIMATE_REPO_TOKEN=${CODECLIMATE_REPO_TOKEN}
-     - FRONTEND_URI=http://socialaggregator.dev
-     - SENTRY_PRIVATE_DSN=public:secret@localhost:9000/2
+     - FRONTEND_URI=http://socialaggregator.dev/
+     - SENTRY_PRIVATE_DSN=http://public:secret@localhost:9000/2
     build:
       context: ./socialaggregator/
       dockerfile: Dockerfile

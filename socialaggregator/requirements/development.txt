@@ -1,5 +1,6 @@
 raven
 pudb
+django-cors-headers
 
 -r test.txt
 

@@ -34,7 +34,8 @@ class Development(LoggingMixin, EnvWithRealAuth):
         'django_extensions',
         'django_nose',
         'rest_framework_swagger',
-        'raven.contrib.django.raven_compat'
+        'raven.contrib.django.raven_compat',
+        'corsheaders'
     ]
 
     SWAGGER_SETTINGS = BaseSettings.SWAGGER_SETTINGS = {
@@ -48,6 +49,12 @@ class Development(LoggingMixin, EnvWithRealAuth):
     }
 
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+    MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + ['corsheaders.middleware.CorsMiddleware']
+
+    CORS_ALLOW_CREDENTIALS = True
+
+    CORS_ORIGIN_ALLOW_ALL = True
 
 
 class Test(BaseSettings):
