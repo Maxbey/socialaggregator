@@ -1,0 +1,60 @@
+<div layout="column" ng-controller="AccountsCtrl as vm">
+  <div layout="column" layout-align="center center">
+    <h2 class="md-display-1">Your social accounts</h2>
+  </div>
+
+
+  <md-fab-speed-dial md-open="false" md-direction="up"
+                     class="md-scale md-fab-bottom-right">
+    <md-fab-trigger>
+      <md-button aria-label="menu" class="md-fab md-primary">
+        <md-icon md-svg-src="svg/add.svg" style="height: 16px; width: 16px;"></md-icon>
+      </md-button>
+    </md-fab-trigger>
+    <md-fab-actions>
+      <div ng-repeat="provider in vm.providers">
+        <md-button ng-click="vm.addAccount(provider)" aria-label="{{ provider }}" class="md-fab md-raised md-mini">
+          <md-icon md-svg-src="svg/{{ provider }}.svg" aria-label="{{ provider }}"></md-icon>
+        </md-button>
+      </div>
+    </md-fab-actions>
+  </md-fab-speed-dial>
+
+
+  <md-content layout="row" layout-align="center top" layout-wrap>
+    <div ng-repeat="account in vm.accounts" flex-sm="50" flex-lg="20" flex-md="25">
+      <md-card layout-padding>
+        <md-card-header>
+          <md-card-avatar>
+            <object data="svg/{{ account.provider }}.svg" type="image/svg+xml" width="35"
+                    height="35"></object>
+          </md-card-avatar>
+          <md-card-header-text style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+            <span class="md-title">{{ account.social_data.user_info.name }}</span>
+            <span class="md-subhead">{{ account.provider }}</span>
+          </md-card-header-text>
+          <div layout-align="end center" style="padding: 0">
+            <md-button ng-click="vm.removeAccount(account)" class="md-icon-button" aria-label="close">
+              <md-icon md-svg-icon="svg/garbage.svg" style="height: 22px; width: 22px;"></md-icon>
+            </md-button>
+          </div>
+        </md-card-header>
+        <img ng-src="{{ account.social_data.avatar_url }}" class="md-card-image" alt="Avatar">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-subhead">{{ account.social_data.user_info.location }}</span>
+
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-title-text ng-repeat="relation in account.social_data.social_relations">
+            <span class="md-subhead">
+              User has {{ account.social_data.counts[relation + '_count'] }} {{ relation }}
+            </span>
+
+        </md-card-title-text>
+      </md-card>
+    </div>
+  </md-content>
+
+</div>
+
