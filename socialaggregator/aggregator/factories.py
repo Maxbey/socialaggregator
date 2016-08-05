@@ -30,4 +30,4 @@ class UserSocialAuthFactory(factory.DjangoModelFactory):
 
     provider = factory.Faker('word')
     uid = factory.Faker('ean')
-    extra_data = factory.Faker('simple_profile')
+    extra_data = {"access_token": "token", "login": "login"}

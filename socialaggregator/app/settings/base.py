@@ -130,5 +130,6 @@ class BaseSettings(Configuration):
 
     SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']
 
-    SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_friends', 'public_profile']
+    SOCIAL_AUTH_FACEBOOK_SCOPE = [
+        'email', 'user_friends', 'public_profile', 'user_location']
     SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['friends', 'photos', 'email', 'photo_big']

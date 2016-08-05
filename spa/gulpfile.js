@@ -9,6 +9,7 @@ var rimraf = require('rimraf');
 var wiredep = require('wiredep').stream;
 var runSequence = require('run-sequence');
 var process = require('process');
+
 var argv = require('yargs').argv;
 
 var gulpNgConstant = require('gulp-ng-constant');
@@ -36,7 +37,8 @@ var paths = {
   views: {
     main: yeoman.app + '/index.html',
     files: [yeoman.app + '/views/**/*.html']
-  }
+  },
+  svg: './app/images/icons/*.svg'
 };
 
 ////////////////////////
@@ -146,7 +148,8 @@ gulp.task('serve:prod', ['build', 'config'], function() {
   $.connect.server({
     root: [yeoman.dist],
     host: '0.0.0.0',
-    port: argv.port
+    port: argv.port,
+    fallback: yeoman.dist + '/index.html'
   });
 });
 
@@ -176,7 +179,7 @@ gulp.task('clean:dist', function (cb) {
   rimraf('./dist', cb);
 });
 
-gulp.task('client:build', ['html', 'styles'], function () {
+gulp.task('client:build', ['svg', 'html', 'styles'], function () {
   var jsFilter = $.filter('**/*.js');
   var cssFilter = $.filter('**/*.css');
 
@@ -205,6 +208,12 @@ gulp.task('images', function () {
         interlaced: true
     })))
     .pipe(gulp.dest(yeoman.dist + '/images'));
+});
+
+gulp.task('svg', function(){
+console.log(paths.svg);
+  return gulp.src(paths.svg)
+    .pipe(gulp.dest(yeoman.dist + '/svg/'));
 });
 
 gulp.task('copy:extras', function () {

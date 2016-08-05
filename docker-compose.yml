@@ -9,7 +9,7 @@ services:
       dockerfile: Dockerfile
     environment:
      - PORT=9000
-     - BACKEND_HOST=${BACKEND_HOST}
+     - BACKEND_HOST=http://api.socialaggregator.dev
     volumes:
       - ./spa:/usr/src/spa
   nginx:
@@ -31,7 +31,6 @@ services:
     environment:
      - DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION}
      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
-     - SECRET_KEY=somesecretvalue
      - SOCIAL_AUTH_FACEBOOK_SECRET=${SOCIAL_AUTH_FACEBOOK_SECRET}
      - SOCIAL_AUTH_GITHUB_SECRET=${SOCIAL_AUTH_GITHUB_SECRET}
      - SOCIAL_AUTH_VK_OAUTH2_SECRET=${SOCIAL_AUTH_VK_OAUTH2_SECRET}
@@ -39,8 +38,8 @@ services:
      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
      - CODECLIMATE_REPO_TOKEN=${CODECLIMATE_REPO_TOKEN}
-     - FRONTEND_HOST=socialaggregator.dev
-     - SENTRY_PRIVATE_DSN=public:secret@localhost:9000/2
+     - FRONTEND_URI=http://socialaggregator.dev/
+     - SENTRY_PRIVATE_DSN=http://public:secret@localhost:9000/2
     build:
       context: ./socialaggregator/
       dockerfile: Dockerfile
