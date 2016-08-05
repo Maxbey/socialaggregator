@@ -12,13 +12,19 @@ class BaseFetchStrategy(object):
     @abstractproperty
     def relations(self):
         """
-        Must be implemented in child classes
+        Must be implemented in child classes.
         """
 
     @abstractmethod
     def get_avatar_url(self):
         """
-        Must be implemented in child classes
+        Must be implemented in child classes.
+        """
+
+    @abstractmethod
+    def get_user_info(self):
+        """
+        Must be implemented in child classes.
         """
 
     def get_friends(self):

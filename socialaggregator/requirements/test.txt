@@ -6,4 +6,6 @@ nose
 django_nose
 django_extensions
 coverage
+mock
+testfixtures
 codeclimate-test-reporter

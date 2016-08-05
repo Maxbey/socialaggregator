@@ -1,3 +1,4 @@
+from mock import patch
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -5,6 +6,30 @@ from aggregator.factories import UserSocialAuthFactory
 from aggregator.factories import UserFactory
 
 from .helpers import get_authorized_client, fill_instance, dict_from_model, is_models_equal
+
+from fetchers.fakedata import SOCIAL_DATA
+
+
+class Strategy(object):
+    @property
+    def relations(self):
+        return SOCIAL_DATA['social_relations']
+
+    def get_avatar_url(self):
+        return SOCIAL_DATA['avatar_url']
+
+    def get_followers_count(self):
+        return 2
+
+    def get_friends_count(self):
+        return 2
+
+    def get_user_info(self):
+        return SOCIAL_DATA['user_info']
+
+
+def get_strategy(a, b):
+    return Strategy()
 
 
 class BaseViewSetTestCase(APITestCase):
@@ -33,9 +58,10 @@ class BaseViewSetTestCase(APITestCase):
         if exclude is None:
             exclude = []
 
-        expected_errors = {
-            attribute: [error_message] for attribute in self.required_attributes if attribute not in exclude
-        }
+        expected_errors = \
+            {
+                attribute: [error_message] for attribute in self.required_attributes if attribute not in exclude
+            }
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, expected_errors)
@@ -55,7 +81,6 @@ class BaseViewSetTestCase(APITestCase):
 
 
 class UserSocialAuthViewSet(BaseViewSetTestCase):
-
     def setUp(self):
         self.set_model_attributes(['id', 'provider', 'uid', 'user'])
 
@@ -64,19 +89,28 @@ class UserSocialAuthViewSet(BaseViewSetTestCase):
 
         self.url = '/api/social_account/'
 
-    def test_unauthorized_attempt_to_retrieve_accounts(self):
+    def test_unauthorized_attempt_to_retrieve_account(self):
         response = self.client.get(self.url)
         self.assert_unauthorized(response)
 
+    @patch('aggregator.serializers.UserSocialAuthSerializer.get_strategy', get_strategy)
     def test_authorized_attempt_to_list_accounts(self):
         response = self.first_fixture[0].get(self.url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            response.json()[0],
-            dict_from_model(self.first_fixture[1],
-                            self.model_attributes, ['user'])
+
+        expected_response = dict_from_model(
+            self.first_fixture[1],
+            self.model_attributes, ['user']
         )
 
+        expected_response['social_data'] = SOCIAL_DATA
+
+        self.assertEqual(
+            response.json()[0],
+            expected_response
+        )
+
+    @patch('aggregator.serializers.UserSocialAuthSerializer.get_strategy', get_strategy)
     def test_list_only_owner_accounts(self):
         first_user_account = self.first_fixture[0].get(self.url).json()[0]
         second_user_account = self.second_fixture[0].get(self.url).json()[0]
@@ -97,7 +131,6 @@ class UserSocialAuthViewSet(BaseViewSetTestCase):
 
 
 class UserViewSetTest(BaseViewSetTestCase):
-
     def setUp(self):
         self.set_model_attributes(
             ['id', 'username', 'last_name', 'first_name', 'email'])

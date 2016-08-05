@@ -7,7 +7,7 @@ from .base import BaseFetchStrategy
 
 class GithubFetchStrategy(BaseFetchStrategy):
     api_url = 'https://api.github.com'
-    avatar_size = 200
+    avatar_size = 500
 
     @property
     def relations(self):
@@ -29,3 +29,18 @@ class GithubFetchStrategy(BaseFetchStrategy):
         request_url = '%s/user/followers' % self.api_url
 
         return json.loads(requests.get(request_url, params=params).content)
+
+    def get_followers_count(self):
+        return len(self.get_followers())
+
+    def get_user_info(self):
+        params = {'access_token': self.access_token}
+        request_url = '%s/user' % self.api_url
+
+        response = requests.get(request_url, params=params)
+        data = json.loads(response.content)
+
+        return {
+            'name': data['name'],
+            'location': data['location']
+        }

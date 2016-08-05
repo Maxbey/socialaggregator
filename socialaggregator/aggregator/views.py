@@ -17,7 +17,7 @@ from rest_social_auth.views import SocialTokenOnlyAuthView, decorate_request
 from social.exceptions import AuthException
 from requests.exceptions import HTTPError
 
-from .models import UserSocialAuthSerializer
+from .serializers import UserSocialAuthSerializer
 
 from social.apps.django_app.default.models import UserSocialAuth
 

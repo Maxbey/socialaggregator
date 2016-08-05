@@ -1,44 +1,11 @@
+import json
 import httpretty
-from nose.tools import raises
+from aggregator.factories import UserSocialAuthFactory
+from aggregator.fetchers.github import GithubFetchStrategy
+from aggregator.fetchers.facebook import FacebookFetchStrategy
 from rest_framework.test import APITestCase
 
-from aggregator.factories import UserSocialAuthFactory
-from aggregator.fetchers.fetcher import SocialDataFetcherFactory
-from aggregator.fetchers.fetcher import SocialDataFetcher
-from aggregator.fetchers.github import GithubFetchStrategy
-
-from aggregator.fetchers.facebook import FacebookFetchStrategy
-
-
-class SocialDataFetcherFabricTest(APITestCase):
-    def setUp(self):
-        self.user_social_auth = UserSocialAuthFactory()
-
-    def test_instance_creation(self):
-        fetcher = SocialDataFetcherFactory.fabricate('facebook', self.user_social_auth)
-
-        self.assertIsInstance(fetcher, SocialDataFetcher)
-
-    @raises(Exception)
-    def test_wrong_provider(self):
-        SocialDataFetcherFactory.fabricate('wrong', self.user_social_auth)
-
-
-class SocialDataFetcherTest(APITestCase):
-    def setUp(self):
-        self.user_social_auth = UserSocialAuthFactory()
-
-    def test_expected_facebook_interface(self):
-        fetcher = SocialDataFetcherFactory.fabricate('facebook', self.user_social_auth)
-
-        self.assertTrue('get_friends' in dir(fetcher))
-        self.assertFalse('get_followers' in dir(fetcher))
-
-    def test_expected_github_interface(self):
-        fetcher = SocialDataFetcherFactory.fabricate('github', self.user_social_auth)
-
-        self.assertFalse('get_friends' in dir(fetcher))
-        self.assertTrue('get_followers' in dir(fetcher))
+import fakedata
 
 
 class BaseFetchStrategyTestCase(APITestCase):
@@ -55,17 +22,18 @@ class BaseFetchStrategyTestCase(APITestCase):
             target
         )
 
-    def mock_collection_request(self, url):
+    def mock_collection_request(self, url, response_struct):
         httpretty.register_uri(
             httpretty.HTTPretty.GET,
             url,
-            body='[{}, {}]'
+            body=json.dumps(response_struct)
         )
 
 
 class GithubFetchStrategyTest(BaseFetchStrategyTestCase):
     def setUp(self):
         self.fetcher = GithubFetchStrategy(UserSocialAuthFactory())
+        self.api = 'https://api.github.com'
 
     @httpretty.activate
     def test_get_avatar_url_method(self):
@@ -77,10 +45,29 @@ class GithubFetchStrategyTest(BaseFetchStrategyTestCase):
 
     @httpretty.activate
     def test_get_followers_method(self):
-        api = 'https://api.github.com'
-        self.mock_collection_request('%s/user/followers' % api)
+        self.mock_collection_request(
+            '%s/user/followers' % self.api,
+            fakedata.GITHUB_FOLLOWERS
+        )
 
         self.assertEqual(self.fetcher.get_followers(), [{}, {}])
+
+    @httpretty.activate
+    def test_get_followers_count_method(self):
+        self.mock_collection_request(
+            '%s/user/followers' % self.api,
+            fakedata.GITHUB_FOLLOWERS
+        )
+
+        self.assertEqual(self.fetcher.get_followers_count(), 2)
+
+    @httpretty.activate
+    def test_get_user_info_method(self):
+        url = self.api + '/user'
+        self.mock_collection_request(url, fakedata.GITHUB_USER_INFO)
+
+        data = self.fetcher.get_user_info()
+        self.assertEqual(data, fakedata.USER_INFO)
 
 
 class FacebookFetchStrategyTest(BaseFetchStrategyTestCase):
@@ -100,6 +87,21 @@ class FacebookFetchStrategyTest(BaseFetchStrategyTestCase):
     @httpretty.activate
     def test_get_friends_method(self):
         url = self.api_url % (int(self.user_social_auth.uid), 'friends')
-        self.mock_collection_request(url)
 
+        self.mock_collection_request(url, fakedata.FACEBOOK_FRIENDS)
         self.assertEqual(self.fetcher.get_friends(), [{}, {}])
+
+    @httpretty.activate
+    def test_get_friends_count_method(self):
+        url = self.api_url % (int(self.user_social_auth.uid), 'friends')
+
+        self.mock_collection_request(url, fakedata.FACEBOOK_FRIENDS)
+        self.assertEqual(self.fetcher.get_friends_count(), 2)
+
+    @httpretty.activate
+    def test_get_user_info_method(self):
+        url = 'https://graph.facebook.com/v2.7/me'
+        self.mock_collection_request(url, fakedata.FACEBOOK_USER_INFO)
+
+        data = self.fetcher.get_user_info()
+        self.assertEqual(data, fakedata.USER_INFO)
