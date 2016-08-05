@@ -83,6 +83,14 @@ angular
             templateUrl: 'views/profile.html'
           }
         }
+      })
+      .state('app.accounts', {
+        url: '/accounts',
+        views: {
+          'main@': {
+            templateUrl: 'views/accounts.html'
+          }
+        }
       });
 
     $locationProvider.html5Mode({
@@ -103,7 +111,7 @@ angular
     $authProvider.facebook({
       clientId: envConfig['SOCIAL_AUTH_FACEBOOK_KEY'],
       url: base + '/api/social_auth/login/social/token/facebook/',
-      scope: ['email', 'user_friends', 'public_profile']
+      scope: ['email', 'user_friends', 'public_profile', 'user_location']
     });
 
     $authProvider.github({

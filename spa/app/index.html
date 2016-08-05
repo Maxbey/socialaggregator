@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
 </head>
-<body ng-app="spaApp">
+<body ng-app="spaApp" layout="column" layout-fill>
 <!--[if lte IE 8]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
   your browser</a> to improve your experience.</p>
@@ -24,23 +24,10 @@
 
 <!-- Add your site or application content here -->
 <div ui-view="header"></div>
-<!--<md-content class="Page-Container Header">
-  <div layout="row">
-    <div flex="90" flex-offset="5" class="Header-container">
-      <div layout="row" layout-align="space-between">
-        <div layout="row" layout-align="center stretch">
-          <a hide-xs class="Header-link md-subhead" ng-href="/">Dashboard</a>
-          <a hide-xs class="Header-link md-subhead" ng-href="/login">Login</a>
-          <a hide-xs class="Header-link md-subhead" ng-href="/register">Register</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</md-content>-->
 <div class="Header-spacer"></div>
 
-<div class="container">
-  <div ui-view="main"></div>
+<div class="container" layout="column">
+  <div ui-view="main" layout="column"></div>
 </div>
 
 <div class="footer">
@@ -105,6 +92,7 @@
 <script src="scripts/controllers/profileedit.js"></script>
 <script src="scripts/controllers/userservice.js"></script>
 <script src="scripts/services/userservice.js"></script>
+<script src="scripts/controllers/accounts.js"></script>
 <!-- endbuild -->
 </body>
 </html>
