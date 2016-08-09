@@ -2,37 +2,37 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from social.apps.django_app.default.models import UserSocialAuth
 
-from aggregator.fetchers.factory import SocialFetchStrategyFactory
+from .fetchers.factory import SocialFetchStrategyFactory
 
 
 class UserSocialAuthSerializer(ModelSerializer):
-
     social_data = serializers.SerializerMethodField()
 
-    def get_strategy(self, user_social_auth):
-        return SocialFetchStrategyFactory.fabricate(
-            user_social_auth.provider,
-            user_social_auth
+    def get_social_data(self, account):
+        strategy = SocialFetchStrategyFactory.fabricate(
+            account.provider,
+            account
         )
 
-    def get_social_data(self, user_social_auth):
-        strategy = self.get_strategy(user_social_auth)
+        social_data = account.extra_data['social_data']
 
-        followers_count = strategy.get_followers_count() \
-            if 'followers' in strategy.relations else 0
+        followers_count = len(social_data['followers']) \
+            if 'followers' in social_data else 0
 
-        friends_count = strategy.get_friends_count() \
-            if 'friends' in strategy.relations else 0
+        friends_count = len(social_data['friends']) \
+            if 'friends' in social_data else 0
 
-        return {
-            'avatar_url': strategy.get_avatar_url(),
+        data = {
+            'avatar_url': social_data['avatar_url'],
             'counts': {
-                'followers_count': followers_count,
-                'friends_count': friends_count
+                'followers': followers_count,
+                'friends': friends_count
             },
-            'social_relations': strategy.relations,
-            'user_info': strategy.get_user_info()
+            'user_info': social_data['user_info'],
+            'social_relations': strategy.relations
         }
+
+        return data
 
     class Meta:
         model = UserSocialAuth

@@ -7,7 +7,13 @@ COPY . /usr/src/app
 
 WORKDIR /usr/requirements/
 
-RUN pip install -r production.txt
+RUN pip install -r development.txt
 
+RUN adduser -D myuser
 WORKDIR /usr/src/app
+
+RUN chown -R myuser.myuser .
+USER myuser
+
+
 CMD bash run.sh

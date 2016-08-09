@@ -29,6 +29,8 @@ services:
       file: docker-compose-abstract.yml
       service: base
     environment:
+     - BROKER_URL=${BROKER_URL}
+     - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
      - DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION}
      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
      - SOCIAL_AUTH_FACEBOOK_SECRET=${SOCIAL_AUTH_FACEBOOK_SECRET}
@@ -37,7 +39,6 @@ services:
      - SOCIAL_AUTH_TWITTER_SECRET=${SOCIAL_AUTH_TWITTER_SECRET}
      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-     - CODECLIMATE_REPO_TOKEN=${CODECLIMATE_REPO_TOKEN}
      - FRONTEND_URI=http://socialaggregator.dev/
      - SENTRY_PRIVATE_DSN=http://public:secret@localhost:9000/2
     build:
@@ -48,3 +49,9 @@ services:
       - ./socialaggregator/static:/usr/src/app/static
     expose:
         - "8000"
+  redis:
+    image: redis
+    expose:
+      - "6379"
+
+

@@ -16,13 +16,6 @@ class FacebookFetchStrategy(BaseFetchStrategy):
     def __init__(self, user_social_auth):
         super(FacebookFetchStrategy, self).__init__(user_social_auth)
 
-    def _get_friends_struct(self):
-        params = {'access_token': self.access_token}
-        request_url = self.api_url % (self.uid, 'friends')
-        response = requests.get(request_url, params=params)
-
-        return json.loads(response.content)
-
     def get_avatar_url(self):
         request_url = self.api_url % (self.uid, 'picture')
         response = requests.get(request_url, params=self.avatar_size)
@@ -30,10 +23,11 @@ class FacebookFetchStrategy(BaseFetchStrategy):
         return response.url
 
     def get_friends(self):
-        return self._get_friends_struct()['data']
+        params = {'access_token': self.access_token}
+        request_url = self.api_url % (self.uid, 'friends')
+        response = requests.get(request_url, params=params)
 
-    def get_friends_count(self):
-        return self._get_friends_struct()['summary']['total_count']
+        return json.loads(response.content)['data']
 
     def get_user_info(self):
         request_url = 'https://graph.facebook.com/v2.7/me'

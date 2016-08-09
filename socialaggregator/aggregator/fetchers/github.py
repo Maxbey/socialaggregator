@@ -30,9 +30,6 @@ class GithubFetchStrategy(BaseFetchStrategy):
 
         return json.loads(requests.get(request_url, params=params).content)
 
-    def get_followers_count(self):
-        return len(self.get_followers())
-
     def get_user_info(self):
         params = {'access_token': self.access_token}
         request_url = '%s/user' % self.api_url

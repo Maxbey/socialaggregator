@@ -11,6 +11,8 @@ django-configurations
 rest-social-auth
 django-allauth
 django-rest-auth
+celery[redis]
+supervisor
 
 
 # Versions of this modules are fixed, because in djangorestframework >= 3.4.0
