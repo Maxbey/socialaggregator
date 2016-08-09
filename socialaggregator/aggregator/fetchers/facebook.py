@@ -45,7 +45,9 @@ class FacebookFetchStrategy(BaseFetchStrategy):
         response = requests.get(request_url, params=params)
         data = json.loads(response.content)
 
+        location = data['location']['name'] if 'location' in data else ''
+
         return {
-            'location': data['location']['name'],
+            'location': location,
             'name': data['name']
         }
