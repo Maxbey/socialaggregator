@@ -8,4 +8,4 @@ django_extensions
 coverage
 mock
 testfixtures
-codeclimate-test-reporter
+codecov
