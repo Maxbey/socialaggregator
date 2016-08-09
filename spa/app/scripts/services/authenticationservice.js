@@ -8,7 +8,7 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('AuthenticationService', function ($http, $cookies, $auth, envConfig) {
+  .service('AuthenticationService', function ($http, $cookies, $auth, envConfig, $state) {
     var baseUrl = envConfig.BACKEND_HOST + '/api/auth/';
 
     return {
@@ -16,7 +16,8 @@ angular.module('spaApp')
       socialLogin: socialLogin,
       register: register,
       logout: logout,
-      user: user
+      user: user,
+      stateControl: stateControl
     };
 
     function socialLogin(provider) {
@@ -46,6 +47,15 @@ angular.module('spaApp')
     function logout() {
       $http.defaults.headers.common['Authorization'] = undefined;
       return $auth.logout();
+    }
+
+    function stateControl(event, toState) {
+      if (toState.data && toState.data.auth) {
+        if (!$auth.isAuthenticated()) {
+          event.preventDefault();
+          return $state.go('enter.login');
+        }
+      }
     }
 
   });

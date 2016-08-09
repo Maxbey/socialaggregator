@@ -8,17 +8,17 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('RegisterCtrl', function (AuthenticationService, $log) {
+  .controller('RegisterCtrl', function (AuthenticationService) {
     var vm = this;
 
     vm.register = register;
 
     function register(){
-      AuthenticationService.register(vm.email, vm.password1, vm.password2, vm.username).then(function(response){
-        $log.log(response);
-      });
+      AuthenticationService.register(
+      vm.email,
+      vm.password1,
+      vm.password2,
+      vm.username
+      );
     }
-
-
-
   });

@@ -15,13 +15,12 @@ angular.module('spaApp')
     vm.socialLogin = socialLogin;
 
     function login() {
-      $auth.login({
-        email: vm.email,
-        password: vm.password
-       }).then(function(response){
+      AuthenticationService
+        .login(vm.email, vm.password)
+        .then(function(response){
         $auth.setToken(response.data.key);
-        $state.go('app.dashboard');
         ToastService.show('You are successfully logged in');
+        $state.go('app.dashboard');
        });
     }
 

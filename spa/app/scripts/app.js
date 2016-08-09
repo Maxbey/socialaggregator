@@ -144,15 +144,7 @@ angular
 
     Raven.config(envConfig['SENTRY_PUBLIC_DSN'], {}).install();
 
-  }).run(function ($rootScope, $state, $auth) {
-  var registrationCallback = $rootScope.$on("$stateChangeStart", function (event, toState) {
-    if (toState.data && toState.data.auth) {
-      if (!$auth.isAuthenticated()) {
-        event.preventDefault();
-        return $state.go('enter.login');
-      }
-    }
-
-  });
+  }).run(function ($rootScope, $state, $auth, AuthenticationService) {
+  var registrationCallback = $rootScope.$on("$stateChangeStart", AuthenticationService.stateControl);
   $rootScope.$on('$destroy', registrationCallback)
 });

@@ -14,7 +14,7 @@ angular.module('spaApp')
     vm.logout = logout;
 
     function logout() {
-      $auth.logout();
+      AuthenticationService.logout();
       $state.go('enter.login');
     }
 

@@ -11,9 +11,6 @@ angular.module('spaApp')
   .controller('AccountsCtrl', function (UserService, AuthenticationService, ToastService, $state) {
   var vm = this;
 
-
-  vm.loading = true;
-  vm.isOpen = false;
   vm.addAccount = addAccount;
   vm.removeAccount = removeAccount;
 
@@ -25,25 +22,27 @@ angular.module('spaApp')
 
 
   function addAccount(provider) {
-  vm.loading = true;
       AuthenticationService.socialLogin(provider).then(function () {
         ToastService.show(provider + ' account has been successfully added');
         $state.reload();
       }, function (response) {
-        vm.loading = false;
         ToastService.error(response.data[0]);
     });
   }
 
   function removeAccount(account) {
     UserService.removeAccount(account.id).then(function () {
-      vm.accounts.splice(vm.accounts.indexOf(account), 1);
+      var index = vm.accounts.indexOf(account);
+
+      if(index === -1)
+        throw new Error('Attempt to delete a non-existent account');
+
+      vm.accounts.splice(index, 1);
       ToastService.show('Account has been successfully removed');
      });
    }
 
   UserService.accounts().then(function (response) {
       vm.accounts = response.data;
-      vm.loading = false;
     });
   });
