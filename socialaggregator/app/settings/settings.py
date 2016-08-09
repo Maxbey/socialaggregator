@@ -15,7 +15,10 @@ class Production(EnvWithRealAuth):
 
     DATABASES = DATABASE_URL
 
-    INSTALLED_APPS = BaseSettings.INSTALLED_APPS + ['corsheaders']
+    INSTALLED_APPS = BaseSettings.INSTALLED_APPS + [
+        'corsheaders',
+        'raven.contrib.django.raven_compat'
+    ]
 
     MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + ['corsheaders.middleware.CorsMiddleware']
 
@@ -24,6 +27,10 @@ class Production(EnvWithRealAuth):
     ALLOWED_HOSTS = ['*']
 
     CORS_ORIGIN_ALLOW_ALL = True
+
+    RAVEN_CONFIG = {
+        'dsn': BaseSettings.SENTRY_PRIVATE_DSN
+    }
 
 
 class Development(LoggingMixin, EnvWithRealAuth):
