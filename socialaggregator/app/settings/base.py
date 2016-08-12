@@ -30,14 +30,6 @@ class BaseSettings(Configuration):
         'aggregator'
     ]
 
-    BROKER_TRANSPORT = 'redis'
-    BROKER_URL = values.Value(environ_prefix='', environ_required=True)
-    CELERY_RESULT_BACKEND = values.Value(environ_prefix='', environ_required=True)
-    CELERY_TASK_SERIALIZER = 'json'
-    CELERY_RESULT_SERIALIZER = 'json'
-    CELERY_ACCEPT_CONTENT = ['json']
-    CELERY_ENABLE_UTC = True
-
     MIDDLEWARE_CLASSES = [
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
