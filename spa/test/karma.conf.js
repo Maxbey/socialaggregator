@@ -8,7 +8,7 @@ module.exports = function (config) {
     basePath: '../',
 
     frameworks: ['jasmine'],
-    reporters: ['coverage'],
+    reporters: ['coverage', 'mocha'],
 
     // list of files / patterns to load in the browser
     files: [
@@ -47,7 +47,8 @@ module.exports = function (config) {
     plugins: [
       'karma-jasmine',
       'karma-phantomjs-launcher',
-      'karma-coverage'
+      'karma-coverage',
+      'karma-mocha-reporter'
     ],
 
 

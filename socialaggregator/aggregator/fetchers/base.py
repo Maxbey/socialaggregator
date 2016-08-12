@@ -32,3 +32,9 @@ class BaseFetchStrategy(object):
 
     def get_followers(self):
         assert False, 'Method get_followers not implemented'
+
+    def get_friends_count(self):
+        assert False, 'Method get_friends_count not implemented'
+
+    def get_followers_count(self):
+        assert False, 'Method get_followers_count not implemented'
