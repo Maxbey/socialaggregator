@@ -18,5 +18,4 @@ RUN apk add sqlite
 
 USER myuser
 
-
-CMD bash run.sh
+CMD supervisord

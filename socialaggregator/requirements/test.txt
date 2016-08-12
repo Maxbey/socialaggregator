@@ -1,11 +1,11 @@
 -r base.txt
 
-factory_boy
-HTTPretty
-nose
+factory_boy==2.7.0
+HTTPretty==0.8.14
+nose==1.3.7
 django_nose
 django_extensions
-coverage
-mock
+coverage==4.1
+mock==2.0.0
 testfixtures
 codecov

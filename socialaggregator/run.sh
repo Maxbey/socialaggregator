@@ -12,5 +12,3 @@ if  [ -n "$PORT" ]
 fi
 
 gunicorn -D --bind 0.0.0.0:$port app.wsgi
-
-celery -A app worker -l info

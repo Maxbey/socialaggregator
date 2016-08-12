@@ -1,22 +1,18 @@
 Django==1.9.7
-gunicorn
-dj-database-url
-dj-static
-django-appconf
-drf-nested-routers
-six
-static3
+gunicorn==19.6.0
+dj-database-url==0.4.1
+dj-static==0.0.6
+django-appconf==1.0.2
+drf-nested-routers==0.11.1
+six==1.10.0
+static3==0.7.0
 wsgiref
-django-configurations
-rest-social-auth
-django-allauth
-django-rest-auth
-celery[redis]
+django-configurations==1.0
+rest-social-auth==0.5.0
+python-social-auth==0.2.19
+django-allauth==0.25.2
+django-rest-auth==0.7.0
+celery[redis]==3.1.23
 supervisor
-
-
-# Versions of this modules are fixed, because in djangorestframework >= 3.4.0
-# occurs a bug that it described here https://github.com/tomchristie/django-rest-framework/issues/4265
 djangorestframework==3.3.3
 django-rest-swagger==0.3.8
-
