@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True,
                                         primary_key=True, serialize=False, verbose_name='ID')),
                 ('uid', models.CharField(max_length=255)),
-                ('name', models.CharField(max_length=40)),
+                ('name', models.CharField(max_length=64)),
                 ('avatar_url', models.URLField()),
                 ('email', models.EmailField(max_length=254, null=True)),
                 ('provider', models.CharField(max_length=32)),

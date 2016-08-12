@@ -28,9 +28,12 @@ services:
     extends:
       file: docker-compose-abstract.yml
       service: base
+    depends_on:
+      - db
     environment:
-     - BROKER_URL=${BROKER_URL}
-     - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+     - DATABASE_URL=postgres://postgres@db/postgres
+     - BROKER_URL=redis://redis:6379/0
+     - CELERY_RESULT_BACKEND=redis://redis:6379/0
      - DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION}
      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
      - SOCIAL_AUTH_FACEBOOK_SECRET=${SOCIAL_AUTH_FACEBOOK_SECRET}
@@ -54,4 +57,7 @@ services:
     expose:
       - "6379"
 
-
+  db:
+    image: postgres
+    expose:
+      - "5432"

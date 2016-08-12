@@ -6,7 +6,7 @@ class SocialPerson(models.Model):
     person_type = ['friend', 'follower']
 
     uid = models.CharField(max_length=255)
-    name = models.CharField(max_length=40)
+    name = models.CharField(max_length=64)
     avatar_url = models.URLField()
     email = models.EmailField(null=True)
 

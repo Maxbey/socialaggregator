@@ -20,7 +20,8 @@ class Production(EnvWithRealAuth):
         'raven.contrib.django.raven_compat'
     ]
 
-    MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + ['corsheaders.middleware.CorsMiddleware']
+    MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + \
+        ['corsheaders.middleware.CorsMiddleware']
 
     CORS_ALLOW_CREDENTIALS = True
 
@@ -36,6 +37,11 @@ class Production(EnvWithRealAuth):
 class Development(LoggingMixin, EnvWithRealAuth):
     DEBUG = True
     SECRET_KEY = get_random_string(length=32)
+
+    DATABASE_URL = values.DatabaseURLValue(
+        environ_required=True, environ_prefix='')
+
+    DATABASES = DATABASE_URL
 
     INSTALLED_APPS = BaseSettings.INSTALLED_APPS + [
         'django_extensions',
@@ -57,7 +63,8 @@ class Development(LoggingMixin, EnvWithRealAuth):
 
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-    MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + ['corsheaders.middleware.CorsMiddleware']
+    MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + \
+        ['corsheaders.middleware.CorsMiddleware']
 
     CORS_ALLOW_CREDENTIALS = True
 
