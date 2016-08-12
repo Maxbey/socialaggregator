@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from aggregator.factories import UserSocialAuthFactory
+from .factories import UserSocialAuthFactory
 from .helpers import dict_from_model
 
 

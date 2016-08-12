@@ -7,12 +7,15 @@ COPY . /usr/src/app
 
 WORKDIR /usr/requirements/
 
-RUN pip install -r development.txt
+RUN pip install -r production.txt
 
 RUN adduser -D myuser
 WORKDIR /usr/src/app
 
 RUN chown -R myuser.myuser .
+
+RUN apk add sqlite
+
 USER myuser
 
 

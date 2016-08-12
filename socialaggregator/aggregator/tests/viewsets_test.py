@@ -2,21 +2,22 @@ from mock import patch
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from aggregator.factories import UserSocialAuthFactory
-from aggregator.factories import UserFactory
+from .factories import UserSocialAuthFactory
+from .factories import UserFactory
 
 from .helpers import get_authorized_client, fill_instance, dict_from_model, is_models_equal
 
-from fetchers.fakedata import SOCIAL_DATA
+from fetchers.fakedata import SOCIAL_DATA_RESPONSE
 
 
 class Strategy(object):
+
     @property
     def relations(self):
-        return SOCIAL_DATA['social_relations']
+        return SOCIAL_DATA_RESPONSE['social_relations']
 
     def get_avatar_url(self):
-        return SOCIAL_DATA['avatar_url']
+        return SOCIAL_DATA_RESPONSE['avatar_url']
 
     def get_followers_count(self):
         return 2
@@ -25,7 +26,7 @@ class Strategy(object):
         return 2
 
     def get_user_info(self):
-        return SOCIAL_DATA['user_info']
+        return SOCIAL_DATA_RESPONSE['user_info']
 
 
 def get_strategy(a, b):
@@ -81,6 +82,7 @@ class BaseViewSetTestCase(APITestCase):
 
 
 class UserSocialAuthViewSet(BaseViewSetTestCase):
+
     def setUp(self):
         self.set_model_attributes(['id', 'provider', 'uid', 'user'])
 
@@ -103,7 +105,7 @@ class UserSocialAuthViewSet(BaseViewSetTestCase):
             self.model_attributes, ['user']
         )
 
-        expected_response['social_data'] = SOCIAL_DATA
+        expected_response['social_data'] = SOCIAL_DATA_RESPONSE
 
         self.assertEqual(
             response.json()[0],
@@ -131,6 +133,7 @@ class UserSocialAuthViewSet(BaseViewSetTestCase):
 
 
 class UserViewSetTest(BaseViewSetTestCase):
+
     def setUp(self):
         self.set_model_attributes(
             ['id', 'username', 'last_name', 'first_name', 'email'])

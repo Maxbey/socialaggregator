@@ -1,6 +1,8 @@
 from celery import shared_task, group
 from social.apps.django_app.default.models import UserSocialAuth
+import logging
 
+from .models import SocialPerson
 from .fetchers.factory import SocialFetchStrategyFactory
 
 
@@ -11,6 +13,26 @@ def get_strategy(pk):
         account.provider,
         account
     )
+
+
+@shared_task
+def create_social_persons(persons, account_pk, type):
+    account = UserSocialAuth.objects.get(pk=account_pk)
+    db_persons = []
+
+    for person in persons:
+        db_person, created = SocialPerson.objects.update_or_create(
+            uid=person['uid'],
+            provider=account.provider,
+            social_person_type=type,
+            defaults=person
+        )
+
+        db_persons.append(db_person)
+
+    account.socialperson_set.set(db_persons)
+
+    return persons
 
 
 @shared_task
@@ -25,12 +47,26 @@ def fetch_user_info(pk):
 
 @shared_task
 def fetch_user_friends(pk):
-    return {'friends': get_strategy(pk).get_friends()}
+    return get_strategy(pk).get_friends()
 
 
 @shared_task
 def fetch_user_followers(pk):
-    return {'followers': get_strategy(pk).get_followers()}
+    return get_strategy(pk).get_followers()
+
+
+@shared_task
+def fetch_user_friends_count(pk):
+    return {
+        'friends_count': get_strategy(pk).get_friends_count()
+    }
+
+
+@shared_task
+def fetch_user_followers_count(pk):
+    return {
+        'followers_count': get_strategy(pk).get_followers_count()
+    }
 
 
 @shared_task
@@ -42,7 +78,6 @@ def save_social_data(result, pk):
         social_data.update(d)
 
     account.extra_data['social_data'] = social_data
-
     account.save()
 
     return result

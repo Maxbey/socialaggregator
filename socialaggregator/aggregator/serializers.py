@@ -8,19 +8,22 @@ from .fetchers.factory import SocialFetchStrategyFactory
 class UserSocialAuthSerializer(ModelSerializer):
     social_data = serializers.SerializerMethodField()
 
-    def get_social_data(self, account):
-        strategy = SocialFetchStrategyFactory.fabricate(
+    def get_strategy(self, account):
+        return SocialFetchStrategyFactory.fabricate(
             account.provider,
             account
         )
 
+    def get_social_data(self, account):
+        strategy = self.get_strategy(account)
+
         social_data = account.extra_data['social_data']
 
-        followers_count = len(social_data['followers']) \
-            if 'followers' in social_data else 0
+        followers_count = social_data['followers_count'] \
+            if 'followers_count' in social_data else 0
 
-        friends_count = len(social_data['friends']) \
-            if 'friends' in social_data else 0
+        friends_count = social_data['friends_count'] \
+            if 'friends_count' in social_data else 0
 
         data = {
             'avatar_url': social_data['avatar_url'],
