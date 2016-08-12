@@ -26,7 +26,8 @@ def load_social_data(social, *args, **kwargs):
 
         tasks.fetch_user_friends.apply_async(
             (social.id,),
-            link=tasks.create_social_persons.s(account_pk=social.id, type=0)
+            link=tasks.create_social_persons.s(
+                account_pk=social.id, type='friend')
         )
 
     if 'followers' in strategy.relations:
@@ -34,7 +35,8 @@ def load_social_data(social, *args, **kwargs):
 
         tasks.fetch_user_followers.apply_async(
             (social.id,),
-            link=tasks.create_social_persons.s(account_pk=social.id, type=1)
+            link=tasks.create_social_persons.s(
+                account_pk=social.id, type='follower')
         )
 
     chord(task_pipeline)(tasks.save_social_data.s(pk=social.id))
