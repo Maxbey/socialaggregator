@@ -1,8 +1,10 @@
+import json
 from mock import patch
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .factories import UserSocialAuthFactory
+from aggregator.models import SocialPerson
+from .factories import UserSocialAuthFactory, SocialPersonFactory
 from .factories import UserFactory
 
 from .helpers import get_authorized_client, fill_instance, dict_from_model, is_models_equal
@@ -11,7 +13,6 @@ from fetchers.fakedata import SOCIAL_DATA_RESPONSE
 
 
 class Strategy(object):
-
     @property
     def relations(self):
         return SOCIAL_DATA_RESPONSE['social_relations']
@@ -62,7 +63,7 @@ class BaseViewSetTestCase(APITestCase):
         expected_errors = \
             {
                 attribute: [error_message] for attribute in self.required_attributes if attribute not in exclude
-            }
+                }
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, expected_errors)
@@ -82,7 +83,6 @@ class BaseViewSetTestCase(APITestCase):
 
 
 class UserSocialAuthViewSet(BaseViewSetTestCase):
-
     def setUp(self):
         self.set_model_attributes(['id', 'provider', 'uid', 'user'])
 
@@ -133,7 +133,6 @@ class UserSocialAuthViewSet(BaseViewSetTestCase):
 
 
 class UserViewSetTest(BaseViewSetTestCase):
-
     def setUp(self):
         self.set_model_attributes(
             ['id', 'username', 'last_name', 'first_name', 'email'])
@@ -173,3 +172,41 @@ class UserViewSetTest(BaseViewSetTestCase):
         response = self.authorized_client.put(self.url, {})
         self.assert_bad_request(
             response, error_message='This field is required.')
+
+
+class SocialPersonViewSetTest(BaseViewSetTestCase):
+    def setUp(self):
+        self.user = UserFactory()
+        self.authorized_client = self.get_authorized_client(self.user)
+        self.url = '/api/social_person/'
+        self.set_model_attributes(
+            ['id', 'uid', 'name', 'avatar_url', 'email', 'provider', 'social_person_type']
+        )
+
+    def test_unauthorized_attempt_to_list_persons(self):
+        response = self.client.get(self.url)
+        self.assert_unauthorized(response)
+
+    def test_list(self):
+        for i in xrange(0, 3):
+            persons = []
+
+            for j in xrange(0, 2):
+                persons.append(SocialPersonFactory())
+
+            account = UserSocialAuthFactory()
+            account.user = self.user
+            account.save()
+
+            account.socialperson_set.set(persons)
+
+        response = self.authorized_client.get(self.url)
+
+        expected_response = []
+
+        for person in SocialPerson.objects.all():
+            expected_response.append(
+                dict_from_model(person, self.model_attributes, [])
+            )
+
+        self.assertEqual(expected_response, json.loads(response.content))

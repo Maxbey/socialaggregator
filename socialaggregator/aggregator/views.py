@@ -17,7 +17,8 @@ from rest_social_auth.views import SocialTokenOnlyAuthView, decorate_request
 from social.exceptions import AuthException
 from requests.exceptions import HTTPError
 
-from .serializers import UserSocialAuthSerializer
+from aggregator.models import SocialPerson
+from .serializers import UserSocialAuthSerializer, SocialPersonSerializer
 
 from social.apps.django_app.default.models import UserSocialAuth
 
@@ -49,6 +50,20 @@ class UserSocialAuthViewSet(mixins.ListModelMixin, mixins.DestroyModelMixin, Aut
         user = self.request.user
 
         return self.queryset.filter(user=user)
+
+
+class SocialPersonViewSet(mixins.ListModelMixin, AuthByTokenViewSet):
+    """
+    Endpoint for fetching user`s friends and followers.
+    """
+    queryset = SocialPerson.objects.all()
+    serializer_class = SocialPersonSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        accounts = user.social_auth.all()
+
+        return self.queryset.filter(user_social_auth__in=accounts)
 
 
 class SocialAuthView(SocialTokenOnlyAuthView):

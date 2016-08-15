@@ -9,11 +9,14 @@ from aggregator.views import UserSocialAuthViewSet
 from rest_auth.views import LoginView, LogoutView
 from rest_auth.registration.views import RegisterView
 
+from aggregator.views import SocialPersonViewSet
+
 user_router = UserRouter()
 router = SimpleRouter()
 
 user_router.register(r'user', UserViewSet)
 router.register(r'social_account', UserSocialAuthViewSet)
+router.register(r'social_person', SocialPersonViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
