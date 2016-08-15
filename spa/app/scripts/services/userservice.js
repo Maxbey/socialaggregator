@@ -14,6 +14,7 @@ angular.module('spaApp')
     return {
       update: update,
       accounts: accounts,
+      persons: persons,
       removeAccount: removeAccount
     };
 
@@ -23,6 +24,10 @@ angular.module('spaApp')
 
     function accounts() {
       return $http.get(baseUrl + '/social_account/');
+    }
+
+    function persons() {
+      return $http.get(baseUrl + '/social_person/');
     }
 
     function removeAccount(accountId) {

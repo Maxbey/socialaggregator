@@ -39,6 +39,16 @@ describe('Service: UserService', function () {
     expect(httpBackend.flush).not.toThrow();
   });
 
+  it('should do get request to fetch list of friends and followers', function () {
+    UserService.persons();
+
+    httpBackend
+      .expect('GET', apiUrl + '/social_person/')
+      .respond(200);
+
+    expect(httpBackend.flush).not.toThrow();
+  });
+
   it('should do delete request to delete some account', function () {
     var id = 1;
     UserService.removeAccount(id);

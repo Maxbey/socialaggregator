@@ -72,7 +72,7 @@ angular
         url: '/',
         views: {
           'main@': {
-            templateUrl: 'views/main.html'
+            templateUrl: 'views/dashboard.html'
           }
         }
       })
@@ -136,7 +136,7 @@ angular
     $authProvider.twitter({
       url: base + '/api/social_auth/login/social/token/twitter/',
       authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
-      redirectUri: 'https://socaggregator.herokuapp.com/',
+      redirectUri: window.location.origin + '/',
       type: '1.0'
     });
 
