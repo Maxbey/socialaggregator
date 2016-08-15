@@ -22,6 +22,14 @@ angular.module('userServiceMock').service("UserService", function () {
     }
   };
 
+  this.persons = function() {
+    return {
+      then: function(cb){
+        return cb({data: []})
+      }
+    }
+  }
+
   this.update = function () {
     return {
       then: function (cb) {

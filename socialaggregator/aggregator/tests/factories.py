@@ -9,7 +9,6 @@ from fetchers.fakedata import SOCIAL_DATA
 
 
 class UserFactory(factory.DjangoModelFactory):
-
     class Meta:
         model = get_user_model()
 
@@ -27,7 +26,6 @@ class UserFactory(factory.DjangoModelFactory):
 
 
 class UserSocialAuthFactory(factory.DjangoModelFactory):
-
     class Meta:
         model = UserSocialAuth
 
@@ -40,6 +38,18 @@ class UserSocialAuthFactory(factory.DjangoModelFactory):
         'login': 'login',
         'social_data': SOCIAL_DATA
     }
+
+
+class SocialPersonFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = SocialPerson
+
+    uid = factory.Faker('ean'),
+    name = factory.Faker('name'),
+    avatar_url = factory.Faker('image_url'),
+    email = factory.Faker('safe_email'),
+    provider = factory.Faker('word'),
+    social_person_type = random.choice(['friend', 'follower']),
 
 
 def build_social_persons(count):

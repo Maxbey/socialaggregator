@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from social.apps.django_app.default.models import UserSocialAuth
 
+from aggregator.models import SocialPerson
 from .fetchers.factory import SocialFetchStrategyFactory
 
 
@@ -40,3 +41,9 @@ class UserSocialAuthSerializer(ModelSerializer):
     class Meta:
         model = UserSocialAuth
         exclude = ('extra_data',)
+
+
+class SocialPersonSerializer(ModelSerializer):
+    class Meta:
+        model = SocialPerson
+        exclude = ('user_social_auth',)
