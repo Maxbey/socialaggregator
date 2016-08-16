@@ -57,7 +57,7 @@ class FacebookFetchStrategy(BaseFetchStrategy):
 
         response = requests.get(request_url, params=params)
 
-        return json.loads(response.content)['friends']['summary']['total_count']
+        return len(json.loads(response.content)['friends']['data'])
 
     def get_user_info(self):
         request_url = '%s/me' % self.api_url
