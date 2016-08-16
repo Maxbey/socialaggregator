@@ -11,6 +11,7 @@ from aggregator.fetchers.twitter import TwitterFetchStrategy
 
 
 class BaseFetchStrategyTestCase(APITestCase):
+
     def mock_avatar_request(self, url, target):
         httpretty.register_uri(
             httpretty.HTTPretty.GET,
@@ -33,6 +34,7 @@ class BaseFetchStrategyTestCase(APITestCase):
 
 
 class GithubFetchStrategyTest(BaseFetchStrategyTestCase):
+
     def setUp(self):
         self.fetcher = GithubFetchStrategy(UserSocialAuthFactory())
         self.api = 'https://api.github.com'
@@ -99,6 +101,7 @@ class GithubFetchStrategyTest(BaseFetchStrategyTestCase):
 
 
 class FacebookFetchStrategyTest(BaseFetchStrategyTestCase):
+
     def setUp(self):
         self.user_social_auth = UserSocialAuthFactory()
         self.fetcher = FacebookFetchStrategy(self.user_social_auth)
@@ -139,6 +142,7 @@ class FacebookFetchStrategyTest(BaseFetchStrategyTestCase):
 
 
 class TwitterStrategyTest(BaseFetchStrategyTestCase):
+
     def setUp(self):
         account = UserSocialAuthFactory()
         account.extra_data['access_token'] = {
@@ -177,21 +181,49 @@ class TwitterStrategyTest(BaseFetchStrategyTestCase):
             'https://cdnhost.com/asdwadw.png'
         )
 
-    @httpretty.activate
-    def test_get_friends_method(self):
-        url = '%s/friends/list.json' % self.api_url
+    def test_make_persons(self):
+        result = self.fetcher.make_persons(fakedata.TWITTER_PERSONS['users'])
 
-        self.mock_collection_request(url, fakedata.TWITTER_PERSONS)
-
-        self.assertEqual(self.fetcher.get_friends(), self.persons)
+        self.assertEqual(result, self.persons)
 
     @httpretty.activate
-    def test_get_followers_method(self):
-        url = '%s/followers/list.json' % self.api_url
+    def test_obtain_ids(self):
+        url = '%s/relation/ids.json' % self.api_url
+        response = {'ids': ['1', '2']}
 
-        self.mock_collection_request(url, fakedata.TWITTER_PERSONS)
+        self.mock_collection_request(url, response)
 
-        self.assertEqual(self.fetcher.get_followers(), self.persons)
+        self.assertEqual(self.fetcher.obtain_ids('relation'), ['1', '2'])
+
+    @httpretty.activate
+    def test_obtain_users(self):
+        url = '%s/users/lookup.json' % self.api_url
+
+        self.mock_collection_request(url, fakedata.TWITTER_PERSONS['users'])
+
+        result = self.fetcher.obtain_users(['1', '2'], 2)
+
+        self.assertEqual(result, fakedata.TWITTER_PERSONS['users'])
+
+    @patch('aggregator.fetchers.twitter.TwitterFetchStrategy.make_persons')
+    @patch('aggregator.fetchers.twitter.TwitterFetchStrategy.obtain_users')
+    @patch('aggregator.fetchers.twitter.TwitterFetchStrategy.obtain_ids')
+    def test_get_friends_method(self, obtain_ids, obtain_users, make_persons):
+        self.fetcher.get_friends()
+
+        obtain_ids.assert_called_with('friends')
+        obtain_users.assert_called()
+        make_persons.assert_called()
+
+    @patch('aggregator.fetchers.twitter.TwitterFetchStrategy.make_persons')
+    @patch('aggregator.fetchers.twitter.TwitterFetchStrategy.obtain_users')
+    @patch('aggregator.fetchers.twitter.TwitterFetchStrategy.obtain_ids')
+    def test_get_followers_method(self, obtain_ids, obtain_users, make_persons):
+        self.fetcher.get_followers()
+
+        obtain_ids.assert_called_with('followers')
+        obtain_users.assert_called()
+        make_persons.assert_called()
 
     @httpretty.activate
     def test_get_friends_count_method(self):

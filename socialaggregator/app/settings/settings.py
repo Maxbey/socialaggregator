@@ -13,8 +13,9 @@ class Production(EnvWithRealAuth):
     DATABASE_URL = values.DatabaseURLValue(
         environ_required=True, environ_prefix='')
 
-    BROKER_URL = values.Value(environ_prefix='', environ_name='REDIS_URL')
-    CELERY_RESULT_BACKEND = values.Value(environ_required=True, environ_prefix='')
+    BROKER_URL = values.Value(environ_prefix='', environ_name='REDISCLOUD_URL')
+    CELERY_RESULT_BACKEND = values.Value(
+        environ_required=True, environ_prefix='')
 
     DATABASES = DATABASE_URL
 
@@ -24,7 +25,7 @@ class Production(EnvWithRealAuth):
     ]
 
     MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + \
-                         ['corsheaders.middleware.CorsMiddleware']
+        ['corsheaders.middleware.CorsMiddleware']
 
     CORS_ALLOW_CREDENTIALS = True
 
@@ -67,14 +68,15 @@ class Development(LoggingMixin, EnvWithRealAuth):
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
     MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + \
-                         ['corsheaders.middleware.CorsMiddleware']
+        ['corsheaders.middleware.CorsMiddleware']
 
     CORS_ALLOW_CREDENTIALS = True
 
     CORS_ORIGIN_ALLOW_ALL = True
 
     BROKER_URL = values.Value(environ_prefix='', environ_name='REDIS_URL')
-    CELERY_RESULT_BACKEND = values.Value(environ_prefix='', environ_name='REDIS_URL')
+    CELERY_RESULT_BACKEND = values.Value(
+        environ_prefix='', environ_name='REDIS_URL')
 
 
 class Test(BaseSettings):

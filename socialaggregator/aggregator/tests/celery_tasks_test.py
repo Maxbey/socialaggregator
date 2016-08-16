@@ -6,8 +6,6 @@ from factories import UserSocialAuthFactory, build_social_persons
 from aggregator import tasks
 from social.apps.django_app.default.models import UserSocialAuth
 
-from aggregator.models import SocialPerson
-
 
 class StrategyMock(object):
     def get_avatar_url(self):

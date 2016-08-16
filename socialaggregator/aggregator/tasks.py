@@ -1,7 +1,6 @@
-from celery import shared_task, group
+from celery import shared_task
 from django.db.models import Q
 from social.apps.django_app.default.models import UserSocialAuth
-import logging
 
 from .models import SocialPerson
 from .fetchers.factory import SocialFetchStrategyFactory
