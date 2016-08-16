@@ -48,21 +48,9 @@ class SocialPersonFactory(factory.DjangoModelFactory):
     name = factory.Faker('name'),
     avatar_url = factory.Faker('image_url'),
     email = factory.Faker('safe_email'),
-    provider = factory.Faker('word'),
+    provider = factory.Faker('domain_word'),
     social_person_type = random.choice(['friend', 'follower']),
 
 
 def build_social_persons(count):
-    persons = []
-
-    for i in xrange(0, count):
-        persons.append({
-            'uid': factory.Faker('ean'),
-            'name': factory.Faker('name'),
-            'avatar_url': factory.Faker('image_url'),
-            'email': factory.Faker('safe_email'),
-            'provider': factory.Faker('word'),
-            'social_person_type': random.choice(['friend', 'follower']),
-        })
-
-    return persons
+    return factory.build_batch(dict, FACTORY_CLASS=SocialPersonFactory, size=count)

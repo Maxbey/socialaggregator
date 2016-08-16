@@ -1,4 +1,5 @@
 from celery import shared_task, group
+from django.db.models import Q
 from social.apps.django_app.default.models import UserSocialAuth
 import logging
 
@@ -16,7 +17,7 @@ def get_strategy(pk):
 
 
 @shared_task
-def create_social_persons(persons, account_pk, type):
+def create_social_persons(persons, account_pk, person_type):
     account = UserSocialAuth.objects.get(pk=account_pk)
     db_persons = []
 
@@ -24,13 +25,17 @@ def create_social_persons(persons, account_pk, type):
         db_person, created = SocialPerson.objects.update_or_create(
             uid=person['uid'],
             provider=account.provider,
-            social_person_type=type,
+            social_person_type=person_type,
             defaults=person
         )
 
         db_persons.append(db_person)
 
-    account.socialperson_set.set(db_persons)
+    all_persons = account.socialperson_set.filter(
+        ~Q(social_person_type=person_type)
+    )
+
+    account.socialperson_set.set(list(all_persons) + db_persons)
 
     return persons
 
