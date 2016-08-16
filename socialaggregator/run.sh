@@ -11,4 +11,4 @@ if  [ -n "$PORT" ]
     port=$PORT
 fi
 
-gunicorn -D --bind 0.0.0.0:$port app.wsgi
+gunicorn -D -w 1 --bind 0.0.0.0:$port app.wsgi

@@ -32,8 +32,9 @@ services:
       - db
     environment:
      - DATABASE_URL=postgres://postgres@db/postgres
-     - BROKER_URL=redis://redis:6379/0
-     - CELERY_RESULT_BACKEND=redis://redis:6379/0
+     - REDIS_URL=redis://redis:6379/0
+     - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+     - SECRET_KEY=somesecretvalue
      - DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION}
      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
      - SOCIAL_AUTH_FACEBOOK_SECRET=${SOCIAL_AUTH_FACEBOOK_SECRET}

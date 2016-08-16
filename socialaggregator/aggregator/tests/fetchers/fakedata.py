@@ -70,3 +70,17 @@ GITHUB_USER_INFO = {
     'location': USER_INFO['location'],
     'followers': 2
 }
+
+TWITTER_USER_INFO = {
+    'name': 'Firstname Lastname',
+    'location': 'Country, City',
+    'followers_count': 12,
+    'friends_count': 20
+}
+
+TWITTER_PERSONS = {
+    'users': [
+        {'id': 1, 'name': 'name1', 'profile_image_url': 'avatarurl1'},
+        {'id': 2, 'name': 'name2', 'profile_image_url': 'avatarurl2'},
+    ]
+}

@@ -1,3 +1,4 @@
+from .twitter import TwitterFetchStrategy
 from .facebook import FacebookFetchStrategy
 from .github import GithubFetchStrategy
 
@@ -5,7 +6,8 @@ from .github import GithubFetchStrategy
 class SocialFetchStrategyFactory(object):
     _classes = {
         'facebook': FacebookFetchStrategy,
-        'github': GithubFetchStrategy
+        'github': GithubFetchStrategy,
+        'twitter': TwitterFetchStrategy
     }
 
     _err_pattern = 'Cannot create an instance of %s strategy'

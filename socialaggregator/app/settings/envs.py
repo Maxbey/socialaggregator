@@ -17,8 +17,6 @@ class EnvWithRealAuth(BaseSettings):
     SOCIAL_AUTH_VK_OAUTH2_SECRET = values.SecretValue(environ_prefix='')
 
     BROKER_TRANSPORT = 'redis'
-    BROKER_URL = values.Value(environ_prefix='', environ_required=True)
-    CELERY_RESULT_BACKEND = values.Value(environ_prefix='', environ_required=True)
     CELERY_TASK_SERIALIZER = 'json'
     CELERY_RESULT_SERIALIZER = 'json'
     CELERY_ACCEPT_CONTENT = ['json']

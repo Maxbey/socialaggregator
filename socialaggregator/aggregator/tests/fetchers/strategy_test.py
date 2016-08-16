@@ -1,16 +1,16 @@
 import json
 import httpretty
+from mock import patch
+from rest_framework.test import APITestCase
+import fakedata
+
 from aggregator.tests.factories import UserSocialAuthFactory
 from aggregator.fetchers.github import GithubFetchStrategy
 from aggregator.fetchers.facebook import FacebookFetchStrategy
-from mock import patch
-from rest_framework.test import APITestCase
-
-import fakedata
+from aggregator.fetchers.twitter import TwitterFetchStrategy
 
 
 class BaseFetchStrategyTestCase(APITestCase):
-
     def mock_avatar_request(self, url, target):
         httpretty.register_uri(
             httpretty.HTTPretty.GET,
@@ -33,7 +33,6 @@ class BaseFetchStrategyTestCase(APITestCase):
 
 
 class GithubFetchStrategyTest(BaseFetchStrategyTestCase):
-
     def setUp(self):
         self.fetcher = GithubFetchStrategy(UserSocialAuthFactory())
         self.api = 'https://api.github.com'
@@ -100,7 +99,6 @@ class GithubFetchStrategyTest(BaseFetchStrategyTestCase):
 
 
 class FacebookFetchStrategyTest(BaseFetchStrategyTestCase):
-
     def setUp(self):
         self.user_social_auth = UserSocialAuthFactory()
         self.fetcher = FacebookFetchStrategy(self.user_social_auth)
@@ -138,3 +136,71 @@ class FacebookFetchStrategyTest(BaseFetchStrategyTestCase):
 
         data = self.fetcher.get_user_info()
         self.assertEqual(data, fakedata.USER_INFO)
+
+
+class TwitterStrategyTest(BaseFetchStrategyTestCase):
+    def setUp(self):
+        account = UserSocialAuthFactory()
+        account.extra_data['access_token'] = {
+            'oauth_token': 'token',
+            'oauth_token_secret': 'secret'
+        }
+        account.save()
+
+        self.fetcher = TwitterFetchStrategy(account)
+        self.api_url = 'https://api.twitter.com/1.1'
+
+        self.persons = [
+            {'uid': 1, 'name': 'name1', 'avatar_url': 'avatarurl1'},
+            {'uid': 2, 'name': 'name2', 'avatar_url': 'avatarurl2'},
+        ]
+
+    def mock_user_request(self, response):
+        url = '%s/users/show.json' % self.api_url
+
+        httpretty.register_uri(
+            httpretty.HTTPretty.GET,
+            url,
+            body=json.dumps(response)
+        )
+
+    @httpretty.activate
+    def test_get_avatar_url_method(self):
+        response = {
+            'profile_image_url': 'https://cdnhost.com/asdwadw_normal.png'
+        }
+
+        self.mock_user_request(response)
+
+        self.assertEqual(
+            self.fetcher.get_avatar_url(),
+            'https://cdnhost.com/asdwadw.png'
+        )
+
+    @httpretty.activate
+    def test_get_friends_method(self):
+        url = '%s/friends/list.json' % self.api_url
+
+        self.mock_collection_request(url, fakedata.TWITTER_PERSONS)
+
+        self.assertEqual(self.fetcher.get_friends(), self.persons)
+
+    @httpretty.activate
+    def test_get_followers_method(self):
+        url = '%s/followers/list.json' % self.api_url
+
+        self.mock_collection_request(url, fakedata.TWITTER_PERSONS)
+
+        self.assertEqual(self.fetcher.get_followers(), self.persons)
+
+    @httpretty.activate
+    def test_get_friends_count_method(self):
+        self.mock_user_request(fakedata.TWITTER_USER_INFO)
+
+        self.assertEqual(self.fetcher.get_friends_count(), 20)
+
+    @httpretty.activate
+    def test_get_followers_count_method(self):
+        self.mock_user_request(fakedata.TWITTER_USER_INFO)
+
+        self.assertEqual(self.fetcher.get_followers_count(), 12)
