@@ -38,6 +38,8 @@ class Production(EnvWithRealAuth):
     }
 
 
+
+
 class Development(LoggingMixin, EnvWithRealAuth):
     DEBUG = True
     SECRET_KEY = get_random_string(length=32)
@@ -50,16 +52,9 @@ class Development(LoggingMixin, EnvWithRealAuth):
     INSTALLED_APPS = BaseSettings.INSTALLED_APPS + [
         'django_extensions',
         'django_nose',
-        'rest_framework_swagger',
         'raven.contrib.django.raven_compat',
         'corsheaders'
     ]
-
-    SWAGGER_SETTINGS = BaseSettings.SWAGGER_SETTINGS = {
-        'exclude_url_names': [
-            'login_social_token'
-        ],
-    }
 
     RAVEN_CONFIG = {
         'dsn': BaseSettings.SENTRY_PRIVATE_DSN
@@ -77,6 +72,10 @@ class Development(LoggingMixin, EnvWithRealAuth):
     BROKER_URL = values.Value(environ_prefix='', environ_name='REDIS_URL')
     CELERY_RESULT_BACKEND = values.Value(
         environ_prefix='', environ_name='REDIS_URL')
+
+    EMAIL_HOST = ''
+    EMAIL_HOST_USER = ''
+    EMAIL_HOST_PASSWORD = ''
 
 
 class Test(BaseSettings):
@@ -98,3 +97,7 @@ class Test(BaseSettings):
 
     SOCIAL_AUTH_VK_OAUTH2_KEY = ''
     SOCIAL_AUTH_VK_OAUTH2_SECRET = ''
+
+    EMAIL_HOST = ''
+    EMAIL_HOST_USER = ''
+    EMAIL_HOST_PASSWORD = ''
