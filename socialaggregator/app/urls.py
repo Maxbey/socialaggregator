@@ -33,7 +33,6 @@ urlpatterns = [
         name='login_social_token'),
 
     url(r'^api/', include(user_router.urls)),
-    url(r'^api/', include(router.urls)),
-    #url(r'^api/docs/', include('rest_framework_swagger.urls'))
+    url(r'^api/', include(router.urls))
 
 ]

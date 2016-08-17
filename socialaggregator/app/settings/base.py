@@ -126,7 +126,6 @@ class BaseSettings(Configuration):
     ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
     EMAIL_USE_TLS = True
-    EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 587
 
     SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']
