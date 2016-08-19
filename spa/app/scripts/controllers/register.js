@@ -8,7 +8,7 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('RegisterCtrl', function (AuthenticationService) {
+  .controller('RegisterCtrl', function (AuthenticationService, ToastService, $state) {
     var vm = this;
 
     vm.register = register;
@@ -19,6 +19,9 @@ angular.module('spaApp')
       vm.password1,
       vm.password2,
       vm.username
-      );
+      ).then(function(response){
+        $state.go('enter.login');
+        ToastService.show('You are successfully registered');
+      });
     }
   });

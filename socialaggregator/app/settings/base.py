@@ -7,6 +7,8 @@ class BaseSettings(Configuration):
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
     FRONTEND_URI = values.Value(environ_prefix='', environ_required=True)
+    FRONTEND_CONFIRMATION_URI = values.Value(
+        environ_prefix='', environ_required=True)
 
     ALLOWED_HOSTS = []
 
@@ -29,6 +31,9 @@ class BaseSettings(Configuration):
         'rest_auth',
         'aggregator'
     ]
+
+    ACCOUNT_ADAPTER = 'aggregator.allauth_account_adapter.AccountAdapter'
+    REST_SESSION_LOGIN = False
 
     MIDDLEWARE_CLASSES = [
         'django.middleware.security.SecurityMiddleware',

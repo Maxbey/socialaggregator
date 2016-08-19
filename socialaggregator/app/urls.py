@@ -1,4 +1,3 @@
-from allauth.account.views import confirm_email
 from django.conf.urls import url, include
 from django.contrib import admin
 from aggregator.views import UserViewSet
@@ -7,7 +6,7 @@ from aggregator.routers import UserRouter
 from rest_framework.routers import SimpleRouter
 from aggregator.views import UserSocialAuthViewSet
 from rest_auth.views import LoginView, LogoutView
-from rest_auth.registration.views import RegisterView
+from rest_auth.registration.views import RegisterView, VerifyEmailView
 
 from aggregator.views import SocialPersonViewSet
 
@@ -24,9 +23,7 @@ urlpatterns = [
     url(r'^api/auth/registration/', RegisterView.as_view(), name='register_view'),
     url(r'^api/auth/login/$', LoginView.as_view(), name='rest_login'),
     url(r'^api/auth/logout/$', LogoutView.as_view(), name='rest_logout'),
-
-    url(r'^api/auth/email-confirmation/(?P<key>\w+)/$',
-        confirm_email, name='account_confirm_email'),
+    url(r'^api/auth/confirm_email/$', VerifyEmailView.as_view()),
 
     url(r'^api/social_auth/login/social/token/(?:(?P<provider>[a-zA-Z0-9_-]+)/?)?$',
         SocialAuthView.as_view(),

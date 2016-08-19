@@ -1,0 +1,3 @@
+Dear {{ user }}!
+We are pleased to welcome you on our service.
+To confirm your email address, follow the link {{ activation_url }}

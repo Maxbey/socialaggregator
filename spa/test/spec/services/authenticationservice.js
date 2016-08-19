@@ -62,6 +62,16 @@ describe('Service: AuthenticationService', function () {
     expect(httpBackend.flush).not.toThrow();
   });
 
+  it('should do post request to email confirmation endpoint', function () {
+    AuthenticationService.confirmEmail('somekey');
+
+    httpBackend
+      .expect('POST', apiUrl + '/auth/confirm_email/')
+      .respond(200);
+
+    expect(httpBackend.flush).not.toThrow();
+  });
+
   it('should call $auth.authenticate method', function () {
     spyOn($authMock, 'authenticate').and.callThrough();
     AuthenticationService.socialLogin('twitter');

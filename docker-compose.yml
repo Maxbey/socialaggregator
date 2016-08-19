@@ -45,6 +45,7 @@ services:
      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
      - FRONTEND_URI=http://socialaggregator.dev/
+     - FRONTEND_CONFIRMATION_URI=http://socialaggregator.dev/register/confirm
      - SENTRY_PRIVATE_DSN=http://public:secret@localhost:9000/2
     build:
       context: ./socialaggregator/

@@ -17,7 +17,8 @@ angular.module('spaApp')
       register: register,
       logout: logout,
       user: user,
-      stateControl: stateControl
+      stateControl: stateControl,
+      confirmEmail: confirmEmail
     };
 
     function socialLogin(provider) {
@@ -38,6 +39,10 @@ angular.module('spaApp')
         password2: password2,
         email: email
       });
+    }
+
+    function confirmEmail(key) {
+      return $http.post(baseUrl + 'confirm_email/', {key: key});
     }
 
     function user() {

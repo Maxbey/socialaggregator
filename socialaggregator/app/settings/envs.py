@@ -22,6 +22,6 @@ class EnvWithRealAuth(BaseSettings):
     CELERY_ACCEPT_CONTENT = ['json']
     CELERY_ENABLE_UTC = True
 
-    EMAIL_HOST = values.Value(environ_prefix='', environ_name='MAILGUN_SMTP_SERVER')
-    EMAIL_HOST_USER = values.SecretValue(environ_prefix='', environ_name='MAILGUN_SMTP_LOGIN')
-    EMAIL_HOST_PASSWORD = values.SecretValue(environ_prefix='', environ_name='MAILGUN_SMTP_PASSWORD')
+    EMAIL_HOST = ''
+    EMAIL_HOST_USER = ''
+    EMAIL_HOST_PASSWORD = ''

@@ -38,8 +38,6 @@ class Production(EnvWithRealAuth):
     }
 
 
-
-
 class Development(LoggingMixin, EnvWithRealAuth):
     DEBUG = True
     SECRET_KEY = get_random_string(length=32)
@@ -73,9 +71,9 @@ class Development(LoggingMixin, EnvWithRealAuth):
     CELERY_RESULT_BACKEND = values.Value(
         environ_prefix='', environ_name='REDIS_URL')
 
-    EMAIL_HOST = ''
-    EMAIL_HOST_USER = ''
-    EMAIL_HOST_PASSWORD = ''
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_HOST_USER = values.Value(environ_prefix='')
+    EMAIL_HOST_PASSWORD = values.Value(environ_prefix='')
 
 
 class Test(BaseSettings):

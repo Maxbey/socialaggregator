@@ -8,6 +8,7 @@ from social.apps.django_app.default.models import UserSocialAuth
 
 
 class StrategyMock(object):
+
     def get_avatar_url(self):
         return 'someurl'
 
@@ -28,6 +29,7 @@ class StrategyMock(object):
 
 
 class CreateSocialPersonsTest(APITestCase):
+
     def assert_creation(self, account):
         refreshed_account = UserSocialAuth.objects.get(pk=account.id)
 
@@ -43,7 +45,8 @@ class CreateSocialPersonsTest(APITestCase):
         persons_set_two = build_social_persons(3)
 
         tasks.create_social_persons(persons_set_one, account_one.id, 'friend')
-        tasks.create_social_persons(persons_set_two, account_two.id, 'follower')
+        tasks.create_social_persons(
+            persons_set_two, account_two.id, 'follower')
 
         self.assertEqual(2, len(account_one.socialperson_set.all()))
         self.assertEqual(3, len(account_two.socialperson_set.all()))
@@ -64,6 +67,7 @@ class CreateSocialPersonsTest(APITestCase):
 
 
 class SaveSocialDataTest(APITestCase):
+
     def setUp(self):
         self.account = UserSocialAuthFactory()
 
@@ -86,11 +90,6 @@ class SaveSocialDataTest(APITestCase):
 
 
 class FetchTasksTest(APITestCase):
-    @patch('aggregator.tasks.get_strategy', lambda a: StrategyMock())
-    def test_fetch_avatar_url_task(self):
-        expected = {'avatar_url': 'someurl'}
-
-        self.assertEqual(expected, tasks.fetch_avatar_url(1))
 
     @patch('aggregator.tasks.get_strategy', lambda a: StrategyMock())
     def test_fetch_avatar_url_task(self):

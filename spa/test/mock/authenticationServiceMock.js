@@ -39,5 +39,14 @@ angular.module('authenticationServiceMock').service("AuthenticationService", fun
   };
 
   this.register = function () {
+    return {
+      then: responseSwitcher
+    }
+  };
+
+  this.confirmEmail = function() {
+    return {
+      then: responseSwitcher
+    }
   };
 });

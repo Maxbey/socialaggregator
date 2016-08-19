@@ -52,6 +52,14 @@ angular
             templateUrl: 'views/register.html'
           }
         }
+      })
+      .state('enter.confirmation', {
+        url: '/register/confirm/:key',
+        views: {
+          'main@': {
+            templateUrl: 'views/email-confirmation.html'
+          }
+        }
       });
 
 

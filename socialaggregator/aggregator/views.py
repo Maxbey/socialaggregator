@@ -67,7 +67,7 @@ class SocialPersonViewSet(mixins.ListModelMixin, AuthByTokenViewSet):
 
 
 class SocialAuthView(SocialTokenOnlyAuthView):
-    redirect_uri = getattr(settings, 'FRONTEND_URI')
+    redirect_uri = settings.FRONTEND_URI
 
     def respond_error(self, error):
         """
@@ -87,7 +87,7 @@ class SocialAuthView(SocialTokenOnlyAuthView):
         input_data = self.get_serializer_in_data()
         provider_name = self.get_provider_name(input_data)
         if not provider_name:
-            return self.respond_error("Provider is not specified")
+            return self.respond_error('Provider is not specified')
         self.set_input_data(request, input_data)
         decorate_request(request, provider_name)
 

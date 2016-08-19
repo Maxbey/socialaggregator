@@ -21,6 +21,8 @@ angular.module('spaApp')
         $auth.setToken(response.data.key);
         ToastService.show('You are successfully logged in');
         $state.go('app.dashboard');
+       }, function(response){
+        ToastService.error(response.data['non_field_errors'][0]);
        });
     }
 
