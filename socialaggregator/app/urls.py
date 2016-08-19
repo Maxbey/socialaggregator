@@ -5,7 +5,7 @@ from aggregator.views import SocialAuthView
 from aggregator.routers import UserRouter
 from rest_framework.routers import SimpleRouter
 from aggregator.views import UserSocialAuthViewSet
-from rest_auth.views import LoginView, LogoutView
+import rest_auth.views
 from rest_auth.registration.views import RegisterView, VerifyEmailView
 
 from aggregator.views import SocialPersonViewSet
@@ -18,12 +18,21 @@ router.register(r'social_account', UserSocialAuthViewSet)
 router.register(r'social_person', SocialPersonViewSet)
 
 urlpatterns = [
+    url(r'^', include('django.contrib.auth.urls')),
     url(r'^admin/', admin.site.urls),
 
     url(r'^api/auth/registration/', RegisterView.as_view(), name='register_view'),
-    url(r'^api/auth/login/$', LoginView.as_view(), name='rest_login'),
-    url(r'^api/auth/logout/$', LogoutView.as_view(), name='rest_logout'),
+    url(r'^api/auth/login/$', rest_auth.views.LoginView.as_view(), name='rest_login'),
+    url(r'^api/auth/logout/$', rest_auth.views.LogoutView.as_view(), name='rest_logout'),
     url(r'^api/auth/confirm_email/$', VerifyEmailView.as_view()),
+
+    url(
+        r'^api/auth/password/confirm/$',
+        rest_auth.views.PasswordResetConfirmView.as_view(),
+        name='password_reset_confirm'
+    ),
+    url(r'^api/auth/password/reset/$', rest_auth.views.PasswordResetView.as_view()),
+    url(r'^api/auth/password/change/$', rest_auth.views.PasswordChangeView.as_view()),
 
     url(r'^api/social_auth/login/social/token/(?:(?P<provider>[a-zA-Z0-9_-]+)/?)?$',
         SocialAuthView.as_view(),

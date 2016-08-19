@@ -9,6 +9,8 @@ class BaseSettings(Configuration):
     FRONTEND_URI = values.Value(environ_prefix='', environ_required=True)
     FRONTEND_CONFIRMATION_URI = values.Value(
         environ_prefix='', environ_required=True)
+    FRONTEND_RESET_PASSWORD_URI = values.Value(
+        environ_prefix='', environ_required=True)
 
     ALLOWED_HOSTS = []
 
@@ -34,6 +36,11 @@ class BaseSettings(Configuration):
 
     ACCOUNT_ADAPTER = 'aggregator.allauth_account_adapter.AccountAdapter'
     REST_SESSION_LOGIN = False
+    LOGOUT_ON_PASSWORD_CHANGE = True
+
+    REST_AUTH_SERIALIZERS = {
+        'PASSWORD_RESET_SERIALIZER': 'aggregator.serializers.PasswordSerializer'
+    }
 
     MIDDLEWARE_CLASSES = [
         'django.middleware.security.SecurityMiddleware',

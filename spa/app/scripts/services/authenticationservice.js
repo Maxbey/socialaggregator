@@ -18,7 +18,9 @@ angular.module('spaApp')
       logout: logout,
       user: user,
       stateControl: stateControl,
-      confirmEmail: confirmEmail
+      confirmEmail: confirmEmail,
+      resetPassword: resetPassword,
+      resetPasswordComplete: resetPasswordComplete
     };
 
     function socialLogin(provider) {
@@ -43,6 +45,14 @@ angular.module('spaApp')
 
     function confirmEmail(key) {
       return $http.post(baseUrl + 'confirm_email/', {key: key});
+    }
+
+    function resetPassword(email) {
+      return $http.post(baseUrl + 'password/reset/', {'email': email});
+    }
+
+    function resetPasswordComplete(credentials) {
+      return $http.post(baseUrl + 'password/confirm/', credentials);
     }
 
     function user() {

@@ -1,6 +1,8 @@
+from rest_auth.serializers import PasswordResetSerializer
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from social.apps.django_app.default.models import UserSocialAuth
+from django.conf import settings
 
 from aggregator.models import SocialPerson
 from .fetchers.factory import SocialFetchStrategyFactory
@@ -47,3 +49,15 @@ class SocialPersonSerializer(ModelSerializer):
     class Meta:
         model = SocialPerson
         exclude = ('user_social_auth',)
+
+
+class PasswordSerializer(PasswordResetSerializer):
+    def get_email_options(self):
+
+
+        return {
+            'email_template_name': 'mails/email_password_reset_message.txt',
+            'extra_email_context': {
+                'complete_url': settings.FRONTEND_RESET_PASSWORD_URI
+            }
+        }

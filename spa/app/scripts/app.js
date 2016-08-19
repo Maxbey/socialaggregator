@@ -60,6 +60,22 @@ angular
             templateUrl: 'views/email-confirmation.html'
           }
         }
+      })
+      .state('enter.passreset', {
+        url: '/password/reset',
+        views: {
+          'main@': {
+            templateUrl: 'views/passwordreset.html'
+          }
+        }
+      })
+      .state('enter.passresetcomplete', {
+        url: '/password/reset/complete/:uid/:token',
+        views: {
+          'main@': {
+            templateUrl: 'views/passwordresetcomplete.html'
+          }
+        }
       });
 
 
