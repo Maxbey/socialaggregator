@@ -26,6 +26,7 @@ module.exports = function (config) {
       './bower_components/angular-ui-router/release/angular-ui-router.js',
       './bower_components/raven-js/dist/raven.js',
       './bower_components/angular-raven/angular-raven.js',
+      './bower_components/angular-validation-match/dist/angular-validation-match.min.js',
 
       './app/scripts/ngConstants.js',
       './app/scripts/app.js',

@@ -16,6 +16,7 @@ from rest_framework import mixins
 from rest_social_auth.views import SocialTokenOnlyAuthView, decorate_request
 from social.exceptions import AuthException
 from requests.exceptions import HTTPError
+from rest_auth.views import PasswordChangeView as OriginPasswordChangeView
 
 from aggregator.models import SocialPerson
 from .serializers import UserSocialAuthSerializer, SocialPersonSerializer
@@ -109,3 +110,7 @@ class SocialAuthView(SocialTokenOnlyAuthView):
         resp_data = self.get_serializer(instance=user)
         self.do_login(request.backend, user)
         return Response(resp_data.data)
+
+
+class PasswordChangeView(OriginPasswordChangeView):
+    authentication_classes = [TokenAuthentication]

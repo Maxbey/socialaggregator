@@ -36,7 +36,9 @@ class BaseSettings(Configuration):
 
     ACCOUNT_ADAPTER = 'aggregator.allauth_account_adapter.AccountAdapter'
     REST_SESSION_LOGIN = False
-    LOGOUT_ON_PASSWORD_CHANGE = True
+
+    LOGOUT_ON_PASSWORD_CHANGE = False
+    OLD_PASSWORD_FIELD_ENABLED = True
 
     REST_AUTH_SERIALIZERS = {
         'PASSWORD_RESET_SERIALIZER': 'aggregator.serializers.PasswordSerializer'

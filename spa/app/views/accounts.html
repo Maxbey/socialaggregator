@@ -1,6 +1,7 @@
 <div layout="column" ng-controller="AccountsCtrl as vm">
   <div layout="column" layout-align="center center">
     <h2 class="md-display-1">Your social accounts</h2>
+    <h3 class="md-subhead" ng-if="vm.accounts.length === 0">You have not yet added any social account.</h3>
   </div>
 
 
@@ -20,8 +21,7 @@
     </md-fab-actions>
   </md-fab-speed-dial>
 
-
-  <md-content layout="row" layout-align="center top" layout-wrap>
+  <md-content ng-if="vm.accounts.length" layout="row" layout-align="center top" layout-wrap>
     <div ng-repeat="account in vm.accounts" flex-sm="50" flex-lg="20" flex-md="25">
       <md-card layout-padding>
         <md-card-header>

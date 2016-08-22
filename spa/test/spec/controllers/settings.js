@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: ProfileCtrl', function () {
+describe('Controller: SettingsCtrl', function () {
 
   // load the controller's module
   beforeEach(module('spaApp'));
@@ -9,7 +9,7 @@ describe('Controller: ProfileCtrl', function () {
   beforeEach(module('userServiceMock'));
   beforeEach(module('authenticationServiceMock'));
 
-  var ProfileCtrl,
+  var SettingsCtrl,
     AuthenticationService,
     UserService,
     ToastServiceMock,
@@ -28,7 +28,7 @@ describe('Controller: ProfileCtrl', function () {
       }
     };
 
-    ProfileCtrl = $controller('ProfileCtrl', {
+    SettingsCtrl = $controller('SettingsCtrl', {
       $scope: scope,
       AuthenticationService: _AuthenticationService_,
       UserService: _UserService_,
@@ -39,22 +39,28 @@ describe('Controller: ProfileCtrl', function () {
   }));
 
   it('interface should be defined', function () {
-    expect(ProfileCtrl.update).toBeDefined();
+    expect(SettingsCtrl.updateProfile).toBeDefined();
+    expect(SettingsCtrl.changePassword).toBeDefined();
   });
 
   it('should attach user data to scope', function () {
-    expect(ProfileCtrl.user).toBeDefined();
+    expect(SettingsCtrl.user).toBeDefined();
   });
 
-  it('should call UserService.update, reload state and show toast', function () {
+  it('should call UserService.update and show toast', function () {
     spyOn(UserService, 'update').and.callThrough();
     spyOn(ToastServiceMock, 'show').and.callThrough();
-    spyOn($state, 'reload').and.callThrough();
 
-    ProfileCtrl.update();
+    SettingsCtrl.updateProfile();
 
     expect(UserService.update).toHaveBeenCalled();
     expect(ToastServiceMock.show).toHaveBeenCalled();
-    expect($state.reload).toHaveBeenCalled();
+  });
+
+  it('should call AuthenticationService.changePassword', function () {
+    spyOn(AuthenticationService, 'changePassword').and.callThrough();
+
+    SettingsCtrl.changePassword();
+    expect(AuthenticationService.changePassword).toHaveBeenCalled();
   });
 });

@@ -20,7 +20,8 @@ angular
     'ngSanitize',
     'ngMaterial',
     'satellizer',
-    'ngRaven'
+    'ngRaven',
+    'validation.match'
   ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider, envConfig) {
     $urlRouterProvider.otherwise('/');
@@ -100,11 +101,11 @@ angular
           }
         }
       })
-      .state('app.profile', {
-        url: '/im',
+      .state('app.settings', {
+        url: '/settings',
         views: {
           'main@': {
-            templateUrl: 'views/profile.html'
+            templateUrl: 'views/settings.html'
           }
         }
       })

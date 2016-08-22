@@ -9,6 +9,7 @@ import rest_auth.views
 from rest_auth.registration.views import RegisterView, VerifyEmailView
 
 from aggregator.views import SocialPersonViewSet
+from aggregator.views import PasswordChangeView
 
 user_router = UserRouter()
 router = SimpleRouter()
@@ -32,7 +33,7 @@ urlpatterns = [
         name='password_reset_confirm'
     ),
     url(r'^api/auth/password/reset/$', rest_auth.views.PasswordResetView.as_view()),
-    url(r'^api/auth/password/change/$', rest_auth.views.PasswordChangeView.as_view()),
+    url(r'^api/auth/password/change/$', PasswordChangeView.as_view()),
 
     url(r'^api/social_auth/login/social/token/(?:(?P<provider>[a-zA-Z0-9_-]+)/?)?$',
         SocialAuthView.as_view(),
