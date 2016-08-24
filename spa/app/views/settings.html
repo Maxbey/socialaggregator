@@ -8,7 +8,7 @@
           <md-content class="md-padding" layout-align="center center">
             <h1 class="md-headline">Profile settings</h1>
             <div class="Login-formContainer" layout="column" layout-align="center center">
-              <form ng-show="vm.user" ng-submit="vm.updateProfile()">
+              <form ng-show="vm.user" name="ProfileForm" ng-submit="vm.updateProfile(ProfileForm)">
                 <div>
                   <md-input-container class="ProfileForm-inputContainer">
                     <label>Email</label>
@@ -19,7 +19,16 @@
                 <div>
                   <md-input-container class="ProfileForm-inputContainer">
                     <label>Username</label>
-                    <input type="text" ng-model="vm.user.username">
+                    <input required name="username" type="text" ng-model="vm.user.username"
+                           ng-change="vm.resetServerValidation(ProfileForm.username)">
+                    <div ng-messages="ProfileForm.username.$error" role="alert">
+                      <div ng-message="serverValidation">
+                        {{ vm.backendValidationErrors.username.message }}
+                      </div>
+                      <div ng-message="required">
+                        Type the username
+                      </div>
+                    </div>
                   </md-input-container>
                 </div>
 
@@ -38,7 +47,9 @@
                 </div>
 
                 <div layout="column" layout-align="center center">
-                  <md-button type="submit" class="ProfileForm-submit md-primary md-raised">Update profile</md-button>
+                  <md-button type="submit" class="ProfileForm-submit md-primary md-raised">
+                    Update profile
+                  </md-button>
                 </div>
 
               </form>
@@ -50,25 +61,36 @@
             <h1 class="md-headline">Security settings</h1>
             <div class="Login-formContainer" layout="column" layout-align="center center">
               <md-subheader>Change password</md-subheader>
-              <form ng-submit="vm.changePassword()" name="changePasswordForm">
+              <form ng-submit="vm.changePassword(changePasswordForm)" name="changePasswordForm">
                 <div>
                   <md-input-container class="ProfileForm-inputContainer">
                     <label>Old password</label>
-                    <input type="password" required name="old_password" ng-model="vm.credentials.old_password">
+                    <input type="password" required name="old_password"
+                           ng-change="vm.resetServerValidation(changePasswordForm.old_password)"
+                           ng-model="vm.credentials.old_password">
+
                     <div ng-messages="changePasswordForm.old_password.$error" role="alert">
+                      <div ng-message="serverValidation">
+                        {{ vm.backendValidationErrors.old_password.message }}
+                      </div>
                       <div ng-message="required">
-                        Type your old password
+                        Type new password
                       </div>
                     </div>
+
                   </md-input-container>
                 </div>
                 <div>
                   <md-input-container class="ProfileForm-inputContainer">
                     <label>New password</label>
-                    <input type="password" required name="new_password1" ng-model="vm.credentials.new_password1">
+                    <input type="password" minlength="8" name="new_password1" ng-model="vm.credentials.new_password1"
+                           ng-change="vm.resetServerValidation(changePasswordForm.new_password1)">
                     <div ng-messages="changePasswordForm.new_password1.$error" role="alert">
-                      <div ng-message="required">
-                        Type new password
+                      <div ng-message="serverValidation">
+                        {{ vm.backendValidationErrors.new_password1.message }}
+                      </div>
+                      <div ng-message="minlength">
+                        The new password must be large than 8 characters
                       </div>
                     </div>
                   </md-input-container>
@@ -76,10 +98,15 @@
                 <div>
                   <md-input-container class="ProfileForm-inputContainer">
                     <label>Confirm password</label>
-                    <input type="password" required name="new_password2" ng-model="vm.credentials.new_password2" match="vm.credentials.new_password1">
-                    <div ng-messages="changePasswordForm.new_password1.$error" role="alert">
-                      <div ng-message="required">
-                        Confirm the new password
+                    <input type="password" minlength="8" name="new_password2" ng-model="vm.credentials.new_password2"
+                           match="vm.credentials.new_password1"
+                           ng-change="vm.resetServerValidation(changePasswordForm.new_password2)">
+                    <div ng-messages="changePasswordForm.new_password2.$error" role="alert">
+                      <div ng-message="serverValidation">
+                        {{ vm.backendValidationErrors.new_password2.message }}
+                      </div>
+                      <div ng-message="minlength">
+                        The new password must be large than 8 characters
                       </div>
                       <div ng-message="match">
                         Passwords do not match
@@ -89,7 +116,9 @@
                 </div>
 
                 <div layout="column" layout-align="center center">
-                  <md-button type="submit" ng-disabled="changePasswordForm.$invalid" class="ProfileForm-submit md-primary md-raised">Change password</md-button>
+                  <md-button type="submit"
+                             class="ProfileForm-submit md-primary md-raised">Change password
+                  </md-button>
                 </div>
               </form>
             </div>

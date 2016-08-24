@@ -23,9 +23,13 @@ angular
     'ngRaven',
     'validation.match'
   ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider, envConfig) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider, envConfig, $mdThemingProvider) {
     $urlRouterProvider.otherwise('/');
     $httpProvider.defaults.withCredentials = true;
+
+    $mdThemingProvider.theme('default')
+      .primaryPalette('indigo')
+      .accentPalette('red');
 
     $stateProvider
       .state('enter', {

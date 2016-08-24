@@ -50,7 +50,6 @@ angular.module('spaApp')
 					$mdToast.simple()
 						.content(content)
 						.position(position)
-						.theme('warn')
 						.action(action)
 						.hideDelay(delay * 3)
 				);

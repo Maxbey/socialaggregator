@@ -8,10 +8,91 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('DashboardCtrl', function (UserService) {
+  .controller('DashboardCtrl', function (UserService, $window, $scope, ToastService) {
     var vm = this;
 
-    UserService.persons().then(function(response){
-      vm.persons = response.data
+    vm.persons = [];
+    vm.searchToolbar = false;
+    vm.topIndex = 0;
+
+    vm.toggleToolbar = function() {
+      if(vm.searchToolbar && vm.searchName) {
+        vm.searchName = null;
+        refreshList();
+      }
+
+      vm.searchToolbar = !vm.searchToolbar;
+    };
+
+    vm.loadMore = function() {
+      if (!vm.personList.page)
+        return;
+
+      fetchMorePersons();
+      vm.topIndex += 8;
+    };
+
+    vm.personList = {
+        numLoaded_: -1,
+        toLoad_: 0,
+        page:1,
+        getItemAtIndex: function (index) {
+            if (index + 1 >= vm.personList.numLoaded_ && vm.personList.page) {
+                vm.personList.fetchMoreItems_(index);
+                return null;
+            }
+            return vm.persons[index];
+        },
+        getLength: function () {
+            return vm.personList.numLoaded_;
+        },
+        fetchMoreItems_: function (index) {
+          if (vm.personList.toLoad_ <= vm.persons.length) {
+
+                fetchMorePersons();
+            }
+        }
+    }
+
+    function fetchMorePersons() {
+      vm.personList.toLoad_ += 9;
+
+      UserService.persons(vm.personList.page, vm.searchName).then(function(response) {
+        vm.persons = vm.persons.concat(response.data['results']);
+
+        if(!response.data['next'])
+          vm.personList.page = null;
+
+        vm.personList.numLoaded_ = vm.persons.length;
+      });
+
+      vm.personList.page++;
+    }
+
+    function refreshList() {
+      vm.persons = [];
+      vm.personList.toLoad_ = 0;
+      vm.personList.page = 1;
+      vm.personList.numLoaded_ = -1;
+    }
+
+    $scope.$watch('vm.searchName', function(){
+      refreshList();
     });
+
+    vm.listHeight = $window.innerHeight - 130 + 'px';
+
+
+
+    $window.addEventListener('resize', onResize);
+
+    function onResize() {
+      vm.listHeight = $window.innerHeight - 130 + 'px';
+      $scope.$digest();
+    }
+
+    $scope.$on('$destroy', function() {
+      $window.removeEventListener('resize', onResize);
+    });
+
   });

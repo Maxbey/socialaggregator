@@ -19,6 +19,8 @@ from requests.exceptions import HTTPError
 from rest_auth.views import PasswordChangeView as OriginPasswordChangeView
 
 from aggregator.models import SocialPerson
+
+from aggregator.paginations import SocialPersonPagination
 from .serializers import UserSocialAuthSerializer, SocialPersonSerializer
 
 from social.apps.django_app.default.models import UserSocialAuth
@@ -59,10 +61,15 @@ class SocialPersonViewSet(mixins.ListModelMixin, AuthByTokenViewSet):
     """
     queryset = SocialPerson.objects.all()
     serializer_class = SocialPersonSerializer
+    pagination_class = SocialPersonPagination
 
     def get_queryset(self):
         user = self.request.user
         accounts = user.social_auth.all()
+
+        name = self.request.query_params.get('name', None)
+        if name is not None:
+            return self.queryset.filter(user_social_auth__in=accounts, name__istartswith=name)
 
         return self.queryset.filter(user_social_auth__in=accounts)
 

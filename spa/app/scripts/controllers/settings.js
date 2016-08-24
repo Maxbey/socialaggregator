@@ -8,24 +8,39 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('SettingsCtrl', function (AuthenticationService, ToastService, UserService) {
+  .controller('SettingsCtrl', function (AuthenticationService, ToastService, UserService, ResponseService, FormService) {
     var vm = this;
+
     vm.updateProfile = updateProfile;
     vm.changePassword = changePassword;
+    vm.resetServerValidation = resetServerValidation;
 
     vm.credentials = {};
 
-    function updateProfile() {
+    vm.backendValidationErrors = {};
+
+    function updateProfile(form) {
       UserService.update(vm.user).then(function () {
         ToastService.show('Your profile successfully updated');
+      }, function(response) {
+        vm.backendValidationErrors = ResponseService.parseResponseErrors(response.data);
+
+        FormService.setServerValidation(form, vm.backendValidationErrors, 'serverValidation');
       });
     }
 
-    function changePassword() {
+    function resetServerValidation(formField) {
+      formField.$setValidity('serverValidation', null);
+    }
+
+    function changePassword(form) {
+
       AuthenticationService.changePassword(vm.credentials).then(function(response) {
         ToastService.show(response.data.success);
-      }, function(r) {
-        console.log(r);
+      }, function(response) {
+        vm.backendValidationErrors = ResponseService.parseResponseErrors(response.data);
+
+        FormService.setServerValidation(form, vm.backendValidationErrors, 'serverValidation');
       });
     }
 

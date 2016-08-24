@@ -26,8 +26,13 @@ angular.module('spaApp')
       return $http.get(baseUrl + '/social_account/');
     }
 
-    function persons() {
-      return $http.get(baseUrl + '/social_person/');
+    function persons(page, name) {
+      query = '?page=' + page;
+
+      if (name)
+        query += '&name=' + name;
+
+      return $http.get(baseUrl + '/social_person/' + query);
     }
 
     function removeAccount(accountId) {
