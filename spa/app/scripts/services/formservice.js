@@ -8,7 +8,7 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('FormService', function ($http, envConfig) {
+  .service('FormService', function($http, envConfig) {
 
     return {
       setServerValidation: setServerValidation

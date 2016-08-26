@@ -8,7 +8,7 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('ResponseService', function ($http, envConfig) {
+  .service('ResponseService', function($http, envConfig) {
 
     return {
       parseResponseErrors: parseResponseErrors
@@ -18,7 +18,9 @@ angular.module('spaApp')
       result = {};
 
       for (field in errors) {
-        result[field] = {'message': errors[field][0]}
+        result[field] = {
+          message: errors[field][0]
+        }
       }
 
       return result;

@@ -8,7 +8,7 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('UserService', function ($http, envConfig) {
+  .service('UserService', function($http, envConfig) {
     var baseUrl = envConfig.BACKEND_HOST + '/api';
 
     return {
@@ -36,6 +36,6 @@ angular.module('spaApp')
     }
 
     function removeAccount(accountId) {
-      return $http.delete(baseUrl + '/social_account/' + accountId + '/')
+      return $http.delete(baseUrl + '/social_account/' + accountId + '/');
     }
   });

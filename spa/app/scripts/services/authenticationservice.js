@@ -8,7 +8,7 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('AuthenticationService', function ($http, $cookies, $auth, envConfig, $state) {
+  .service('AuthenticationService', function($http, $cookies, $auth, envConfig, $state) {
     var baseUrl = envConfig.BACKEND_HOST + '/api/auth/';
 
     return {
@@ -45,7 +45,9 @@ angular.module('spaApp')
     }
 
     function confirmEmail(key) {
-      return $http.post(baseUrl + 'confirm_email/', {key: key});
+      return $http.post(baseUrl + 'confirm_email/', {
+        key: key
+      });
     }
 
     function changePassword(credentials) {
@@ -53,7 +55,9 @@ angular.module('spaApp')
     }
 
     function resetPassword(email) {
-      return $http.post(baseUrl + 'password/reset/', {'email': email});
+      return $http.post(baseUrl + 'password/reset/', {
+        email: email
+      });
     }
 
     function resetPasswordComplete(credentials) {
@@ -65,7 +69,7 @@ angular.module('spaApp')
     }
 
     function logout() {
-      $http.defaults.headers.common['Authorization'] = undefined;
+      $http.defaults.headers.common.Authorization = undefined;
       return $auth.logout();
     }
 
@@ -77,5 +81,4 @@ angular.module('spaApp')
         }
       }
     }
-
   });

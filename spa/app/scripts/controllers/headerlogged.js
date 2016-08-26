@@ -8,7 +8,7 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('HeaderLoggedCtrl', function ($auth, $state, AuthenticationService) {
+  .controller('HeaderLoggedCtrl', function($auth, $state, AuthenticationService) {
     var vm = this;
 
     vm.logout = logout;
@@ -18,7 +18,7 @@ angular.module('spaApp')
       $state.go('enter.login');
     }
 
-    AuthenticationService.user().then(function (response) {
+    AuthenticationService.user().then(function(response) {
       vm.username = response.data.username;
     });
   });

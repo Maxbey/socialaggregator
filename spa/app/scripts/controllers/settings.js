@@ -8,7 +8,7 @@
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('SettingsCtrl', function (AuthenticationService, ToastService, UserService, ResponseService, FormService) {
+  .controller('SettingsCtrl', function(AuthenticationService, ToastService, UserService, ResponseService, FormService) {
     var vm = this;
 
     vm.updateProfile = updateProfile;
@@ -20,7 +20,7 @@ angular.module('spaApp')
     vm.backendValidationErrors = {};
 
     function updateProfile(form) {
-      UserService.update(vm.user).then(function () {
+      UserService.update(vm.user).then(function() {
         ToastService.show('Your profile successfully updated');
       }, function(response) {
         vm.backendValidationErrors = ResponseService.parseResponseErrors(response.data);
@@ -34,7 +34,6 @@ angular.module('spaApp')
     }
 
     function changePassword(form) {
-
       AuthenticationService.changePassword(vm.credentials).then(function(response) {
         ToastService.show(response.data.success);
       }, function(response) {
@@ -44,7 +43,7 @@ angular.module('spaApp')
       });
     }
 
-    AuthenticationService.user().then(function (response) {
+    AuthenticationService.user().then(function(response) {
       vm.user = response.data;
     });
   });
