@@ -1,5 +1,5 @@
 from urlparse import parse_qs
-
+from django.core.cache import cache
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
@@ -24,11 +24,25 @@ from aggregator.paginations import SocialPersonPagination
 from .serializers import UserSocialAuthSerializer, SocialPersonSerializer
 
 from social.apps.django_app.default.models import UserSocialAuth
+from rest_framework import status as http_status
+from celery.result import AsyncResult
 
 
 class AuthByTokenViewSet(GenericViewSet):
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
+
+
+class DependsOnCeleryMixin(object):
+    def is_task_done(self, name):
+        task_id = cache.get(name)
+
+        if task_id:
+            status = AsyncResult(task_id).status
+
+            return status == 'SUCCESS'
+
+        return True
 
 
 class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, AuthByTokenViewSet):
@@ -42,7 +56,7 @@ class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, AuthByToke
         return self.request.user
 
 
-class UserSocialAuthViewSet(mixins.ListModelMixin, mixins.DestroyModelMixin, AuthByTokenViewSet):
+class UserSocialAuthViewSet(mixins.ListModelMixin, mixins.DestroyModelMixin, DependsOnCeleryMixin, AuthByTokenViewSet):
     """
     User social accounts viewset.
     """
@@ -54,8 +68,14 @@ class UserSocialAuthViewSet(mixins.ListModelMixin, mixins.DestroyModelMixin, Aut
 
         return self.queryset.filter(user=user)
 
+    def list(self, request, **kwargs):
+        if self.is_task_done('save_social_data'):
+            return super(UserSocialAuthViewSet, self).list(request, **kwargs)
 
-class SocialPersonViewSet(mixins.ListModelMixin, AuthByTokenViewSet):
+        return Response('CELERY_PROCESSING', http_status.HTTP_400_BAD_REQUEST)
+
+
+class SocialPersonViewSet(mixins.ListModelMixin, DependsOnCeleryMixin, AuthByTokenViewSet):
     """
     Endpoint for fetching user`s friends and followers.
     """
@@ -72,6 +92,12 @@ class SocialPersonViewSet(mixins.ListModelMixin, AuthByTokenViewSet):
             return self.queryset.filter(user_social_auth__in=accounts, name__istartswith=name)
 
         return self.queryset.filter(user_social_auth__in=accounts)
+
+    def list(self, request, **kwargs):
+        if self.is_task_done('fetch_user_friends') and self.is_task_done('fetch_user_followers'):
+            return super(SocialPersonViewSet, self).list(request, **kwargs)
+
+        return Response('CELERY_PROCESSING', http_status.HTTP_400_BAD_REQUEST)
 
 
 class SocialAuthView(SocialTokenOnlyAuthView):

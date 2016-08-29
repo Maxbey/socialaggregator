@@ -8,16 +8,22 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('FormService', function ($http, envConfig) {
+  .service('FormService', function() {
 
     return {
-      setServerValidation: setServerValidation
+      setServerValidation: setServerValidation,
+      resetServerValidation: resetServerValidation
     };
 
     function setServerValidation(form, errors, errorName) {
-      for (field in errors) {
+      for (var field in errors) {
         if (form[field])
           form[field].$setValidity(errorName, false);
       }
+    }
+
+    function resetServerValidation(formField, errorName) {
+      if(formField.$setValidity)
+        formField.$setValidity(errorName, null);
     }
   });

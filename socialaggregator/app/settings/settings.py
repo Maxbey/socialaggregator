@@ -59,6 +59,8 @@ class Development(LoggingMixin, EnvWithRealAuth):
         'corsheaders'
     ]
 
+    CACHES = values.CacheURLValue(environ_name='REDIS_URL')
+
     RAVEN_CONFIG = {
         'dsn': BaseSettings.SENTRY_PRIVATE_DSN
     }

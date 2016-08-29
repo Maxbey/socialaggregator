@@ -39,11 +39,21 @@ describe('Service: UserService', function () {
     expect(httpBackend.flush).not.toThrow();
   });
 
-  it('should do get request to fetch list of friends and followers', function () {
-    UserService.persons();
+  it('fetch list of friends and followers with name query param', function () {
+    UserService.persons(1, 'name');
 
     httpBackend
-      .expect('GET', apiUrl + '/social_person/')
+      .expect('GET', apiUrl + '/social_person/?page=1&name=name')
+      .respond(200);
+
+    expect(httpBackend.flush).not.toThrow();
+  });
+
+  it('fetch list of friends and followers without name param', function () {
+    UserService.persons(1, undefined);
+
+    httpBackend
+      .expect('GET', apiUrl + '/social_person/?page=1')
       .respond(200);
 
     expect(httpBackend.flush).not.toThrow();

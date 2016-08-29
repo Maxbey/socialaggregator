@@ -1,9 +1,11 @@
 import json
-from mock import patch
+from mock import patch, PropertyMock
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from aggregator.models import SocialPerson
+
+from aggregator.views import DependsOnCeleryMixin
 from .factories import UserSocialAuthFactory, SocialPersonFactory
 from .factories import UserFactory
 
@@ -96,7 +98,10 @@ class UserSocialAuthViewSet(BaseViewSetTestCase):
         self.assert_unauthorized(response)
 
     @patch('aggregator.serializers.UserSocialAuthSerializer.get_strategy', get_strategy)
-    def test_authorized_attempt_to_list_accounts(self):
+    @patch('aggregator.views.DependsOnCeleryMixin.is_task_done')
+    def test_accounts_list_when_celery_not_processing(self, is_task_done):
+        is_task_done.return_value = True
+
         response = self.first_fixture[0].get(self.url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -111,6 +116,15 @@ class UserSocialAuthViewSet(BaseViewSetTestCase):
             response.json()[0],
             expected_response
         )
+
+    @patch('aggregator.views.DependsOnCeleryMixin.is_task_done')
+    def test_accounts_list_when_celery_processing(self, is_task_done):
+        is_task_done.return_value = False
+
+        response = self.first_fixture[0].get(self.url)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual('CELERY_PROCESSING', json.loads(response.content))
 
     @patch('aggregator.serializers.UserSocialAuthSerializer.get_strategy', get_strategy)
     def test_list_only_owner_accounts(self):
@@ -187,7 +201,10 @@ class SocialPersonViewSetTest(BaseViewSetTestCase):
         response = self.client.get(self.url)
         self.assert_unauthorized(response)
 
-    def test_list(self):
+    @patch('aggregator.views.DependsOnCeleryMixin.is_task_done')
+    def test_list_when_celery_not_processing(self, is_task_done):
+        is_task_done.return_value = True
+
         for i in xrange(0, 3):
             persons = []
 
@@ -202,11 +219,51 @@ class SocialPersonViewSetTest(BaseViewSetTestCase):
 
         response = self.authorized_client.get(self.url)
 
-        expected_response = []
+        expected_response = {'count': 6, 'previous': None, 'next': None, 'results': []}
 
         for person in SocialPerson.objects.all():
-            expected_response.append(
+            expected_response['results'].append(
                 dict_from_model(person, self.model_attributes, [])
             )
 
         self.assertEqual(expected_response, json.loads(response.content))
+
+    @patch('aggregator.views.DependsOnCeleryMixin.is_task_done')
+    def test_list_when_celery_processing(self, is_task_done):
+        is_task_done.return_value = False
+
+        response = self.authorized_client.get(self.url)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual('CELERY_PROCESSING', json.loads(response.content))
+
+class DependsOnCeleryMixinTest(APITestCase):
+    @patch('aggregator.views.cache.get')
+    def test_task_id_not_exist_in_cache(self, get):
+        get.return_value = None
+
+        mixin = DependsOnCeleryMixin()
+
+        self.assertTrue(mixin.is_task_done('name'))
+
+    @patch('aggregator.views.AsyncResult.status', new_callable=PropertyMock)
+    @patch('aggregator.views.cache.get')
+    def test_task_should_not_be_finished(self, get, status):
+        get.return_value = 'taskid'
+        status.return_value = 'PENDING'
+
+        mixin = DependsOnCeleryMixin()
+
+        self.assertFalse(mixin.is_task_done('name'))
+
+    @patch('aggregator.views.AsyncResult.status', new_callable=PropertyMock)
+    @patch('aggregator.views.cache.get')
+    def test_task_should_be_finished(self, get, status):
+        get.return_value = 'taskid'
+        status.return_value = 'SUCCESS'
+
+        mixin = DependsOnCeleryMixin()
+
+        self.assertTrue(mixin.is_task_done('name'))
+
+

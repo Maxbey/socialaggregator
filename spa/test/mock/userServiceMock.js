@@ -1,40 +1,70 @@
 angular.module('userServiceMock', []);
-angular.module('userServiceMock').service("UserService", function () {
-  var fake = [{id: 1}, {id: 2}];
+angular.module('userServiceMock').service("UserService", function() {
+  var fake = [{
+    id: 1
+  }, {
+    id: 2
+  }];
 
-  this.getAccountsFake = function () {
+  var successResponse = {
+    data: fake
+  };
+
+  var errorResponse = {
+    data: ['some error']
+  };
+
+  self = this;
+
+  function responseSwitcher(scb, ecb) {
+    if (self.response)
+      return scb(successResponse);
+
+    return ecb(errorResponse);
+  }
+
+  this.response = true;
+
+  this.specifyErrorData = function(data) {
+    errorResponse.data = data;
+  };
+
+  this.specifySuccessData = function(data) {
+    successResponse.data = data;
+  };
+
+  this.specifyResponseType = function(type) {
+    self.response = type;
+  };
+
+  this.getAccountsFake = function() {
     return fake;
   };
 
-  this.removeAccount = function () {
+  this.removeAccount = function() {
     return {
-      then: function (cb) {
+      then: function(cb) {
         return cb()
       }
     }
   };
 
-  this.accounts = function () {
+  this.accounts = function() {
     return {
-      then: function (cb) {
-        return cb({data: fake})
-      }
-    }
+      then: responseSwitcher
+    };
   };
 
   this.persons = function() {
     return {
-      then: function(cb){
-        return cb({data: []})
-      }
-    }
+      then: responseSwitcher
+    };
   }
 
-  this.update = function () {
+  this.update = function() {
     return {
-      then: function (cb) {
-        return cb()
-      }
-    }
+      then: responseSwitcher
+    };
+
   };
 });

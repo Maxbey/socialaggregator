@@ -21,9 +21,10 @@ angular
     'ngMaterial',
     'satellizer',
     'ngRaven',
-    'validation.match'
+    'validation.match',
+    'Backo'
   ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider, envConfig, $mdThemingProvider) {
+  .config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider, envConfig, $mdThemingProvider) {
     $urlRouterProvider.otherwise('/');
     $httpProvider.defaults.withCredentials = true;
 
@@ -83,7 +84,6 @@ angular
         }
       });
 
-
     $stateProvider
       .state('app', {
         abstract: true,
@@ -133,18 +133,16 @@ angular
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
 
-    var base = envConfig.BACKEND_HOST;
-
     $authProvider.loginUrl = base + '/api/auth/login/';
 
     $authProvider.facebook({
-      clientId: envConfig['SOCIAL_AUTH_FACEBOOK_KEY'],
+      clientId: envConfig.SOCIAL_AUTH_FACEBOOK_KEY,
       url: base + '/api/social_auth/login/social/token/facebook/',
       scope: ['email', 'user_friends', 'public_profile', 'user_location']
     });
 
     $authProvider.github({
-      clientId: envConfig['SOCIAL_AUTH_GITHUB_KEY'],
+      clientId: envConfig.SOCIAL_AUTH_GITHUB_KEY,
       url: base + '/api/social_auth/login/social/token/github/'
     });
 
@@ -152,7 +150,7 @@ angular
       name: 'vk',
       url: base + '/api/social_auth/login/social/token/vk/',
       redirectUri: window.location.origin + '/',
-      clientId: envConfig['SOCIAL_AUTH_VK_OAUTH2_KEY'],
+      clientId: envConfig.SOCIAL_AUTH_VK_OAUTH2_KEY,
       authorizationEndpoint: 'http://oauth.vk.com/authorize',
       scope: 'friends, photos, email, photo_big',
       display: 'popup',
@@ -171,9 +169,8 @@ angular
 
     $authProvider.authToken = 'Token';
 
-    Raven.config(envConfig['SENTRY_PUBLIC_DSN'], {}).install();
-
-  }).run(function ($rootScope, $state, $auth, AuthenticationService) {
-  var registrationCallback = $rootScope.$on("$stateChangeStart", AuthenticationService.stateControl);
-  $rootScope.$on('$destroy', registrationCallback)
-});
+    Raven.config(envConfig.SENTRY_PUBLIC_DSN, {}).install();
+  }).run(function($rootScope, $state, $auth, AuthenticationService) {
+    var registrationCallback = $rootScope.$on("$stateChangeStart", AuthenticationService.stateControl);
+    $rootScope.$on('$destroy', registrationCallback);
+  });

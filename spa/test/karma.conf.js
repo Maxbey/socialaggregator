@@ -27,6 +27,7 @@ module.exports = function (config) {
       './bower_components/raven-js/dist/raven.js',
       './bower_components/angular-raven/angular-raven.js',
       './bower_components/angular-validation-match/dist/angular-validation-match.min.js',
+      './bower_components/angular-backoff/dist/angular-backoff.min.js',
 
       './app/scripts/ngConstants.js',
       './app/scripts/app.js',

@@ -19,13 +19,25 @@ describe('Controller: EmailConfirmationCtrl', function () {
 
     EmailConfirmationCtrl = $controller('EmailConfirmationCtrl', {
       $scope: scope,
-      AuthenticationService: _AuthenticationService_,
-      $stateParams: {key: 'confirmationkey'},
+      $stateParams: {key: 'confirmationkey'}
     });
 
   }));
 
-  it('confirmation variable should be defined', function () {
-    expect(EmailConfirmationCtrl.confirmation).toBeDefined();
+  it('confirmEmail success test case', function () {
+    spyOn(AuthenticationService, 'confirmEmail').and.callThrough();
+    EmailConfirmationCtrl.confirmEmail();
+
+    expect(EmailConfirmationCtrl.confirmation).toBe(true);
+    expect(AuthenticationService.confirmEmail).toHaveBeenCalled();
+  });
+
+  it('confirmEmail fail test case', function () {
+    AuthenticationService.response = false;
+    spyOn(AuthenticationService, 'confirmEmail').and.callThrough();
+    EmailConfirmationCtrl.confirmEmail();
+
+    expect(EmailConfirmationCtrl.confirmation).toBe(false);
+    expect(AuthenticationService.confirmEmail).toHaveBeenCalled();
   });
 });

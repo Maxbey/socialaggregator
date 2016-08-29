@@ -73,7 +73,7 @@ def fetch_user_followers_count(pk):
     }
 
 
-@shared_task
+@shared_task(name='abctask')
 def save_social_data(result, pk):
     account = UserSocialAuth.objects.get(pk=pk)
     social_data = {}
