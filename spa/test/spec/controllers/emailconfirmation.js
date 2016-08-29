@@ -1,13 +1,13 @@
 'use strict';
 
-describe('Controller: EmailConfirmationCtrl', function () {
+describe('Controller: EmailConfirmationController', function () {
 
   // load the controller's module
   beforeEach(module('spaApp'));
 
   beforeEach(module('authenticationServiceMock'));
 
-  var EmailConfirmationCtrl,
+  var EmailConfirmationController,
     AuthenticationService,
     scope;
 
@@ -17,7 +17,7 @@ describe('Controller: EmailConfirmationCtrl', function () {
 
     AuthenticationService = _AuthenticationService_;
 
-    EmailConfirmationCtrl = $controller('EmailConfirmationCtrl', {
+    EmailConfirmationController = $controller('EmailConfirmationController', {
       $scope: scope,
       $stateParams: {key: 'confirmationkey'}
     });
@@ -26,18 +26,18 @@ describe('Controller: EmailConfirmationCtrl', function () {
 
   it('confirmEmail success test case', function () {
     spyOn(AuthenticationService, 'confirmEmail').and.callThrough();
-    EmailConfirmationCtrl.confirmEmail();
+    EmailConfirmationController.confirmEmail();
 
-    expect(EmailConfirmationCtrl.confirmation).toBe(true);
+    expect(EmailConfirmationController.confirmation).toBe(true);
     expect(AuthenticationService.confirmEmail).toHaveBeenCalled();
   });
 
   it('confirmEmail fail test case', function () {
     AuthenticationService.response = false;
     spyOn(AuthenticationService, 'confirmEmail').and.callThrough();
-    EmailConfirmationCtrl.confirmEmail();
+    EmailConfirmationController.confirmEmail();
 
-    expect(EmailConfirmationCtrl.confirmation).toBe(false);
+    expect(EmailConfirmationController.confirmation).toBe(false);
     expect(AuthenticationService.confirmEmail).toHaveBeenCalled();
   });
 });

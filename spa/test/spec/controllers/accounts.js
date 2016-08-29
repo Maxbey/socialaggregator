@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: AccountsCtrl', function() {
+describe('Controller: AccountsController', function() {
 
   // load the controller's module
   beforeEach(module('spaApp'));
@@ -9,7 +9,7 @@ describe('Controller: AccountsCtrl', function() {
   beforeEach(module('userServiceMock'));
   beforeEach(module('authenticationServiceMock'));
 
-  var AccountsCtrl,
+  var AccountsController,
     AuthenticationService,
     UserService,
     $state,
@@ -34,7 +34,7 @@ describe('Controller: AccountsCtrl', function() {
 
     accounts = _UserService_.getAccountsFake();
 
-    AccountsCtrl = $controller('AccountsCtrl', {
+    AccountsController = $controller('AccountsController', {
       $scope: scope,
       ToastService: ToastServiceMock,
       $state: $state,
@@ -43,8 +43,8 @@ describe('Controller: AccountsCtrl', function() {
   }));
 
   it('interface should be defined', function() {
-    expect(AccountsCtrl.addAccount).toBeDefined();
-    expect(AccountsCtrl.removeAccount).toBeDefined();
+    expect(AccountsController.addAccount).toBeDefined();
+    expect(AccountsController.removeAccount).toBeDefined();
   });
 
   it('addAccount success case', function() {
@@ -53,7 +53,7 @@ describe('Controller: AccountsCtrl', function() {
     spyOn(ToastServiceMock, 'show').and.callThrough();
     spyOn($state, 'reload').and.callThrough();
 
-    AccountsCtrl.addAccount('twitter');
+    AccountsController.addAccount('twitter');
 
     expect(AuthenticationService.socialLogin).toHaveBeenCalled();
     expect(ToastServiceMock.show)
@@ -67,7 +67,7 @@ describe('Controller: AccountsCtrl', function() {
     spyOn(AuthenticationService, 'socialLogin').and.callThrough();
 
     spyOn(ToastServiceMock, 'error').and.callThrough();
-    AccountsCtrl.addAccount('facebook');
+    AccountsController.addAccount('facebook');
 
     expect(AuthenticationService.socialLogin).toHaveBeenCalled();
     expect(ToastServiceMock.error).toHaveBeenCalledWith('some error');
@@ -78,20 +78,20 @@ describe('Controller: AccountsCtrl', function() {
     spyOn(UserService, 'removeAccount').and.callThrough();
 
     var lengthBefore = accounts.length;
-    AccountsCtrl.accounts = accounts;
-    AccountsCtrl.removeAccount(accounts[0]);
+    AccountsController.accounts = accounts;
+    AccountsController.removeAccount(accounts[0]);
 
-    expect(AccountsCtrl.accounts.length).toBe(lengthBefore - 1);
+    expect(AccountsController.accounts.length).toBe(lengthBefore - 1);
 
     expect(ToastServiceMock.show).toHaveBeenCalled();
     expect(UserService.removeAccount).toHaveBeenCalled();
   });
 
   it('Attempt to remove non-existent account should throw exception', function() {
-    AccountsCtrl.accounts = [];
+    AccountsController.accounts = [];
 
     expect(function() {
-        AccountsCtrl.removeAccount({})
+        AccountsController.removeAccount({})
       })
       .toThrow(new Error('Attempt to delete a non-existent account'));
   });
@@ -99,43 +99,43 @@ describe('Controller: AccountsCtrl', function() {
   it('loadAccounts success test case', function() {
     spyOn(UserService, 'accounts').and.callThrough();
 
-    AccountsCtrl.loadAccounts();
+    AccountsController.loadAccounts();
 
     expect(UserService.accounts).toHaveBeenCalled();
-    expect(AccountsCtrl.loading).toBe(false);
+    expect(AccountsController.loading).toBe(false);
   });
 
   it('loadAccounts fail test case, accountsTimer should be called', function() {
     UserService.specifyResponseType(false);
     spyOn(UserService, 'accounts').and.callThrough();
-    spyOn(AccountsCtrl, 'accountsTimer');
+    spyOn(AccountsController, 'accountsTimer');
 
     UserService.specifyErrorData('CELERY_PROCESSING');
-    AccountsCtrl.loadAccounts();
+    AccountsController.loadAccounts();
 
     expect(UserService.accounts).toHaveBeenCalled();
-    expect(AccountsCtrl.accountsTimer).toHaveBeenCalled();
+    expect(AccountsController.accountsTimer).toHaveBeenCalled();
   });
 
   it('loadAccounts fail test case, accountsTimer should not be called', function() {
     UserService.specifyResponseType(false);
     spyOn(UserService, 'accounts').and.callThrough();
-    spyOn(AccountsCtrl, 'accountsTimer');
+    spyOn(AccountsController, 'accountsTimer');
 
-    AccountsCtrl.loadAccounts();
+    AccountsController.loadAccounts();
 
     expect(UserService.accounts).toHaveBeenCalled();
-    expect(AccountsCtrl.accountsTimer).not.toHaveBeenCalled();
+    expect(AccountsController.accountsTimer).not.toHaveBeenCalled();
   });
 
   it('accountsTimer should call loadAccounts into timeout', function() {
-    spyOn(AccountsCtrl, 'loadAccounts');
+    spyOn(AccountsController, 'loadAccounts');
 
-    AccountsCtrl.accountsTimer();
+    AccountsController.accountsTimer();
     $timeout.flush();
 
-    expect(AccountsCtrl.loading).toBe(true);
-    expect(AccountsCtrl.loadAccounts).toHaveBeenCalled();
+    expect(AccountsController.loading).toBe(true);
+    expect(AccountsController.loadAccounts).toHaveBeenCalled();
   });
 
 });

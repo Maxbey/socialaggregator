@@ -15,6 +15,7 @@ from fetchers.fakedata import SOCIAL_DATA_RESPONSE
 
 
 class Strategy(object):
+
     @property
     def relations(self):
         return SOCIAL_DATA_RESPONSE['social_relations']
@@ -62,10 +63,9 @@ class BaseViewSetTestCase(APITestCase):
         if exclude is None:
             exclude = []
 
-        expected_errors = \
-            {
-                attribute: [error_message] for attribute in self.required_attributes if attribute not in exclude
-                }
+        expected_errors = {
+            attribute: [error_message] for attribute in self.required_attributes if attribute not in exclude
+        }
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, expected_errors)
@@ -85,6 +85,7 @@ class BaseViewSetTestCase(APITestCase):
 
 
 class UserSocialAuthViewSet(BaseViewSetTestCase):
+
     def setUp(self):
         self.set_model_attributes(['id', 'provider', 'uid', 'user'])
 
@@ -147,6 +148,7 @@ class UserSocialAuthViewSet(BaseViewSetTestCase):
 
 
 class UserViewSetTest(BaseViewSetTestCase):
+
     def setUp(self):
         self.set_model_attributes(
             ['id', 'username', 'last_name', 'first_name', 'email'])
@@ -189,12 +191,14 @@ class UserViewSetTest(BaseViewSetTestCase):
 
 
 class SocialPersonViewSetTest(BaseViewSetTestCase):
+
     def setUp(self):
         self.user = UserFactory()
         self.authorized_client = self.get_authorized_client(self.user)
         self.url = '/api/social_person/'
         self.set_model_attributes(
-            ['id', 'uid', 'name', 'avatar_url', 'email', 'provider', 'social_person_type']
+            ['id', 'uid', 'name', 'avatar_url', 'email',
+                'provider', 'social_person_type']
         )
 
     def test_unauthorized_attempt_to_list_persons(self):
@@ -219,7 +223,8 @@ class SocialPersonViewSetTest(BaseViewSetTestCase):
 
         response = self.authorized_client.get(self.url)
 
-        expected_response = {'count': 6, 'previous': None, 'next': None, 'results': []}
+        expected_response = {'count': 6,
+                             'previous': None, 'next': None, 'results': []}
 
         for person in SocialPerson.objects.all():
             expected_response['results'].append(
@@ -237,7 +242,9 @@ class SocialPersonViewSetTest(BaseViewSetTestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual('CELERY_PROCESSING', json.loads(response.content))
 
+
 class DependsOnCeleryMixinTest(APITestCase):
+
     @patch('aggregator.views.cache.get')
     def test_task_id_not_exist_in_cache(self, get):
         get.return_value = None
@@ -265,5 +272,3 @@ class DependsOnCeleryMixinTest(APITestCase):
         mixin = DependsOnCeleryMixin()
 
         self.assertTrue(mixin.is_task_done('name'))
-
-

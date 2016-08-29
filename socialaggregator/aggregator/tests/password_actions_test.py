@@ -4,6 +4,7 @@ from .factories import UserFactory
 
 
 class RegistrationTest(APITestCase):
+
     def setUp(self):
         self.user = UserFactory()
 

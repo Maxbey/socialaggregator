@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name spaApp.controller:AccountsCtrl
+ * @name spaApp.controller:AccountsController
  * @description
- * # AccountsCtrl
+ * # AccountsController
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('AccountsCtrl', function(UserService, AuthenticationService, ToastService, $state, $timeout, Backoff) {
+  .controller('AccountsController', function(UserService, AuthenticationService, ToastService, $state, $timeout, Backoff) {
     var vm = this;
 
     vm.addAccount = addAccount;
@@ -36,7 +36,7 @@ angular.module('spaApp')
       }, backoff.duration());
     }
 
-    function addAccount(provider) {
+   function addAccount(provider) {
       AuthenticationService.socialLogin(provider).then(function(response) {
         ToastService.show(provider + ' account has been successfully added');
         $state.reload();

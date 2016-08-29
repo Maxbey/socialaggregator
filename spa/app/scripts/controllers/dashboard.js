@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name spaApp.controller:DashboardCtrl
+ * @name spaApp.controller:DashboardController
  * @description
- * # DashboardCtrl
+ * # DashboardController
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('DashboardCtrl', function(UserService, $window, $scope, $timeout, ToastService, Backoff) {
+  .controller('DashboardController', function(UserService, $window, $scope, $timeout, ToastService, Backoff) {
     var vm = this;
 
     vm.persons = [];

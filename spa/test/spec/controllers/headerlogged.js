@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: HeaderLoggedCtrl', function () {
+describe('Controller: HeaderLoggedController', function () {
 
   // load the controller's module
   beforeEach(module('spaApp'));
@@ -8,7 +8,7 @@ describe('Controller: HeaderLoggedCtrl', function () {
   beforeEach(module('stateMock'));
   beforeEach(module('authenticationServiceMock'));
 
-  var HeaderLoggedCtrl,
+  var HeaderLoggedController,
     AuthenticationService,
     scope,
     $state;
@@ -20,7 +20,7 @@ describe('Controller: HeaderLoggedCtrl', function () {
 
     AuthenticationService = _AuthenticationService_;
 
-    HeaderLoggedCtrl = $controller('HeaderLoggedCtrl', {
+    HeaderLoggedController = $controller('HeaderLoggedController', {
       $scope: scope,
       AuthenticationService: _AuthenticationService_,
       $state: _$state_,
@@ -29,18 +29,18 @@ describe('Controller: HeaderLoggedCtrl', function () {
   }));
 
   it('interface should be defined', function () {
-    expect(HeaderLoggedCtrl.logout).toBeDefined();
+    expect(HeaderLoggedController.logout).toBeDefined();
   });
 
   it('should attach username to scope', function () {
-    expect(HeaderLoggedCtrl.username).toBe('username');
+    expect(HeaderLoggedController.username).toBe('username');
   });
 
   it('should call logout and change state', function () {
     spyOn(AuthenticationService, 'logout').and.callThrough();
     $state.expectTransitionTo('enter.login');
 
-    HeaderLoggedCtrl.logout();
+    HeaderLoggedController.logout();
     expect(AuthenticationService.logout).toHaveBeenCalled();
   });
 

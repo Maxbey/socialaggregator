@@ -8,7 +8,7 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('ToastService', function($mdToast) {
+  .factory('ToastService', function($mdToast) {
     var delay = 3000,
       position = 'bottom left',
       action = 'OK';

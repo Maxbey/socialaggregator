@@ -8,7 +8,7 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('ResponseService', function() {
+  .factory('ResponseService', function() {
 
     return {
       parseResponseErrors: parseResponseErrors

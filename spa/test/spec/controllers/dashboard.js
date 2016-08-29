@@ -1,13 +1,13 @@
 'use strict';
 
-describe('Controller: DashboardCtrl', function() {
+describe('Controller: DashboardController', function() {
 
   // load the controller's module
   beforeEach(module('spaApp'));
   beforeEach(module('stateMock'));
   beforeEach(module('userServiceMock'));
 
-  var DashboardCtrl,
+  var DashboardController,
     UserService,
     scope,
     $state,
@@ -27,7 +27,7 @@ describe('Controller: DashboardCtrl', function() {
 
     UserService = _UserService_;
 
-    DashboardCtrl = $controller('DashboardCtrl', {
+    DashboardController = $controller('DashboardController', {
       $scope: scope,
       UserService: _UserService_,
       $timeout: _$timeout_,
@@ -37,16 +37,16 @@ describe('Controller: DashboardCtrl', function() {
   }));
 
   it('should attach persons to scope', function() {
-    expect(DashboardCtrl.persons).toBeDefined();
+    expect(DashboardController.persons).toBeDefined();
   });
 
   it('preloadTimer should call preloadPersons', function() {
-    spyOn(DashboardCtrl, 'preloadPersons');
+    spyOn(DashboardController, 'preloadPersons');
 
-    DashboardCtrl.preloadTimer();
+    DashboardController.preloadTimer();
     $timeout.flush();
 
-    expect(DashboardCtrl.preloadPersons).toHaveBeenCalled();
+    expect(DashboardController.preloadPersons).toHaveBeenCalled();
   });
 
   it('preloadPersons success test case with next page', function() {
@@ -57,13 +57,13 @@ describe('Controller: DashboardCtrl', function() {
 
     spyOn(UserService, 'persons').and.callThrough();
 
-    DashboardCtrl.preloadPersons();
+    DashboardController.preloadPersons();
 
-    expect(DashboardCtrl.personList.toLoad_).toBeGreaterThan(0);
+    expect(DashboardController.personList.toLoad_).toBeGreaterThan(0);
     expect(UserService.persons).toHaveBeenCalledWith(1);
-    expect(DashboardCtrl.persons.length).toBe(2);
-    expect(DashboardCtrl.personList.numLoaded_).toBe(2);
-    expect(DashboardCtrl.loading).toBe(false);
+    expect(DashboardController.persons.length).toBe(2);
+    expect(DashboardController.personList.numLoaded_).toBe(2);
+    expect(DashboardController.loading).toBe(false);
   });
 
   it('preloadPersons success test case without next page', function() {
@@ -73,121 +73,121 @@ describe('Controller: DashboardCtrl', function() {
     });
 
     spyOn(UserService, 'persons').and.callThrough();
-    DashboardCtrl.preloadPersons();
-    expect(DashboardCtrl.personList.page).toBe(null);
+    DashboardController.preloadPersons();
+    expect(DashboardController.personList.page).toBe(null);
   });
 
   it('preloadPersons fail test case, should call preloadTimer', function() {
     UserService.specifyResponseType(false);
     UserService.specifyErrorData('CELERY_PROCESSING');
     spyOn(UserService, 'persons').and.callThrough();
-    spyOn(DashboardCtrl, 'preloadTimer');
+    spyOn(DashboardController, 'preloadTimer');
 
-    DashboardCtrl.preloadPersons();
+    DashboardController.preloadPersons();
 
     expect(UserService.persons).toHaveBeenCalledWith(1);
 
-    expect(DashboardCtrl.personList.toLoad_).toBeGreaterThan(0);
-    expect(DashboardCtrl.preloadTimer).toHaveBeenCalled();
-    expect(DashboardCtrl.persons.length).toBe(0);
-    expect(DashboardCtrl.personList.numLoaded_).toBe(-1);
-    expect(DashboardCtrl.loading).toBe(true);
+    expect(DashboardController.personList.toLoad_).toBeGreaterThan(0);
+    expect(DashboardController.preloadTimer).toHaveBeenCalled();
+    expect(DashboardController.persons.length).toBe(0);
+    expect(DashboardController.personList.numLoaded_).toBe(-1);
+    expect(DashboardController.loading).toBe(true);
   });
 
   it('preloadPersons fail test case, should not call preloadTimer', function() {
     UserService.specifyResponseType(false);
     spyOn(UserService, 'persons').and.callThrough();
-    spyOn(DashboardCtrl, 'preloadTimer');
+    spyOn(DashboardController, 'preloadTimer');
 
-    DashboardCtrl.preloadPersons();
+    DashboardController.preloadPersons();
 
     expect(UserService.persons).toHaveBeenCalledWith(1);
-    expect(DashboardCtrl.personList.toLoad_).toBeGreaterThan(0);
+    expect(DashboardController.personList.toLoad_).toBeGreaterThan(0);
   });
 
   it('toggleToolbar should toggle toolbar bool value', function() {
-    DashboardCtrl.searchToolbar = false;
+    DashboardController.searchToolbar = false;
 
-    DashboardCtrl.toggleToolbar();
+    DashboardController.toggleToolbar();
 
-    expect(DashboardCtrl.searchToolbar).toBe(true);
+    expect(DashboardController.searchToolbar).toBe(true);
   });
 
   it('toggleToolbar should toggle toolbar bool value, reset searchName and list', function() {
-    spyOn(DashboardCtrl, 'refreshList');
+    spyOn(DashboardController, 'refreshList');
 
-    DashboardCtrl.searchToolbar = true;
-    DashboardCtrl.searchName = 'asd';
+    DashboardController.searchToolbar = true;
+    DashboardController.searchName = 'asd';
 
-    DashboardCtrl.toggleToolbar();
+    DashboardController.toggleToolbar();
 
-    expect(DashboardCtrl.searchToolbar).toBe(false);
-    expect(DashboardCtrl.searchName).toBe(null);
-    expect(DashboardCtrl.refreshList).toHaveBeenCalled();
+    expect(DashboardController.searchToolbar).toBe(false);
+    expect(DashboardController.searchName).toBe(null);
+    expect(DashboardController.refreshList).toHaveBeenCalled();
   });
 
   it('loadMore should call fetchMorePersons and increase the top index', function() {
-    spyOn(DashboardCtrl, 'fetchMorePersons');
+    spyOn(DashboardController, 'fetchMorePersons');
 
-    var currentIndex = DashboardCtrl.topIndex;
-    DashboardCtrl.loadMore();
+    var currentIndex = DashboardController.topIndex;
+    DashboardController.loadMore();
 
-    expect(DashboardCtrl.fetchMorePersons).toHaveBeenCalled();
-    expect(DashboardCtrl.topIndex).toBeGreaterThan(currentIndex);
+    expect(DashboardController.fetchMorePersons).toHaveBeenCalled();
+    expect(DashboardController.topIndex).toBeGreaterThan(currentIndex);
   });
 
   it('loadMore should not call fetchMorePersons, becase next page is null', function() {
-    spyOn(DashboardCtrl, 'fetchMorePersons');
+    spyOn(DashboardController, 'fetchMorePersons');
 
-    var currentIndex = DashboardCtrl.topIndex;
-    DashboardCtrl.personList.page = null;
-    DashboardCtrl.loadMore();
+    var currentIndex = DashboardController.topIndex;
+    DashboardController.personList.page = null;
+    DashboardController.loadMore();
 
-    expect(DashboardCtrl.fetchMorePersons).not.toHaveBeenCalled();
-    expect(DashboardCtrl.topIndex).toBe(currentIndex);
+    expect(DashboardController.fetchMorePersons).not.toHaveBeenCalled();
+    expect(DashboardController.topIndex).toBe(currentIndex);
   });
 
   it('personList.getItemAtIndex should return element', function() {
     var expected = {};
-    DashboardCtrl.persons[2] = expected;
-    DashboardCtrl.personList.numLoaded_ = 100;
+    DashboardController.persons[2] = expected;
+    DashboardController.personList.numLoaded_ = 100;
 
-    var item = DashboardCtrl.personList.getItemAtIndex(2);
+    var item = DashboardController.personList.getItemAtIndex(2);
 
     expect(item).toBe(expected);
   });
 
   it('personList.getItemAtIndex should return null and call fetchMoreItems_', function() {
-    spyOn(DashboardCtrl.personList, 'fetchMoreItems_');
-    var item = DashboardCtrl.personList.getItemAtIndex(5);
+    spyOn(DashboardController.personList, 'fetchMoreItems_');
+    var item = DashboardController.personList.getItemAtIndex(5);
 
-    expect(DashboardCtrl.personList.fetchMoreItems_)
+    expect(DashboardController.personList.fetchMoreItems_)
       .toHaveBeenCalled();
     expect(item).toBe(null);
   });
 
   it('personList.getlength should return numLoaded_', function() {
-    var expected = DashboardCtrl.personList.numLoaded_;
+    var expected = DashboardController.personList.numLoaded_;
 
-    expect(DashboardCtrl.personList.getLength()).toBe(expected);
+    expect(DashboardController.personList.getLength()).toBe(expected);
   });
 
   it('fetchMoreItems_ should call fetchMorePersons', function() {
-    spyOn(DashboardCtrl, 'fetchMorePersons');
-    DashboardCtrl.persons.length = 10;
-    DashboardCtrl.personList.fetchMoreItems_(1);
+    spyOn(DashboardController, 'fetchMorePersons');
+    DashboardController.persons.length = 10;
+    DashboardController.personList.fetchMoreItems_(1);
 
-    expect(DashboardCtrl.fetchMorePersons).toHaveBeenCalled();
+    expect(DashboardController.fetchMorePersons).toHaveBeenCalled();
   });
 
   it('fetchMoreItems_ should not call fetchMorePersons', function() {
-    spyOn(DashboardCtrl, 'fetchMorePersons');
-    DashboardCtrl.persons.length = 10;
-    DashboardCtrl.personList.toLoad_ = 11;
+    spyOn(DashboardController, 'fetchMorePersons');
+    DashboardController.persons.length = 10;
+    DashboardController.personList.toLoad_ = 11;
 
-    DashboardCtrl.personList.fetchMoreItems_(1);
+    DashboardController.personList.fetchMoreItems_(1);
 
-    expect(DashboardCtrl.fetchMorePersons).not.toHaveBeenCalled();
+    expect(DashboardController.fetchMorePersons).not.toHaveBeenCalled();
   });
 
   it('fetchMorePersons success test case', function() {
@@ -197,16 +197,16 @@ describe('Controller: DashboardCtrl', function() {
     });
     spyOn(UserService, 'persons').and.callThrough();
 
-    var currentToLoad = DashboardCtrl.personList.toLoad_;
-    var currentPage = DashboardCtrl.personList.page;
+    var currentToLoad = DashboardController.personList.toLoad_;
+    var currentPage = DashboardController.personList.page;
 
-    DashboardCtrl.fetchMorePersons();
+    DashboardController.fetchMorePersons();
 
-    expect(DashboardCtrl.personList.toLoad_).toBeGreaterThan(currentToLoad);
+    expect(DashboardController.personList.toLoad_).toBeGreaterThan(currentToLoad);
     expect(UserService.persons).toHaveBeenCalledWith(currentPage, undefined);
-    expect(DashboardCtrl.persons.length).toBe(2);
-    expect(DashboardCtrl.personList.numLoaded_).toBe(2);
-    expect(DashboardCtrl.personList.page).toBe(currentPage + 1);
+    expect(DashboardController.persons.length).toBe(2);
+    expect(DashboardController.personList.numLoaded_).toBe(2);
+    expect(DashboardController.personList.page).toBe(currentPage + 1);
   });
 
   it('fetchMorePersons success test case, page should be setted to null', function() {
@@ -214,19 +214,19 @@ describe('Controller: DashboardCtrl', function() {
       results: [{}, {}],
       next: null
     });
-    var currentPage = DashboardCtrl.personList.page;
+    var currentPage = DashboardController.personList.page;
 
     spyOn(UserService, 'persons').and.callThrough();
-    DashboardCtrl.fetchMorePersons();
+    DashboardController.fetchMorePersons();
 
     expect(UserService.persons).toHaveBeenCalledWith(currentPage, undefined);
-    //expect(DashboardCtrl.personList.page).toBe(null);
+    //expect(DashboardController.personList.page).toBe(null);
   });
 
   it('onResize should calc new height of list', function() {
-    DashboardCtrl.onResize();
+    DashboardController.onResize();
 
-    expect(DashboardCtrl.listHeight).toBe('1px');
+    expect(DashboardController.listHeight).toBe('1px');
   });
 
 });

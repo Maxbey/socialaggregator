@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name spaApp.controller:RegisterCtrl
+ * @name spaApp.controller:RegisterController
  * @description
- * # RegisterCtrl
+ * # RegisterController
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('RegisterCtrl', function(AuthenticationService, ToastService, $state, ResponseService, FormService) {
+  .controller('RegisterController', function(AuthenticationService, ToastService, $state, ResponseService, FormService) {
     var vm = this;
 
     vm.register = register;

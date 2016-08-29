@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name spaApp.controller:PasswordResetCtrl
+ * @name spaApp.controller:PasswordResetController
  * @description
- * # PasswordResetCtrl
+ * # PasswordResetController
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('PasswordResetCtrl', function(AuthenticationService, ToastService, $state) {
+  .controller('PasswordResetController', function(AuthenticationService, ToastService, $state) {
     var vm = this;
     vm.reset = reset;
 

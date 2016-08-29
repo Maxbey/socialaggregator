@@ -46,15 +46,15 @@ class UserSocialAuthSerializer(ModelSerializer):
 
 
 class SocialPersonSerializer(ModelSerializer):
+
     class Meta:
         model = SocialPerson
         exclude = ('user_social_auth',)
 
 
 class PasswordSerializer(PasswordResetSerializer):
+
     def get_email_options(self):
-
-
         return {
             'email_template_name': 'mails/email_password_reset_message.txt',
             'extra_email_context': {

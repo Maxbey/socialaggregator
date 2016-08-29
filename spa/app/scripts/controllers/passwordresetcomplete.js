@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name spaApp.controller:PasswordResetCompleteCtrl
+ * @name spaApp.controller:PasswordResetCompleteController
  * @description
- * # PasswordResetCompleteCtrl
+ * # PasswordResetCompleteController
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('PasswordResetCompleteCtrl', function(AuthenticationService, ToastService, $stateParams, $state, ResponseService, FormService) {
+  .controller('PasswordResetCompleteController', function(AuthenticationService, ToastService, $stateParams, $state, ResponseService, FormService) {
     var vm = this;
 
     vm.complete = complete;

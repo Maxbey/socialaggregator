@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name spaApp.controller:SettingsCtrl
+ * @name spaApp.controller:SettingsController
  * @description
- * # SettingsCtrl
+ * # SettingsController
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('SettingsCtrl', function(AuthenticationService, ToastService, UserService, ResponseService, FormService) {
+  .controller('SettingsController', function(AuthenticationService, ToastService, UserService, ResponseService, FormService) {
     var vm = this;
 
     vm.updateProfile = updateProfile;

@@ -11,6 +11,7 @@ ignore-paths:
   - nginx
   - .idea
   - .git
+  - __init__.py
 
 pep8:
   full: true

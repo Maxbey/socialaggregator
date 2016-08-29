@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: PasswordResetCtrl', function() {
+describe('Controller: PasswordResetController', function() {
 
   // load the controller's module
   beforeEach(module('spaApp'));
@@ -8,7 +8,7 @@ describe('Controller: PasswordResetCtrl', function() {
   beforeEach(module('authenticationServiceMock'));
   beforeEach(module('stateMock'));
 
-  var PasswordResetCtrl,
+  var PasswordResetController,
     AuthenticationService,
     ToastService,
     scope,
@@ -24,7 +24,7 @@ describe('Controller: PasswordResetCtrl', function() {
       show: function() {}
     };
 
-    PasswordResetCtrl = $controller('PasswordResetCtrl', {
+    PasswordResetController = $controller('PasswordResetController', {
       $scope: scope,
       AuthenticationService: _AuthenticationService_,
       $state: _$state_,
@@ -34,14 +34,14 @@ describe('Controller: PasswordResetCtrl', function() {
   }));
 
   it('interface should be defined', function() {
-    expect(PasswordResetCtrl.reset).toBeDefined();
+    expect(PasswordResetController.reset).toBeDefined();
   });
 
   it('should call AuthenticationService.resetPassword and show toast', function() {
     spyOn(AuthenticationService, 'resetPassword').and.callThrough();
     spyOn(ToastService, 'show').and.callThrough();
 
-    PasswordResetCtrl.reset('someemail');
+    PasswordResetController.reset('someemail');
 
     expect(AuthenticationService.resetPassword)
       .toHaveBeenCalledWith('someemail');

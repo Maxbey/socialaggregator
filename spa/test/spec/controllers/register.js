@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: RegisterCtrl', function () {
+describe('Controller: RegisterController', function () {
 
   // load the controller's module
   beforeEach(module('spaApp'));
@@ -10,7 +10,7 @@ describe('Controller: RegisterCtrl', function () {
   beforeEach(module('responseServiceMock'));
   beforeEach(module('stateMock'));
 
-  var RegisterCtrl,
+  var RegisterController,
     AuthenticationService,
     FormService,
     ToastService,
@@ -28,7 +28,7 @@ describe('Controller: RegisterCtrl', function () {
 
     ToastService = {show: function(){}};
 
-    RegisterCtrl = $controller('RegisterCtrl', {
+    RegisterController = $controller('RegisterController', {
       $scope: scope,
       AuthenticationService: _AuthenticationService_,
       ToastService: ToastService,
@@ -38,8 +38,8 @@ describe('Controller: RegisterCtrl', function () {
   }));
 
   it('interface should be defined', function () {
-    expect(RegisterCtrl.register).toBeDefined();
-    expect(RegisterCtrl.resetServerValidation).toBeDefined();
+    expect(RegisterController.register).toBeDefined();
+    expect(RegisterController.resetServerValidation).toBeDefined();
   });
 
   it('register success test case', function () {
@@ -47,7 +47,7 @@ describe('Controller: RegisterCtrl', function () {
     spyOn(ToastService, 'show').and.callThrough();
     $state.expectTransitionTo('enter.login');
 
-    RegisterCtrl.register({});
+    RegisterController.register({});
 
     expect(AuthenticationService.register).toHaveBeenCalled();
     expect(ToastService.show)
@@ -59,12 +59,12 @@ describe('Controller: RegisterCtrl', function () {
     spyOn(ResponseService, 'parseResponseErrors').and.callThrough();
     spyOn(FormService, 'setServerValidation').and.callThrough();
 
-    RegisterCtrl.register({});
+    RegisterController.register({});
 
     expect(ResponseService.parseResponseErrors).toHaveBeenCalled();
     expect(FormService.setServerValidation)
       .toHaveBeenCalledWith({},
-        RegisterCtrl.backendValidationErrors,
+        RegisterController.backendValidationErrors,
         'serverValidation'
       );
   });
@@ -72,7 +72,7 @@ describe('Controller: RegisterCtrl', function () {
   it('should call FormService.resetServerValidation', function() {
     spyOn(FormService, 'resetServerValidation').and.callThrough();
 
-    RegisterCtrl.resetServerValidation({}, 'asd');
+    RegisterController.resetServerValidation({}, 'asd');
 
     expect(FormService.resetServerValidation)
       .toHaveBeenCalledWith({}, 'serverValidation');

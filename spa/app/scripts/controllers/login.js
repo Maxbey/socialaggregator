@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name spaApp.controller:LoginCtrl
+ * @name spaApp.controller:LoginController
  * @description
- * # LoginCtrl
+ * # LoginController
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('LoginCtrl', function(AuthenticationService, ToastService, $state, $auth, FormService, ResponseService) {
+  .controller('LoginController', function(AuthenticationService, ToastService, $state, $auth, FormService, ResponseService) {
     var vm = this;
 
     vm.login = login;

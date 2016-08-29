@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: SettingsCtrl', function() {
+describe('Controller: SettingsController', function() {
 
   // load the controller's module
   beforeEach(module('spaApp'));
@@ -11,7 +11,7 @@ describe('Controller: SettingsCtrl', function() {
   beforeEach(module('formServiceMock'));
   beforeEach(module('authenticationServiceMock'));
 
-  var SettingsCtrl,
+  var SettingsController,
     AuthenticationService,
     FormService,
     ResponseService,
@@ -33,7 +33,7 @@ describe('Controller: SettingsCtrl', function() {
       show: function() {}
     };
 
-    SettingsCtrl = $controller('SettingsCtrl', {
+    SettingsController = $controller('SettingsController', {
       $scope: scope,
       UserService: _UserService_,
       ToastService: ToastServiceMock,
@@ -43,20 +43,20 @@ describe('Controller: SettingsCtrl', function() {
   }));
 
   it('interface should be defined', function() {
-    expect(SettingsCtrl.updateProfile).toBeDefined();
-    expect(SettingsCtrl.changePassword).toBeDefined();
-    expect(SettingsCtrl.resetServerValidation).toBeDefined();
+    expect(SettingsController.updateProfile).toBeDefined();
+    expect(SettingsController.changePassword).toBeDefined();
+    expect(SettingsController.resetServerValidation).toBeDefined();
   });
 
   it('should attach user data to scope', function() {
-    expect(SettingsCtrl.user).toBeDefined();
+    expect(SettingsController.user).toBeDefined();
   });
 
   it('updateProfile success test case', function() {
     spyOn(UserService, 'update').and.callThrough();
     spyOn(ToastServiceMock, 'show').and.callThrough();
 
-    SettingsCtrl.updateProfile();
+    SettingsController.updateProfile();
 
     expect(UserService.update).toHaveBeenCalled();
     expect(ToastServiceMock.show).toHaveBeenCalled();
@@ -69,12 +69,12 @@ describe('Controller: SettingsCtrl', function() {
     spyOn(FormService, 'setServerValidation').and.callThrough();
 
 
-    SettingsCtrl.updateProfile({});
+    SettingsController.updateProfile({});
     expect(UserService.update).toHaveBeenCalled();
     expect(ResponseService.parseResponseErrors).toHaveBeenCalled();
     expect(FormService.setServerValidation)
       .toHaveBeenCalledWith({},
-        SettingsCtrl.backendValidationErrors,
+        SettingsController.backendValidationErrors,
         'serverValidation'
       );
   });
@@ -83,10 +83,10 @@ describe('Controller: SettingsCtrl', function() {
     spyOn(AuthenticationService, 'changePassword').and.callThrough();
     spyOn(ToastServiceMock, 'show').and.callThrough();
 
-    SettingsCtrl.changePassword({});
+    SettingsController.changePassword({});
     expect(ToastServiceMock.show).toHaveBeenCalled();
     expect(AuthenticationService.changePassword)
-      .toHaveBeenCalledWith(SettingsCtrl.credentials);
+      .toHaveBeenCalledWith(SettingsController.credentials);
   });
 
   it('changePassword fail test case', function() {
@@ -96,15 +96,15 @@ describe('Controller: SettingsCtrl', function() {
     spyOn(FormService, 'setServerValidation').and.callThrough();
 
 
-    SettingsCtrl.changePassword({});
+    SettingsController.changePassword({});
 
     expect(AuthenticationService.changePassword)
-      .toHaveBeenCalledWith(SettingsCtrl.credentials);
+      .toHaveBeenCalledWith(SettingsController.credentials);
 
     expect(ResponseService.parseResponseErrors).toHaveBeenCalled();
     expect(FormService.setServerValidation)
       .toHaveBeenCalledWith({},
-        SettingsCtrl.backendValidationErrors,
+        SettingsController.backendValidationErrors,
         'serverValidation'
       );
   });
@@ -112,7 +112,7 @@ describe('Controller: SettingsCtrl', function() {
   it('should call FormService.resetServerValidation', function() {
     spyOn(FormService, 'resetServerValidation').and.callThrough();
 
-    SettingsCtrl.resetServerValidation({});
+    SettingsController.resetServerValidation({});
 
     expect(FormService.resetServerValidation)
       .toHaveBeenCalledWith({}, 'serverValidation');

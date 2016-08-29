@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: PasswordResetCompleteCtrl', function() {
+describe('Controller: PasswordResetCompleteController', function() {
 
   // load the controller's module
   beforeEach(module('spaApp'));
@@ -10,7 +10,7 @@ describe('Controller: PasswordResetCompleteCtrl', function() {
   beforeEach(module('formServiceMock'));
   beforeEach(module('stateMock'));
 
-  var PasswordResetCompleteCtrl,
+  var PasswordResetCompleteController,
     AuthenticationService,
     FormService,
     ResponseService,
@@ -30,7 +30,7 @@ describe('Controller: PasswordResetCompleteCtrl', function() {
       show: function() {}
     };
 
-    PasswordResetCompleteCtrl = $controller('PasswordResetCompleteCtrl', {
+    PasswordResetCompleteController = $controller('PasswordResetCompleteController', {
       $scope: scope,
       AuthenticationService: _AuthenticationService_,
       $state: _$state_,
@@ -40,15 +40,15 @@ describe('Controller: PasswordResetCompleteCtrl', function() {
   }));
 
   it('interface should be defined', function() {
-    expect(PasswordResetCompleteCtrl.complete).toBeDefined();
-    expect(PasswordResetCompleteCtrl.resetServerValidation).toBeDefined();
-    expect(PasswordResetCompleteCtrl.backendValidationErrors).toBeDefined();
+    expect(PasswordResetCompleteController.complete).toBeDefined();
+    expect(PasswordResetCompleteController.resetServerValidation).toBeDefined();
+    expect(PasswordResetCompleteController.backendValidationErrors).toBeDefined();
   });
 
   it('should call FormService.resetServerValidation', function() {
     spyOn(FormService, 'resetServerValidation').and.callThrough();
 
-    PasswordResetCompleteCtrl.resetServerValidation({});
+    PasswordResetCompleteController.resetServerValidation({});
 
     expect(FormService.resetServerValidation)
       .toHaveBeenCalledWith({}, 'serverValidation');
@@ -58,7 +58,7 @@ describe('Controller: PasswordResetCompleteCtrl', function() {
     spyOn(ToastService, 'show').and.callThrough();
     $state.expectTransitionTo('enter.login');
 
-    PasswordResetCompleteCtrl.complete({});
+    PasswordResetCompleteController.complete({});
 
     expect(ToastService.show)
       .toHaveBeenCalledWith('Password has been successfully changed');
@@ -70,12 +70,12 @@ describe('Controller: PasswordResetCompleteCtrl', function() {
     spyOn(ResponseService, 'parseResponseErrors').and.callThrough();
     spyOn(FormService, 'setServerValidation').and.callThrough();
 
-    PasswordResetCompleteCtrl.complete({});
+    PasswordResetCompleteController.complete({});
     expect(ResponseService.parseResponseErrors).toHaveBeenCalled();
 
     expect(FormService.setServerValidation)
       .toHaveBeenCalledWith({},
-        PasswordResetCompleteCtrl.backendValidationErrors,
+        PasswordResetCompleteController.backendValidationErrors,
         'serverValidation'
       );
     expect(ToastService.show)
@@ -88,7 +88,7 @@ describe('Controller: PasswordResetCompleteCtrl', function() {
     AuthenticationService.response = false;
     AuthenticationService.specifyErrorData({});
 
-    PasswordResetCompleteCtrl.complete({});
+    PasswordResetCompleteController.complete({});
 
     expect(ToastService.show).not.toHaveBeenCalled();
 

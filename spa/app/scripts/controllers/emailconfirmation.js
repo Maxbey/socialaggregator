@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name spaApp.controller:DashboardCtrl
+ * @name spaApp.controller:DashboardController
  * @description
- * # DashboardCtrl
+ * # DashboardController
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('EmailConfirmationCtrl', function(AuthenticationService, $stateParams) {
+  .controller('EmailConfirmationController', function(AuthenticationService, $stateParams) {
     var vm = this;
 
     vm.confirmation = undefined;

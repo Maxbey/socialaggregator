@@ -8,7 +8,7 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('UserService', function($http, envConfig) {
+  .factory('UserService', function($http, envConfig) {
     var baseUrl = envConfig.BACKEND_HOST + '/api';
 
     return {

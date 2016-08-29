@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: LoginCtrl', function() {
+describe('Controller: LoginController', function() {
 
   // load the controller's module
   beforeEach(module('spaApp'));
@@ -10,7 +10,7 @@ describe('Controller: LoginCtrl', function() {
   beforeEach(module('responseServiceMock'));
   beforeEach(module('authenticationServiceMock'));
 
-  var LoginCtrl,
+  var LoginController,
     AuthenticationService,
     FormService,
     ResponseService,
@@ -37,7 +37,7 @@ describe('Controller: LoginCtrl', function() {
       setToken: function() {}
     };
 
-    LoginCtrl = $controller('LoginCtrl', {
+    LoginController = $controller('LoginController', {
       $scope: scope,
       $auth: $authMock,
       ToastService: ToastServiceMock,
@@ -47,8 +47,8 @@ describe('Controller: LoginCtrl', function() {
   }));
 
   it('interface should be defined', function() {
-    expect(LoginCtrl.login).toBeDefined();
-    expect(LoginCtrl.socialLogin).toBeDefined();
+    expect(LoginController.login).toBeDefined();
+    expect(LoginController.socialLogin).toBeDefined();
   });
 
   it('login success case', function() {
@@ -57,7 +57,7 @@ describe('Controller: LoginCtrl', function() {
     spyOn($authMock, 'setToken').and.callThrough();
     $state.expectTransitionTo('app.dashboard');
 
-    LoginCtrl.login({});
+    LoginController.login({});
 
     expect(AuthenticationService.login).toHaveBeenCalled();
     expect(ToastServiceMock.show)
@@ -72,13 +72,13 @@ describe('Controller: LoginCtrl', function() {
     spyOn(ResponseService, 'parseResponseErrors').and.callThrough();
     spyOn(FormService, 'setServerValidation').and.callThrough();
 
-    LoginCtrl.login({});
+    LoginController.login({});
 
     expect(AuthenticationService.login).toHaveBeenCalled();
     expect(ResponseService.parseResponseErrors).toHaveBeenCalled();
     expect(FormService.setServerValidation)
       .toHaveBeenCalledWith({},
-        LoginCtrl.backendValidationErrors,
+        LoginController.backendValidationErrors,
         'serverValidation'
       );
       expect(ToastServiceMock.error)
@@ -92,7 +92,7 @@ describe('Controller: LoginCtrl', function() {
     spyOn(AuthenticationService, 'login').and.callThrough();
     spyOn(ToastServiceMock, 'error').and.callThrough();
 
-    LoginCtrl.login({});
+    LoginController.login({});
 
     expect(AuthenticationService.login).toHaveBeenCalled();
     expect(ToastServiceMock.error).not.toHaveBeenCalled();
@@ -103,7 +103,7 @@ describe('Controller: LoginCtrl', function() {
     spyOn(ToastServiceMock, 'show').and.callThrough();
     $state.expectTransitionTo('app.dashboard');
 
-    LoginCtrl.socialLogin('facebook');
+    LoginController.socialLogin('facebook');
 
     expect(AuthenticationService.socialLogin).toHaveBeenCalled();
     expect(ToastServiceMock.show)
@@ -115,7 +115,7 @@ describe('Controller: LoginCtrl', function() {
     AuthenticationService.specifyErrorData(['some error messsage']);
 
     spyOn(ToastServiceMock, 'error').and.callThrough();
-    LoginCtrl.socialLogin('github');
+    LoginController.socialLogin('github');
     expect(ToastServiceMock.error)
       .toHaveBeenCalledWith('some error messsage');
   });
@@ -125,14 +125,14 @@ describe('Controller: LoginCtrl', function() {
     AuthenticationService.specifyErrorData({});
 
     spyOn(ToastServiceMock, 'error').and.callThrough();
-    LoginCtrl.socialLogin('github');
+    LoginController.socialLogin('github');
     expect(ToastServiceMock.error).not.toHaveBeenCalled();
   });
 
   it('should call FormService.resetServerValidation', function() {
     spyOn(FormService, 'resetServerValidation').and.callThrough();
 
-    LoginCtrl.resetServerValidation({}, 'asd');
+    LoginController.resetServerValidation({}, 'asd');
 
     expect(FormService.resetServerValidation)
       .toHaveBeenCalledWith({}, 'serverValidation');
