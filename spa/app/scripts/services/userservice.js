@@ -27,7 +27,7 @@ angular.module('spaApp')
     }
 
     function persons(page, name) {
-      query = '?page=' + page;
+      var query = '?page=' + page;
 
       if (name)
         query += '&name=' + name;

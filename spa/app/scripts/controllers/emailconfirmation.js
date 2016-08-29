@@ -12,10 +12,15 @@ angular.module('spaApp')
     var vm = this;
 
     vm.confirmation = undefined;
+    vm.confirmEmail = confirmEmail;
 
-    AuthenticationService.confirmEmail($stateParams.key).then(function() {
-      vm.confirmation = true;
-    }, function() {
-      vm.confirmation = false;
-    });
+    function confirmEmail() {
+      AuthenticationService.confirmEmail($stateParams.key).then(function() {
+        vm.confirmation = true;
+      }, function() {
+        vm.confirmation = false;
+      });
+    }
+
+    confirmEmail();
   });

@@ -30,7 +30,7 @@ angular.module('spaApp')
     }
 
     function resetServerValidation(formField) {
-      formField.$setValidity('serverValidation', null);
+      FormService.resetServerValidation(formField, 'serverValidation');
     }
 
     function changePassword(form) {

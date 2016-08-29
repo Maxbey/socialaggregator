@@ -18,7 +18,7 @@ angular.module('spaApp')
     vm.backendValidationErrors = {};
 
     function resetServerValidation(formField) {
-      formField.$setValidity('serverValidation', null);
+      FormService.resetServerValidation(formField, 'serverValidation');
     }
 
     function complete(form) {

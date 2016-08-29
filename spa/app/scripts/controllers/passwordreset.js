@@ -14,8 +14,8 @@ angular.module('spaApp')
 
     function reset(email) {
       AuthenticationService.resetPassword(email).then(
-        function(r) {
-          ToastService.error('Email with instructions has been sent');
+        function() {
+          ToastService.show('Email with instructions has been sent');
         });
     }
   });

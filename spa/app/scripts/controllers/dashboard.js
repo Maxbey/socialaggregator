@@ -14,6 +14,11 @@ angular.module('spaApp')
     vm.persons = [];
     vm.searchToolbar = false;
     vm.topIndex = 0;
+    vm.preloadTimer = preloadTimer;
+    vm.preloadPersons = preloadPersons;
+    vm.refreshList = refreshList;
+    vm.fetchMorePersons = fetchMorePersons;
+    vm.onResize = onResize;
 
     vm.loading = true;
 
@@ -24,7 +29,7 @@ angular.module('spaApp')
 
     function preloadTimer() {
       $timeout(function() {
-        preloadPersons();
+        vm.preloadPersons();
       }, backoff.duration());
     }
 
@@ -42,14 +47,14 @@ angular.module('spaApp')
         vm.loading = false;
       }, function(response) {
         if (response.data === 'CELERY_PROCESSING')
-          preloadTimer();
+          vm.preloadTimer();
       });
     }
 
     vm.toggleToolbar = function() {
       if (vm.searchToolbar && vm.searchName) {
         vm.searchName = null;
-        refreshList();
+        vm.refreshList();
       }
 
       vm.searchToolbar = !vm.searchToolbar;
@@ -59,7 +64,7 @@ angular.module('spaApp')
       if (!vm.personList.page)
         return;
 
-      fetchMorePersons();
+      vm.fetchMorePersons();
       vm.topIndex += 8;
     };
 
@@ -79,7 +84,7 @@ angular.module('spaApp')
       },
       fetchMoreItems_: function(index) {
         if (vm.personList.toLoad_ <= vm.persons.length) {
-          fetchMorePersons();
+          vm.fetchMorePersons();
         }
       }
     };

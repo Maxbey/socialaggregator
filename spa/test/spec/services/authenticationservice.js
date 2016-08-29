@@ -1,17 +1,17 @@
 'use strict';
 
-describe('Service: AuthenticationService', function () {
+describe('Service: AuthenticationService', function() {
 
   var $authMock = {
-    authenticate: function () {
-    },
-    logout: function () {
-    },
-    isAuthenticated: function(){return false}
+    authenticate: function() {},
+    logout: function() {},
+    isAuthenticated: function() {
+      return false
+    }
   };
 
   // load the service's module
-  beforeEach(module('spaApp', function ($provide) {
+  beforeEach(module('spaApp', function($provide) {
     $provide.value('$auth', $authMock);
   }));
 
@@ -23,7 +23,7 @@ describe('Service: AuthenticationService', function () {
     httpBackend,
     $http;
 
-  beforeEach(inject(function (_AuthenticationService_, $httpBackend, envConfig, _$state_, _$http_) {
+  beforeEach(inject(function(_AuthenticationService_, $httpBackend, envConfig, _$state_, _$http_) {
     AuthenticationService = _AuthenticationService_;
     httpBackend = $httpBackend;
     $state = _$state_;
@@ -32,7 +32,7 @@ describe('Service: AuthenticationService', function () {
     apiUrl = envConfig.BACKEND_HOST + '/api';
   }));
 
-  it('should do post request to login endpoint', function () {
+  it('should do post request to login endpoint', function() {
     AuthenticationService.login({});
 
     httpBackend
@@ -42,7 +42,7 @@ describe('Service: AuthenticationService', function () {
     expect(httpBackend.flush).not.toThrow();
   });
 
-  it('should do post request to registration endpoint', function () {
+  it('should do post request to registration endpoint', function() {
     AuthenticationService.register('email', 'pass', 'pass', 'uname');
 
     httpBackend
@@ -52,7 +52,7 @@ describe('Service: AuthenticationService', function () {
     expect(httpBackend.flush).not.toThrow();
   });
 
-  it('should do get request to user details endpoint', function () {
+  it('should do get request to user details endpoint', function() {
     AuthenticationService.user();
 
     httpBackend
@@ -62,7 +62,7 @@ describe('Service: AuthenticationService', function () {
     expect(httpBackend.flush).not.toThrow();
   });
 
-  it('should do post request to email confirmation endpoint', function () {
+  it('should do post request to email confirmation endpoint', function() {
     AuthenticationService.confirmEmail('somekey');
 
     httpBackend
@@ -72,14 +72,44 @@ describe('Service: AuthenticationService', function () {
     expect(httpBackend.flush).not.toThrow();
   });
 
-  it('should call $auth.authenticate method', function () {
+  it('should do post request to change password endpoint', function() {
+    AuthenticationService.changePassword({});
+
+    httpBackend
+      .expect('POST', apiUrl + '/auth/password/change/')
+      .respond(200);
+
+    expect(httpBackend.flush).not.toThrow();
+  });
+
+  it('should do post request to reset password endpoint', function() {
+    AuthenticationService.resetPassword('owneremail');
+
+    httpBackend
+      .expect('POST', apiUrl + '/auth/password/reset/')
+      .respond(200);
+
+    expect(httpBackend.flush).not.toThrow();
+  });
+
+  it('should do post request to reset password complete endpoint', function() {
+    AuthenticationService.resetPasswordComplete({});
+
+    httpBackend
+      .expect('POST', apiUrl + '/auth/password/confirm/')
+      .respond(200);
+
+    expect(httpBackend.flush).not.toThrow();
+  });
+
+  it('should call $auth.authenticate method', function() {
     spyOn($authMock, 'authenticate').and.callThrough();
     AuthenticationService.socialLogin('twitter');
 
     expect($authMock.authenticate).toHaveBeenCalled();
   });
 
-  it('should call $auth.logout method', function () {
+  it('should call $auth.logout method', function() {
     spyOn($authMock, 'logout').and.callThrough();
     AuthenticationService.logout();
 
@@ -88,28 +118,48 @@ describe('Service: AuthenticationService', function () {
     expect($authMock.logout).toHaveBeenCalled();
   });
 
-  it('should change state to enter.login', function(){
-    var event = {preventDefault: function(){}}
-    var toState = {data:{auth: true}}
+  it('should change state to enter.login', function() {
+    var event = {
+      preventDefault: function() {}
+    }
+    var toState = {
+      data: {
+        auth: true
+      }
+    }
     $state.expectTransitionTo('enter.login');
 
     AuthenticationService.stateControl(event, toState)
 
   });
 
-  it('should not change state, because state does not require auth', function(){
-    var event = {preventDefault: function(){}}
-    var toState = {data:{auth: false}}
+  it('should not change state, because state does not require auth', function() {
+    var event = {
+      preventDefault: function() {}
+    }
+    var toState = {
+      data: {
+        auth: false
+      }
+    }
 
     AuthenticationService.stateControl(event, toState)
 
   });
 
-  it('should not change state, because authenticated', function(){
-    var event = {preventDefault: function(){}}
-    var toState = {data:{auth: false}}
+  it('should not change state, because authenticated', function() {
+    var event = {
+      preventDefault: function() {}
+    }
+    var toState = {
+      data: {
+        auth: true
+      }
+    }
 
-    $authMock.isAuthenticated = function(){return true}
+    $authMock.isAuthenticated = function() {
+      return true
+    }
 
     AuthenticationService.stateControl(event, toState)
 

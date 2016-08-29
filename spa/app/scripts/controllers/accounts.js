@@ -13,6 +13,8 @@ angular.module('spaApp')
 
     vm.addAccount = addAccount;
     vm.removeAccount = removeAccount;
+    vm.loadAccounts = loadAccounts;
+    vm.accountsTimer = accountsTimer;
 
     vm.loading = false;
 
@@ -30,12 +32,12 @@ angular.module('spaApp')
     function accountsTimer() {
       vm.loading = true;
       $timeout(function() {
-        loadAccounts();
+        vm.loadAccounts();
       }, backoff.duration());
     }
 
     function addAccount(provider) {
-      AuthenticationService.socialLogin(provider).then(function() {
+      AuthenticationService.socialLogin(provider).then(function(response) {
         ToastService.show(provider + ' account has been successfully added');
         $state.reload();
       }, function(response) {
@@ -61,7 +63,7 @@ angular.module('spaApp')
         vm.loading = false;
       }, function(response) {
         if (response.data === 'CELERY_PROCESSING')
-          accountsTimer();
+          vm.accountsTimer();
       });
     }
 
