@@ -7,3 +7,24 @@ services:
      - SOCIAL_AUTH_GITHUB_KEY=${SOCIAL_AUTH_GITHUB_KEY}
      - SOCIAL_AUTH_VK_OAUTH2_KEY=${SOCIAL_AUTH_VK_OAUTH2_KEY}
      - SOCIAL_AUTH_TWITTER_KEY=${SOCIAL_AUTH_TWITTER_KEY}
+  backend:
+    extends:
+      service: base
+    environment:
+     - DATABASE_URL=postgres://postgres@db/postgres
+     - REDIS_URL=redis://redis:6379/0
+     - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+     - SECRET_KEY=somesecretvalue
+     - DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION}
+     - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
+     - SOCIAL_AUTH_FACEBOOK_SECRET=${SOCIAL_AUTH_FACEBOOK_SECRET}
+     - SOCIAL_AUTH_GITHUB_SECRET=${SOCIAL_AUTH_GITHUB_SECRET}
+     - SOCIAL_AUTH_VK_OAUTH2_SECRET=${SOCIAL_AUTH_VK_OAUTH2_SECRET}
+     - SOCIAL_AUTH_TWITTER_SECRET=${SOCIAL_AUTH_TWITTER_SECRET}
+     - EMAIL_HOST=${EMAIL_HOST}
+     - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+     - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+     - FRONTEND_URI=http://socialaggregator.dev/
+     - FRONTEND_CONFIRMATION_URI=http://socialaggregator.dev/register/confirm
+     - FRONTEND_RESET_PASSWORD_URI=http://socialaggregator.dev/password/reset/complete/
+     - SENTRY_PRIVATE_DSN=http://public:secret@localhost:9000/2

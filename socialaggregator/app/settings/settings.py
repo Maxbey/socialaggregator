@@ -13,9 +13,11 @@ class Production(EnvWithRealAuth):
     DATABASE_URL = values.DatabaseURLValue(
         environ_required=True, environ_prefix='')
 
-    BROKER_URL = values.Value(environ_prefix='', environ_name='REDISCLOUD_URL')
+    BROKER_URL = values.Value(environ_prefix='', environ_name='REDIS_URL')
     CELERY_RESULT_BACKEND = values.Value(
-        environ_required=True, environ_prefix='')
+        environ_required=True, environ_prefix='', environ_name='REDIS_URL')
+
+    CACHES = values.CacheURLValue(environ_name='REDIS_URL')
 
     DATABASES = DATABASE_URL
 
@@ -38,9 +40,12 @@ class Production(EnvWithRealAuth):
     }
 
     EMAIL_HOST = 'smtp.mailgun.org'
-    EMAIL_HOST_USER = values.Value(environ_prefix='', environ_name='MAILGUN_SMTP_LOGIN')
-    EMAIL_HOST_PASSWORD = values.Value(environ_prefix='', environ_name='MAILGUN_SMTP_PASSWORD')
-    DEFAULT_FROM_EMAIL = values.Value(environ_name='FRONTEND_URI', environ_prefix='')
+    EMAIL_HOST_USER = values.Value(
+        environ_prefix='', environ_name='MAILGUN_SMTP_LOGIN')
+    EMAIL_HOST_PASSWORD = values.Value(
+        environ_prefix='', environ_name='MAILGUN_SMTP_PASSWORD')
+    DEFAULT_FROM_EMAIL = values.Value(
+        environ_name='FRONTEND_URI', environ_prefix='')
 
 
 class Development(LoggingMixin, EnvWithRealAuth):

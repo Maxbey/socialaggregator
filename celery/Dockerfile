@@ -2,8 +2,8 @@ FROM alpine:latest
 RUN apk add --update python py-pip bash
 RUN apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/main py-psycopg2
 
-COPY ./requirements /usr/requirements/
-COPY . /usr/src/app
+COPY ./socialaggregator/requirements /usr/requirements/
+COPY ./socialaggregator /usr/src/app/
 
 WORKDIR /usr/requirements/
 
@@ -16,4 +16,4 @@ RUN chown -R myuser.myuser .
 
 USER myuser
 
-CMD bash run.sh
+CMD celery -A app worker -l info
