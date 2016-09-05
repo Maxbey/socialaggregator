@@ -15,3 +15,13 @@ class EnvWithRealAuth(BaseSettings):
 
     SOCIAL_AUTH_VK_OAUTH2_KEY = values.SecretValue(environ_prefix='')
     SOCIAL_AUTH_VK_OAUTH2_SECRET = values.SecretValue(environ_prefix='')
+
+    BROKER_TRANSPORT = 'redis'
+    CELERY_TASK_SERIALIZER = 'json'
+    CELERY_RESULT_SERIALIZER = 'json'
+    CELERY_ACCEPT_CONTENT = ['json']
+    CELERY_ENABLE_UTC = True
+
+    EMAIL_HOST = ''
+    EMAIL_HOST_USER = ''
+    EMAIL_HOST_PASSWORD = ''

@@ -1,40 +1,84 @@
-<md-content class="Page-container" ng-controller="RegisterCtrl as vm">
+<md-content class="Page-container" ng-controller="RegisterController as vm">
   <div class="Register-formContainer" layout="column" layout-align="center center">
 
     <h1 class="md-headline">Sign Up</h1>
 
-    <form ng-submit="vm.register()">
+    <form name="RegisterForm" ng-submit="vm.register(RegisterForm)">
       <div>
         <md-input-container class="RegisterForm-inputContainer">
           <label>Email</label>
-          <input type="email" ng-model="vm.email">
+          <input required name="email" type="email" ng-model="vm.email"
+                 ng-change="vm.resetServerValidation(RegisterForm.email)">
+          <div ng-messages="RegisterForm.email.$error" role="alert">
+            <div ng-message="serverValidation">
+              {{ vm.backendValidationErrors.email.message }}
+            </div>
+            <div ng-message="email">
+              Enter a correct email address
+            </div>
+            <div ng-message="required">
+              Type your email addres
+            </div>
+          </div>
         </md-input-container>
       </div>
 
       <div>
         <md-input-container class="RegisterForm-inputContainer">
           <label>Username</label>
-          <input type="text" ng-model="vm.username">
+          <input name="username" required type="text" ng-model="vm.username"
+                 ng-change="vm.resetServerValidation(RegisterForm.username)">
+          <div ng-messages="RegisterForm.username.$error" role="alert">
+            <div ng-message="serverValidation">
+              {{ vm.backendValidationErrors.username.message }}
+            </div>
+            <div ng-message="required">
+              Type a username
+            </div>
+          </div>
         </md-input-container>
       </div>
-
 
 
       <div>
         <md-input-container class="RegisterForm-inputContainer">
           <label>Password</label>
-          <input type="password" ng-model="vm.password1">
+          <input required type="password" minlength="8" name="password1" ng-model="vm.password1"
+                 ng-change="vm.resetServerValidation(RegisterForm.password1)">
+          <div ng-messages="RegisterForm.password1.$error" role="alert">
+            <div ng-message="serverValidation">
+              {{ vm.backendValidationErrors.password1.message }}
+            </div>
+            <div ng-message="minlength">
+              The new password must be large than 8 characters
+            </div>
+          </div>
         </md-input-container>
       </div>
 
       <div>
         <md-input-container class="RegisterForm-inputContainer">
           <label>Confirm password</label>
-          <input type="password" ng-model="vm.password2">
+          <input required type="password" minlength="8" name="password2" ng-model="vm.password2"
+                 ng-change="vm.resetServerValidation(RegisterForm.password2)" match="vm.password1">
+          <div ng-messages="RegisterForm.password2.$error" role="alert">
+            <div ng-message="serverValidation">
+              {{ vm.backendValidationErrors.password2.message }}
+            </div>
+            <div ng-message="minlength">
+              The new password must be large than 8 characters
+            </div>
+            <div ng-message="match">
+              Passwords do not match
+            </div>
+          </div>
+
         </md-input-container>
       </div>
 
-      <md-button type="submit" class="RegisterForm-submit md-primary md-raised">Sign up</md-button>
+      <md-button type="submit" class="RegisterForm-submit md-primary md-raised">
+        Sign up
+      </md-button>
     </form>
 
   </div>

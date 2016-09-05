@@ -1,0 +1,7 @@
+curl -s --user 'api:key-916af78da93c83f967bb9332cc74febe' \
+    https://api.mailgun.net/v3/YOUR_DOMAIN_NAME/messages \
+    -F from='Excited User <mailgun@app6c2cfa22e00642cab3f46ef1d5fa9146>' \
+    -F to=YOU@app6c2cfa22e00642cab3f46ef1d5fa9146 \
+    -F to=bar@example.com \
+    -F subject='Hello' \
+    -F text='Testing some Mailgun awesomness!'

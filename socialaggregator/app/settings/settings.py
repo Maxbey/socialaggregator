@@ -13,11 +13,21 @@ class Production(EnvWithRealAuth):
     DATABASE_URL = values.DatabaseURLValue(
         environ_required=True, environ_prefix='')
 
+    BROKER_URL = values.Value(environ_prefix='', environ_name='REDIS_URL')
+    CELERY_RESULT_BACKEND = values.Value(
+        environ_required=True, environ_prefix='', environ_name='REDIS_URL')
+
+    CACHES = values.CacheURLValue(environ_name='REDIS_URL')
+
     DATABASES = DATABASE_URL
 
-    INSTALLED_APPS = BaseSettings.INSTALLED_APPS + ['corsheaders']
+    INSTALLED_APPS = BaseSettings.INSTALLED_APPS + [
+        'corsheaders',
+        'raven.contrib.django.raven_compat'
+    ]
 
-    MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + ['corsheaders.middleware.CorsMiddleware']
+    MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + \
+        ['corsheaders.middleware.CorsMiddleware']
 
     CORS_ALLOW_CREDENTIALS = True
 
@@ -25,24 +35,36 @@ class Production(EnvWithRealAuth):
 
     CORS_ORIGIN_ALLOW_ALL = True
 
+    RAVEN_CONFIG = {
+        'dsn': BaseSettings.SENTRY_PRIVATE_DSN
+    }
+
+    EMAIL_HOST = 'smtp.mailgun.org'
+    EMAIL_HOST_USER = values.Value(
+        environ_prefix='', environ_name='MAILGUN_SMTP_LOGIN')
+    EMAIL_HOST_PASSWORD = values.Value(
+        environ_prefix='', environ_name='MAILGUN_SMTP_PASSWORD')
+    DEFAULT_FROM_EMAIL = values.Value(
+        environ_name='FRONTEND_URI', environ_prefix='')
+
 
 class Development(LoggingMixin, EnvWithRealAuth):
     DEBUG = True
     SECRET_KEY = get_random_string(length=32)
 
+    DATABASE_URL = values.DatabaseURLValue(
+        environ_required=True, environ_prefix='')
+
+    DATABASES = DATABASE_URL
+
     INSTALLED_APPS = BaseSettings.INSTALLED_APPS + [
         'django_extensions',
         'django_nose',
-        'rest_framework_swagger',
         'raven.contrib.django.raven_compat',
         'corsheaders'
     ]
 
-    SWAGGER_SETTINGS = BaseSettings.SWAGGER_SETTINGS = {
-        'exclude_url_names': [
-            'login_social_token'
-        ],
-    }
+    CACHES = values.CacheURLValue(environ_name='REDIS_URL')
 
     RAVEN_CONFIG = {
         'dsn': BaseSettings.SENTRY_PRIVATE_DSN
@@ -50,11 +72,20 @@ class Development(LoggingMixin, EnvWithRealAuth):
 
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-    MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + ['corsheaders.middleware.CorsMiddleware']
+    MIDDLEWARE_CLASSES = BaseSettings.MIDDLEWARE_CLASSES + \
+        ['corsheaders.middleware.CorsMiddleware']
 
     CORS_ALLOW_CREDENTIALS = True
 
     CORS_ORIGIN_ALLOW_ALL = True
+
+    BROKER_URL = values.Value(environ_prefix='', environ_name='REDIS_URL')
+    CELERY_RESULT_BACKEND = values.Value(
+        environ_prefix='', environ_name='REDIS_URL')
+
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_HOST_USER = values.Value(environ_prefix='')
+    EMAIL_HOST_PASSWORD = values.Value(environ_prefix='')
 
 
 class Test(BaseSettings):
@@ -76,3 +107,7 @@ class Test(BaseSettings):
 
     SOCIAL_AUTH_VK_OAUTH2_KEY = ''
     SOCIAL_AUTH_VK_OAUTH2_SECRET = ''
+
+    EMAIL_HOST = ''
+    EMAIL_HOST_USER = ''
+    EMAIL_HOST_PASSWORD = ''

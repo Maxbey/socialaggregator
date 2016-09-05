@@ -4,3 +4,8 @@ spa/bower_components/
 spa/node_modules/
 spa/dist
 .coverage
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

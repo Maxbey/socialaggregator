@@ -1,6 +1,8 @@
 import json
 import httpretty
 from urllib import urlencode
+
+from mock import patch
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
@@ -32,6 +34,10 @@ TWITTER_USER_DATA = {
     'screen_name': 'TwitterDev',
     'email': 'email@email.com',
 }
+
+
+def load_social_data(**kwargs):
+    return
 
 
 class SocialMock(object):
@@ -157,6 +163,7 @@ class FacebookSocialTest(APITestCase, SocialTestHelpers):
         self.facebook_user_data = FACEBOOK_USER_DATA
 
     @httpretty.activate
+    @patch('aggregator.pipeline.load_social_data', load_social_data)
     def test_user_creation(self):
         SocialMock.mock_facebook(self.facebook_user_data)
 
@@ -181,6 +188,7 @@ class GithubSocialTest(APITestCase, SocialTestHelpers):
         self.github_user_data = GITHUB_USER_DATA
 
     @httpretty.activate
+    @patch('aggregator.pipeline.load_social_data', load_social_data)
     def test_creation(self):
         SocialMock.mock_github(self.github_user_data)
 
@@ -205,6 +213,7 @@ class TwitterSocialTest(APITestCase, SocialTestHelpers):
         self.twitter_user_data = TWITTER_USER_DATA
 
     @httpretty.activate
+    @patch('aggregator.pipeline.load_social_data', load_social_data)
     def test_creation(self):
         SocialMock.mock_twitter(self.twitter_user_data)
 
@@ -235,6 +244,7 @@ class AccountsBindingTest(APITestCase, SocialTestHelpers):
         SocialMock.mock_twitter(TWITTER_USER_DATA)
 
     @httpretty.activate
+    @patch('aggregator.pipeline.load_social_data', load_social_data)
     def test_user_data_will_not_change(self):
         self.mock_all_providers()
 
@@ -252,6 +262,7 @@ class AccountsBindingTest(APITestCase, SocialTestHelpers):
         self.assertTrue(is_models_equal(created_user, user, self.user_fields))
 
     @httpretty.activate
+    @patch('aggregator.pipeline.load_social_data', load_social_data)
     def test_accounts_binding(self):
         self.mock_all_providers()
 
@@ -271,6 +282,7 @@ class AccountsBindingTest(APITestCase, SocialTestHelpers):
             self.assertEqual(user.id, account.user.id)
 
     @httpretty.activate
+    @patch('aggregator.pipeline.load_social_data', load_social_data)
     def test_account_already_in_use(self):
         SocialMock.mock_facebook(FACEBOOK_USER_DATA)
         SocialMock.mock_github(GITHUB_USER_DATA)

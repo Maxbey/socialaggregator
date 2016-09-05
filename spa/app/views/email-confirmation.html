@@ -1,0 +1,9 @@
+<div ng-controller="EmailConfirmationController as vm" layout="column" layout-align="center center">
+  <h2 ng-if="vm.confirmation !== undefined && vm.confirmation === true" class="md-display-1">
+    Your email successfully confirmed
+  </h2>
+
+  <h2 ng-if="vm.confirmation !== undefined && vm.confirmation === false" class="md-display-1">
+    Sorry, your email account cannot be confirmed
+  </h2>
+</div>

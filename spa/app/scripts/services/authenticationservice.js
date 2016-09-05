@@ -8,7 +8,7 @@
  * Service in the spaApp.
  */
 angular.module('spaApp')
-  .service('AuthenticationService', function ($http, $cookies, $auth, envConfig) {
+  .factory('AuthenticationService', function($http, $cookies, $auth, envConfig, $state) {
     var baseUrl = envConfig.BACKEND_HOST + '/api/auth/';
 
     return {
@@ -16,7 +16,12 @@ angular.module('spaApp')
       socialLogin: socialLogin,
       register: register,
       logout: logout,
-      user: user
+      user: user,
+      stateControl: stateControl,
+      confirmEmail: confirmEmail,
+      resetPassword: resetPassword,
+      resetPasswordComplete: resetPasswordComplete,
+      changePassword: changePassword
     };
 
     function socialLogin(provider) {
@@ -39,13 +44,41 @@ angular.module('spaApp')
       });
     }
 
+    function confirmEmail(key) {
+      return $http.post(baseUrl + 'confirm_email/', {
+        key: key
+      });
+    }
+
+    function changePassword(credentials) {
+      return $http.post(baseUrl + 'password/change/', credentials);
+    }
+
+    function resetPassword(email) {
+      return $http.post(baseUrl + 'password/reset/', {
+        email: email
+      });
+    }
+
+    function resetPasswordComplete(credentials) {
+      return $http.post(baseUrl + 'password/confirm/', credentials);
+    }
+
     function user() {
       return $http.get(envConfig.BACKEND_HOST + '/api/user/');
     }
 
     function logout() {
-      $http.defaults.headers.common['Authorization'] = undefined;
+      $http.defaults.headers.common.Authorization = undefined;
       return $auth.logout();
     }
 
+    function stateControl(event, toState) {
+      if (toState.data && toState.data.auth) {
+        if (!$auth.isAuthenticated()) {
+          event.preventDefault();
+          return $state.go('enter.login');
+        }
+      }
+    }
   });

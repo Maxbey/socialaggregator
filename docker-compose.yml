@@ -16,8 +16,6 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    links:
-      - django
     ports:
       - "80:80"
     volumes:
@@ -27,19 +25,10 @@ services:
   django:
     extends:
       file: docker-compose-abstract.yml
-      service: base
-    environment:
-     - DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION}
-     - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
-     - SOCIAL_AUTH_FACEBOOK_SECRET=${SOCIAL_AUTH_FACEBOOK_SECRET}
-     - SOCIAL_AUTH_GITHUB_SECRET=${SOCIAL_AUTH_GITHUB_SECRET}
-     - SOCIAL_AUTH_VK_OAUTH2_SECRET=${SOCIAL_AUTH_VK_OAUTH2_SECRET}
-     - SOCIAL_AUTH_TWITTER_SECRET=${SOCIAL_AUTH_TWITTER_SECRET}
-     - EMAIL_HOST_USER=${EMAIL_HOST_USER}
-     - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-     - CODECLIMATE_REPO_TOKEN=${CODECLIMATE_REPO_TOKEN}
-     - FRONTEND_URI=http://socialaggregator.dev/
-     - SENTRY_PRIVATE_DSN=http://public:secret@localhost:9000/2
+      service: backend
+    depends_on:
+      - db
+      - celery
     build:
       context: ./socialaggregator/
       dockerfile: Dockerfile
@@ -48,3 +37,22 @@ services:
       - ./socialaggregator/static:/usr/src/app/static
     expose:
         - "8000"
+  celery:
+    extends:
+      file: docker-compose-abstract.yml
+      service: backend
+    build:
+      context: .
+      dockerfile: celery/Dockerfile
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+    expose:
+      - "6379"
+
+  db:
+    image: postgres
+    expose:
+      - "5432"

@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from aggregator.factories import UserFactory
+from .factories import UserFactory
 
 
 class RestLoginTest(APITestCase):

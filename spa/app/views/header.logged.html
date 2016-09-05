@@ -1,13 +1,13 @@
-<md-content class="Page-Container Header" ng-controller="HeaderLoggedCtrl as vm">
+<md-content class="Page-Container Header" ng-controller="HeaderLoggedController as vm">
   <div layout="row">
     <div flex="90" flex-offset="5" class="Header-container">
       <div layout="row" layout-align="space-between">
         <div layout="row" layout-align="center stretch">
           <a hide-xs class="Header-link md-subhead" ui-sref="app.dashboard">Dashboard</a>
           <a hide-xs class="Header-link md-subhead" ui-sref="app.accounts">Accounts</a>
+          <a hide-xs class="Header-link md-subhead" ui-sref="app.settings">Settings</a>
         </div>
         <div layout="row" layout-align="right">
-          <md-button ui-sref="app.profile" class="md-primary" style="vertical-align: middle;">{{ vm.username }}</md-button>
           <md-button class="md-primary" ng-click="vm.logout()">Log out</md-button>
         </div>
       </div>

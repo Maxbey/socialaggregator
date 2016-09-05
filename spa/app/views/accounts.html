@@ -1,6 +1,9 @@
-<div layout="column" ng-controller="AccountsCtrl as vm">
+<div layout="column" ng-controller="AccountsController as vm">
   <div layout="column" layout-align="center center">
     <h2 class="md-display-1">Your social accounts</h2>
+    <h3 class="md-subhead" ng-if="vm.accounts.length === 0">You have not yet added any social account.</h3>
+
+    <md-progress-circular ng-if="vm.loading" md-mode="indeterminate"></md-progress-circular>
   </div>
 
 
@@ -21,7 +24,7 @@
   </md-fab-speed-dial>
 
 
-  <md-content layout="row" layout-align="center top" layout-wrap>
+  <md-content ng-if="!vm.loading" layout="row" layout-align="center top" layout-wrap>
     <div ng-repeat="account in vm.accounts" flex-sm="50" flex-lg="20" flex-md="25">
       <md-card layout-padding>
         <md-card-header>
@@ -48,7 +51,7 @@
         </md-card-title>
         <md-card-title-text ng-repeat="relation in account.social_data.social_relations">
             <span class="md-subhead">
-              User has {{ account.social_data.counts[relation + '_count'] }} {{ relation }}
+              User has {{ account.social_data.counts[relation] }} {{ relation }}
             </span>
 
         </md-card-title-text>
@@ -57,4 +60,3 @@
   </md-content>
 
 </div>
-

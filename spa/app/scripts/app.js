@@ -20,11 +20,17 @@ angular
     'ngSanitize',
     'ngMaterial',
     'satellizer',
-    'ngRaven'
+    'ngRaven',
+    'validation.match',
+    'Backo'
   ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider, envConfig) {
+  .config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $authProvider, envConfig, $mdThemingProvider) {
     $urlRouterProvider.otherwise('/');
     $httpProvider.defaults.withCredentials = true;
+
+    $mdThemingProvider.theme('default')
+      .primaryPalette('indigo')
+      .accentPalette('red');
 
     $stateProvider
       .state('enter', {
@@ -52,8 +58,31 @@ angular
             templateUrl: 'views/register.html'
           }
         }
+      })
+      .state('enter.confirmation', {
+        url: '/register/confirm/:key',
+        views: {
+          'main@': {
+            templateUrl: 'views/email-confirmation.html'
+          }
+        }
+      })
+      .state('enter.passreset', {
+        url: '/password/reset',
+        views: {
+          'main@': {
+            templateUrl: 'views/passwordreset.html'
+          }
+        }
+      })
+      .state('enter.passresetcomplete', {
+        url: '/password/reset/complete/:uid/:token',
+        views: {
+          'main@': {
+            templateUrl: 'views/passwordresetcomplete.html'
+          }
+        }
       });
-
 
     $stateProvider
       .state('app', {
@@ -72,15 +101,15 @@ angular
         url: '/',
         views: {
           'main@': {
-            templateUrl: 'views/main.html'
+            templateUrl: 'views/dashboard.html'
           }
         }
       })
-      .state('app.profile', {
-        url: '/im',
+      .state('app.settings', {
+        url: '/settings',
         views: {
           'main@': {
-            templateUrl: 'views/profile.html'
+            templateUrl: 'views/settings.html'
           }
         }
       })
@@ -104,18 +133,16 @@ angular
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
 
-    var base = envConfig.BACKEND_HOST;
-
     $authProvider.loginUrl = base + '/api/auth/login/';
 
     $authProvider.facebook({
-      clientId: envConfig['SOCIAL_AUTH_FACEBOOK_KEY'],
+      clientId: envConfig.SOCIAL_AUTH_FACEBOOK_KEY,
       url: base + '/api/social_auth/login/social/token/facebook/',
       scope: ['email', 'user_friends', 'public_profile', 'user_location']
     });
 
     $authProvider.github({
-      clientId: envConfig['SOCIAL_AUTH_GITHUB_KEY'],
+      clientId: envConfig.SOCIAL_AUTH_GITHUB_KEY,
       url: base + '/api/social_auth/login/social/token/github/'
     });
 
@@ -123,7 +150,7 @@ angular
       name: 'vk',
       url: base + '/api/social_auth/login/social/token/vk/',
       redirectUri: window.location.origin + '/',
-      clientId: envConfig['SOCIAL_AUTH_VK_OAUTH2_KEY'],
+      clientId: envConfig.SOCIAL_AUTH_VK_OAUTH2_KEY,
       authorizationEndpoint: 'http://oauth.vk.com/authorize',
       scope: 'friends, photos, email, photo_big',
       display: 'popup',
@@ -136,23 +163,14 @@ angular
     $authProvider.twitter({
       url: base + '/api/social_auth/login/social/token/twitter/',
       authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
-      redirectUri: 'https://socaggregator.herokuapp.com/',
+      redirectUri: window.location.origin + '/',
       type: '1.0'
     });
 
     $authProvider.authToken = 'Token';
 
-    Raven.config(envConfig['SENTRY_PUBLIC_DSN'], {}).install();
-
-  }).run(function ($rootScope, $state, $auth) {
-  var registrationCallback = $rootScope.$on("$stateChangeStart", function (event, toState) {
-    if (toState.data && toState.data.auth) {
-      if (!$auth.isAuthenticated()) {
-        event.preventDefault();
-        return $state.go('enter.login');
-      }
-    }
-
+    Raven.config(envConfig.SENTRY_PUBLIC_DSN, {}).install();
+  }).run(function($rootScope, $state, $auth, AuthenticationService) {
+    var registrationCallback = $rootScope.$on("$stateChangeStart", AuthenticationService.stateControl);
+    $rootScope.$on('$destroy', registrationCallback);
   });
-  $rootScope.$on('$destroy', registrationCallback)
-});

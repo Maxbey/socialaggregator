@@ -1,6 +1,11 @@
+import random
+
 import factory
 from django.contrib.auth import get_user_model
 from social.apps.django_app.default.models import UserSocialAuth
+
+from aggregator.models import SocialPerson
+from fetchers.fakedata import SOCIAL_DATA
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -30,4 +35,25 @@ class UserSocialAuthFactory(factory.DjangoModelFactory):
 
     provider = factory.Faker('word')
     uid = factory.Faker('ean')
-    extra_data = {"access_token": "token", "login": "login"}
+    extra_data = {
+        'access_token': 'token',
+        'login': 'login',
+        'social_data': SOCIAL_DATA
+    }
+
+
+class SocialPersonFactory(factory.DjangoModelFactory):
+
+    class Meta:
+        model = SocialPerson
+
+    uid = factory.Faker('ean')
+    name = factory.Faker('name')
+    avatar_url = factory.Faker('image_url')
+    email = factory.Faker('safe_email')
+    provider = factory.Faker('domain_word')
+    social_person_type = random.choice(['friend', 'follower'])
+
+
+def build_social_persons(count):
+    return factory.build_batch(dict, FACTORY_CLASS=SocialPersonFactory, size=count)

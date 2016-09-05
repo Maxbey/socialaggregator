@@ -2,23 +2,23 @@
 
 /**
  * @ngdoc function
- * @name spaApp.controller:HeaderloggedCtrl
+ * @name spaApp.controller:HeaderloggedController
  * @description
- * # HeaderloggedCtrl
+ * # HeaderloggedController
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('HeaderLoggedCtrl', function ($auth, $state, AuthenticationService) {
+  .controller('HeaderLoggedController', function($auth, $state, AuthenticationService) {
     var vm = this;
 
     vm.logout = logout;
 
     function logout() {
-      $auth.logout();
+      AuthenticationService.logout();
       $state.go('enter.login');
     }
 
-    AuthenticationService.user().then(function (response) {
+    AuthenticationService.user().then(function(response) {
       vm.username = response.data.username;
     });
   });

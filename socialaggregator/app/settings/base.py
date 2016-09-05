@@ -7,6 +7,10 @@ class BaseSettings(Configuration):
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
     FRONTEND_URI = values.Value(environ_prefix='', environ_required=True)
+    FRONTEND_CONFIRMATION_URI = values.Value(
+        environ_prefix='', environ_required=True)
+    FRONTEND_RESET_PASSWORD_URI = values.Value(
+        environ_prefix='', environ_required=True)
 
     ALLOWED_HOSTS = []
 
@@ -29,6 +33,16 @@ class BaseSettings(Configuration):
         'rest_auth',
         'aggregator'
     ]
+
+    ACCOUNT_ADAPTER = 'aggregator.allauth_account_adapter.AccountAdapter'
+    REST_SESSION_LOGIN = False
+
+    LOGOUT_ON_PASSWORD_CHANGE = False
+    OLD_PASSWORD_FIELD_ENABLED = True
+
+    REST_AUTH_SERIALIZERS = {
+        'PASSWORD_RESET_SERIALIZER': 'aggregator.serializers.PasswordSerializer'
+    }
 
     MIDDLEWARE_CLASSES = [
         'django.middleware.security.SecurityMiddleware',
@@ -76,7 +90,8 @@ class BaseSettings(Configuration):
         'social.pipeline.user.create_user',
         'social.pipeline.social_auth.associate_user',
         'social.pipeline.social_auth.load_extra_data',
-        'social.pipeline.user.user_details'
+        'social.pipeline.user.user_details',
+        'aggregator.pipeline.load_social_data'
     )
 
     WSGI_APPLICATION = 'app.wsgi.application'
@@ -125,7 +140,6 @@ class BaseSettings(Configuration):
     ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
     EMAIL_USE_TLS = True
-    EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 587
 
     SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email', 'first_name', 'last_name']

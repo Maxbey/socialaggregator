@@ -9,7 +9,7 @@ var rimraf = require('rimraf');
 var wiredep = require('wiredep').stream;
 var runSequence = require('run-sequence');
 var process = require('process');
-
+var karma = require('karma');
 var argv = require('yargs').argv;
 
 var gulpNgConstant = require('gulp-ng-constant');
@@ -24,16 +24,12 @@ var paths = {
   styles: [yeoman.app + '/styles/**/*.scss'],
   test: ['test/spec/**/*.js'],
   testRequire: [
-    yeoman.app + '/bower_components/angular/angular.js',
-    yeoman.app + '/bower_components/angular-mocks/angular-mocks.js',
-    yeoman.app + '/bower_components/angular-resource/angular-resource.js',
-    yeoman.app + '/bower_components/angular-cookies/angular-cookies.js',
-    yeoman.app + '/bower_components/angular-sanitize/angular-sanitize.js',
-    yeoman.app + '/bower_components/angular-route/angular-route.js',
-    'test/mock/**/*.js',
-    'test/spec/**/*.js'
+    
+
+    './test/mock/**/*.js',
+    './test/spec/**/*.js'
   ],
-  karma: 'karma.conf.js',
+  karma: 'test/karma.conf.js',
   views: {
     main: yeoman.app + '/index.html',
     files: [yeoman.app + '/views/**/*.html']
@@ -61,7 +57,7 @@ var styles = lazypipe()
 // Tasks //
 ///////////
 
-gulp.task('config', function(){
+gulp.task('config', function () {
   var config = {
     envConfig: {
       BACKEND_HOST: process.env.BACKEND_HOST,
@@ -76,7 +72,7 @@ gulp.task('config', function(){
     constants: config,
     stream: true
   })
-  .pipe(gulp.dest('app/scripts/'));
+    .pipe(gulp.dest('app/scripts/'));
 
 });
 
@@ -98,7 +94,7 @@ gulp.task('start:client', ['start:server', 'styles'], function () {
   openURL('http://localhost:9000');
 });
 
-gulp.task('start:server', function() {
+gulp.task('start:server', function () {
   $.connect.server({
     root: [yeoman.app, '.tmp'],
     livereload: true,
@@ -107,7 +103,7 @@ gulp.task('start:server', function() {
   });
 });
 
-gulp.task('start:server:test', function() {
+gulp.task('start:server:test', function () {
   $.connect.server({
     root: ['test', yeoman.app, '.tmp'],
     livereload: true,
@@ -144,7 +140,7 @@ gulp.task('serve', function (cb) {
     'watch', cb);
 });
 
-gulp.task('serve:prod', ['build', 'config'], function() {
+gulp.task('serve:prod', ['build', 'config'], function () {
   $.connect.server({
     root: [yeoman.dist],
     host: '0.0.0.0',
@@ -153,13 +149,11 @@ gulp.task('serve:prod', ['build', 'config'], function() {
   });
 });
 
-gulp.task('test', ['start:server:test'], function () {
-  var testToFiles = paths.testRequire.concat(paths.scripts, paths.test);
-  return gulp.src(testToFiles)
-    .pipe($.karma({
-      configFile: paths.karma,
-      action: 'watch'
-    }));
+gulp.task('test', function (done) {
+  new karma.Server({
+    configFile: __dirname + '/test/karma.conf.js',
+    singleRun: true
+  }, done).start();
 });
 
 // inject bower components
@@ -168,7 +162,7 @@ gulp.task('bower', function () {
     .pipe(wiredep({
       ignorePath: '..'
     }))
-  .pipe(gulp.dest(yeoman.app));
+    .pipe(gulp.dest(yeoman.app));
 });
 
 ///////////
@@ -187,7 +181,6 @@ gulp.task('client:build', ['svg', 'html', 'styles'], function () {
     .pipe($.useref({searchPath: [yeoman.app, '.tmp']}))
     .pipe(jsFilter)
     .pipe($.ngAnnotate())
-    .pipe($.uglify())
     .pipe(jsFilter.restore())
     .pipe(cssFilter)
     .pipe($.minifyCss({cache: true}))
@@ -203,21 +196,21 @@ gulp.task('html', function () {
 gulp.task('images', function () {
   return gulp.src(yeoman.app + '/images/**/*')
     .pipe($.cache($.imagemin({
-        optimizationLevel: 5,
-        progressive: true,
-        interlaced: true
+      optimizationLevel: 5,
+      progressive: true,
+      interlaced: true
     })))
     .pipe(gulp.dest(yeoman.dist + '/images'));
 });
 
-gulp.task('svg', function(){
-console.log(paths.svg);
+gulp.task('svg', function () {
+  console.log(paths.svg);
   return gulp.src(paths.svg)
     .pipe(gulp.dest(yeoman.dist + '/svg/'));
 });
 
 gulp.task('copy:extras', function () {
-  return gulp.src(yeoman.app + '/*/.*', { dot: true })
+  return gulp.src(yeoman.app + '/*/.*', {dot: true})
     .pipe(gulp.dest(yeoman.dist));
 });
 

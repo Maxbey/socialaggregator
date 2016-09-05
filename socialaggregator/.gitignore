@@ -19,3 +19,4 @@ static/django/
 staticfiles/
 
 env/
+coverage.xml

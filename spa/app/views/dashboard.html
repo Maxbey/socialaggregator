@@ -1,0 +1,52 @@
+<div layout="column" layout-fill="" ng-controller="DashboardController as vm">
+  <div layout="column" layout-align="center center">
+    <md-progress-linear ng-if="vm.loading" md-mode="indeterminate"></md-progress-linear>
+  </div>
+
+  <div ng-if="!vm.loading">
+    <md-button class="md-fab md-fab-bottom-right md-primary" ng-click="vm.loadMore()"
+               ng-disabled="vm.personList.page === null" aria-label="Load more">
+      <md-icon md-svg-src="svg/more.svg"></md-icon>
+    </md-button>
+    <md-toolbar ng-if="!vm.searchToolbar" layout="row" class="md-whiteframe-6dp">
+      <div class="md-toolbar-tools">
+        <span flex="95">Your friends and followers</span>
+
+        <md-button class="md-icon-button" aria-label="Search" ng-click="vm.toggleToolbar()">
+          <md-icon md-svg-icon="svg/search.svg"></md-icon>
+        </md-button>
+
+      </div>
+    </md-toolbar>
+
+    <md-toolbar ng-if="vm.searchToolbar" class="md-whiteframe-6dp" style="background: #eee">
+      <div class="md-toolbar-tools">
+        <md-input-container flex="95" md-theme="input" flex>
+          <label>&nbsp;</label>
+          <input ng-model="vm.searchName" placeholder="Searching">
+        </md-input-container>
+
+
+        <md-button class="md-icon-button md-mini" aria-label="Back" ng-click="vm.toggleToolbar()">
+          <md-icon md-svg-icon="svg/close.svg"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-content>
+      <md-list>
+        <md-virtual-repeat-container flex ng-style="{'height': vm.listHeight}" md-top-index="vm.topIndex">
+          <md-list-item class="md-2-line" md-virtual-repeat="person in vm.personList" md-on-demand
+                        ng-click="null">
+            <img ng-if="person" ng-src="{{ person.avatar_url }}" class="md-avatar" alt="avatar"/>
+            <div ng-if="person" class="md-list-item-text" layout="column">
+              <h3>{{ person.name }}</h3>
+              <p>{{ person.provider }} ({{ person.social_person_type }})</p>
+            </div>
+            <md-divider></md-divider>
+          </md-list-item>
+        </md-virtual-repeat-container>
+      </md-list>
+    </md-content>
+  </div>
+</div>

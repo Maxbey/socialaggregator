@@ -1,6 +1,10 @@
 // bower:scss
 // endbower
 
+.md-toolbar-tools md-input-container .md-errors-spacer{
+ min-height: 0px !important;
+}
+
 .LoginForm-inputContainer, .RegisterForm-inputContainer, .ProfileForm-inputContainer{
     margin-top: 10px;
     margin-bottom: 0px;

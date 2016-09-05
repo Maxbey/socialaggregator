@@ -2,48 +2,70 @@
 
 /**
  * @ngdoc function
- * @name spaApp.controller:AccountsCtrl
+ * @name spaApp.controller:AccountsController
  * @description
- * # AccountsCtrl
+ * # AccountsController
  * Controller of the spaApp
  */
 angular.module('spaApp')
-  .controller('AccountsCtrl', function (UserService, AuthenticationService, ToastService, $state) {
-  var vm = this;
+  .controller('AccountsController', function(UserService, AuthenticationService, ToastService, $state, $timeout, Backoff) {
+    var vm = this;
 
+    vm.addAccount = addAccount;
+    vm.removeAccount = removeAccount;
+    vm.loadAccounts = loadAccounts;
+    vm.accountsTimer = accountsTimer;
 
-  vm.loading = true;
-  vm.isOpen = false;
-  vm.addAccount = addAccount;
-  vm.removeAccount = removeAccount;
+    vm.loading = false;
 
-  vm.providers = [
-    'facebook',
-    'github',
-    'twitter'
-  ];
+    vm.providers = [
+      'facebook',
+      'github',
+      'twitter'
+    ];
 
+    var backoff = new Backoff({
+      min: 100,
+      max: 2000
+    });
 
-  function addAccount(provider) {
-  vm.loading = true;
-      AuthenticationService.socialLogin(provider).then(function () {
+    function accountsTimer() {
+      vm.loading = true;
+      $timeout(function() {
+        vm.loadAccounts();
+      }, backoff.duration());
+    }
+
+   function addAccount(provider) {
+      AuthenticationService.socialLogin(provider).then(function(response) {
         ToastService.show(provider + ' account has been successfully added');
         $state.reload();
-      }, function (response) {
-        vm.loading = false;
+      }, function(response) {
         ToastService.error(response.data[0]);
-    });
-  }
+      });
+    }
 
-  function removeAccount(account) {
-    UserService.removeAccount(account.id).then(function () {
-      vm.accounts.splice(vm.accounts.indexOf(account), 1);
-      ToastService.show('Account has been successfully removed');
-     });
-   }
+    function removeAccount(account) {
+      UserService.removeAccount(account.id).then(function() {
+        var index = vm.accounts.indexOf(account);
 
-  UserService.accounts().then(function (response) {
-      vm.accounts = response.data;
-      vm.loading = false;
-    });
+        if (index === -1)
+          throw new Error('Attempt to delete a non-existent account');
+
+        vm.accounts.splice(index, 1);
+        ToastService.show('Account has been successfully removed');
+      });
+    }
+
+    function loadAccounts() {
+      UserService.accounts().then(function(response) {
+        vm.accounts = response.data;
+        vm.loading = false;
+      }, function(response) {
+        if (response.data === 'CELERY_PROCESSING')
+          vm.accountsTimer();
+      });
+    }
+
+    accountsTimer();
   });
