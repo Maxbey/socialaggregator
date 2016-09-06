@@ -12,6 +12,7 @@ services:
      - BACKEND_HOST=http://api.socialaggregator.dev
     volumes:
       - ./spa:/usr/src/spa
+
   nginx:
     build:
       context: ./nginx
@@ -22,6 +23,7 @@ services:
       - ./socialaggregator/static:/usr/src/app/static
       - ./spa:/usr/src/spa
       - ./docs/:/usr/src/docs/
+
   django:
     extends:
       file: docker-compose-abstract.yml
@@ -37,6 +39,7 @@ services:
       - ./socialaggregator/static:/usr/src/app/static
     expose:
         - "8000"
+
   celery:
     extends:
       file: docker-compose-abstract.yml
@@ -56,3 +59,13 @@ services:
     image: postgres
     expose:
       - "5432"
+
+  sentry:
+    image: slafs/sentry
+    environment:
+     - SECRET_KEY=somethingsecret
+     - SENTRY_URL_PREFIX=http://localhost:9000
+     - SENTRY_INITIAL_TEAM=socialaggregatorteam
+     - SENTRY_INITIAL_PROJECT=socialaggregator
+     - SENTRY_INITIAL_KEY=public:secret
+   command: /usr/local/bin/sentry_run prepare
