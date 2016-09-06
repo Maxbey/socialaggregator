@@ -3,7 +3,7 @@
 describe('Controller: AccountsController', function() {
 
   // load the controller's module
-  beforeEach(module('spaApp'));
+  beforeEach(module('socialAggregator'));
 
   beforeEach(module('stateMock'));
   beforeEach(module('userServiceMock'));

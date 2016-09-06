@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name spaApp.controller:AccountsController
- * @description
- * # AccountsController
- * Controller of the spaApp
- */
-angular.module('spaApp')
+angular.module('socialAggregator')
   .controller('AccountsController', function(UserService, AuthenticationService, ToastService, $state, $timeout, Backoff) {
     var vm = this;
 
@@ -36,7 +29,7 @@ angular.module('spaApp')
       }, backoff.duration());
     }
 
-   function addAccount(provider) {
+    function addAccount(provider) {
       AuthenticationService.socialLogin(provider).then(function(response) {
         ToastService.show(provider + ' account has been successfully added');
         $state.reload();

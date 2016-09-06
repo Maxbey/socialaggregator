@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name spaApp.ResponseService
- * @description
- * # ResponseService
- * Service in the spaApp.
- */
-angular.module('spaApp')
+angular.module('socialAggregator')
   .factory('ResponseService', function() {
 
     return {

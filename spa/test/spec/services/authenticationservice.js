@@ -11,7 +11,7 @@ describe('Service: AuthenticationService', function() {
   };
 
   // load the service's module
-  beforeEach(module('spaApp', function($provide) {
+  beforeEach(module('socialAggregator', function($provide) {
     $provide.value('$auth', $authMock);
   }));
 

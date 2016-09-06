@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name spaApp.FormService
- * @description
- * # FormService
- * Service in the spaApp.
- */
-angular.module('spaApp')
+angular.module('socialAggregator')
   .factory('FormService', function() {
 
     return {

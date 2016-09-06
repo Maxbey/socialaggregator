@@ -1,15 +1,7 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name spaApp
- * @description
- * # spaApp
- *
- * Main module of the application.
- */
 angular
-  .module('spaApp', [
+  .module('socialAggregator', [
     'ngConstants',
     'ngAnimate',
     'ngAria',

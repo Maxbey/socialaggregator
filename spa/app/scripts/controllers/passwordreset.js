@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name spaApp.controller:PasswordResetController
- * @description
- * # PasswordResetController
- * Controller of the spaApp
- */
-angular.module('spaApp')
+angular.module('socialAggregator')
   .controller('PasswordResetController', function(AuthenticationService, ToastService, $state) {
     var vm = this;
     vm.reset = reset;

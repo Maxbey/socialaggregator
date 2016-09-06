@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name spaApp.controller:LoginController
- * @description
- * # LoginController
- * Controller of the spaApp
- */
-angular.module('spaApp')
+angular.module('socialAggregator')
   .controller('LoginController', function(AuthenticationService, ToastService, $state, $auth, FormService, ResponseService) {
     var vm = this;
 

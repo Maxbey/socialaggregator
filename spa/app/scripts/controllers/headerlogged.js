@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name spaApp.controller:HeaderloggedController
- * @description
- * # HeaderloggedController
- * Controller of the spaApp
- */
-angular.module('spaApp')
+angular.module('socialAggregator')
   .controller('HeaderLoggedController', function($auth, $state, AuthenticationService) {
     var vm = this;
 

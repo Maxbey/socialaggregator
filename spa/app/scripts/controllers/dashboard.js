@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name spaApp.controller:DashboardController
- * @description
- * # DashboardController
- * Controller of the spaApp
- */
-angular.module('spaApp')
+angular.module('socialAggregator')
   .controller('DashboardController', function(UserService, $window, $scope, $timeout, ToastService, Backoff) {
     var vm = this;
 
