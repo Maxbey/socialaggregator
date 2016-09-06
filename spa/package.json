@@ -5,10 +5,12 @@
     "compile": "bower install --allow-root && gulp",
     "bower": "bower install --allow-root",
     "config": "gulp config",
-    "prod": "gulp serve:prod --port $PORT"
+    "prod": "gulp serve:prod --port $PORT",
+    "test": "gulp test && codecov"
   },
   "devDependencies": {
     "bower": "latest",
+    "codecov": "^1.0.1",
     "eslint": "^3.4.0",
     "eslint-config-angular": "^0.5.0",
     "eslint-config-google": "^0.6.0",
