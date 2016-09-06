@@ -63,9 +63,9 @@ services:
   sentry:
     image: slafs/sentry
     environment:
-     - SECRET_KEY=somethingsecret
-     - SENTRY_URL_PREFIX=http://localhost:9000
-     - SENTRY_INITIAL_TEAM=socialaggregatorteam
-     - SENTRY_INITIAL_PROJECT=socialaggregator
-     - SENTRY_INITIAL_KEY=public:secret
-   command: /usr/local/bin/sentry_run prepare
+      - SECRET_KEY=somethingsecret
+      - SENTRY_URL_PREFIX=http://localhost:9000
+      - SENTRY_INITIAL_TEAM=socialaggregatorteam
+      - SENTRY_INITIAL_PROJECT=socialaggregator
+      - SENTRY_INITIAL_KEY=public:secret
+    command: /usr/local/bin/sentry_run prepare

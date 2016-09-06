@@ -10,4 +10,3 @@ if  [ -n "$CODECOV_TOKEN" ]
   else
     codecov
 fi
-
