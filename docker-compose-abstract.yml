@@ -7,7 +7,7 @@ services:
      - SOCIAL_AUTH_GITHUB_KEY=${SOCIAL_AUTH_GITHUB_KEY}
      - SOCIAL_AUTH_VK_OAUTH2_KEY=${SOCIAL_AUTH_VK_OAUTH2_KEY}
      - SOCIAL_AUTH_TWITTER_KEY=${SOCIAL_AUTH_TWITTER_KEY}
-  backend:
+  django-abstract:
     extends:
       service: base
     environment:

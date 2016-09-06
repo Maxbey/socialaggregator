@@ -27,13 +27,15 @@ services:
   django:
     extends:
       file: docker-compose-abstract.yml
-      service: backend
+      service: django-abstract
     depends_on:
       - db
       - celery
     build:
       context: ./socialaggregator/
       dockerfile: Dockerfile
+    environment:
+     - CONTAINER_BEHAVIOUR=DJANGO
     volumes:
       - ./spa:/usr/src/spa
       - ./socialaggregator/static:/usr/src/app/static
@@ -43,10 +45,12 @@ services:
   celery:
     extends:
       file: docker-compose-abstract.yml
-      service: backend
+      service: django-abstract
     build:
-      context: .
-      dockerfile: celery/Dockerfile
+      context: ./socialaggregator/
+      dockerfile: Dockerfile
+    environment:
+     - CONTAINER_BEHAVIOUR=CELERY
     depends_on:
       - redis
 

@@ -1,48 +1,46 @@
 {
-  "AWSEBDockerrunVersion": 2,
-  "volumes": [
-    {
-      "name": "nginx-conf",
-      "host": {
-        "sourcePath": "/var/app/current/nginx/nginx.conf"
-      }
-    }
-  ],
-  "containerDefinitions": [
-    {
-      "name": "django",
-      "image": "maxbey/socialaggregator_django",
-      "essential": true,
-      "memory": 256
-    },
-    {
-      "name": "celery",
-      "image": "maxbey/socialaggregator_celery",
-      "essential": true,
-      "memory": 128
-    },
-    {
-      "name": "nginx",
-      "image": "nginx",
-      "essential": true,
-      "memory": 128,
-      "portMappings": [
-        {
-          "hostPort": 80,
-          "containerPort": 80
+    "AWSEBDockerrunVersion": 2,
+    "volumes": [{
+        "name": "nginx-conf",
+        "host": {
+            "sourcePath": "/var/app/current/nginx/nginx.conf"
         }
-      ],
-      "links": [
-        "django",
-        "celery"
-      ],
-      "mountPoints": [
-        {
-          "sourceVolume": "nginx-conf",
-          "containerPath": "/etc/nginx/nginx.conf",
-          "readOnly": true
-        }
-      ]
-    }
-  ]
+    }],
+    "containerDefinitions": [{
+        "name": "django",
+        "image": "maxbey/socialaggregator_django",
+        "essential": true,
+        "memory": 256,
+        "environment": [{
+            "name": "CONTAINER_BEHAVIOUR",
+            "value": "DJANGO"
+        }]
+    }, {
+        "name": "celery",
+        "image": "maxbey/socialaggregator_django",
+        "essential": true,
+        "memory": 128,
+        "environment": [{
+            "name": "CONTAINER_BEHAVIOUR",
+            "value": "CELERY"
+        }]
+    }, {
+        "name": "nginx",
+        "image": "nginx",
+        "essential": true,
+        "memory": 128,
+        "portMappings": [{
+            "hostPort": 80,
+            "containerPort": 80
+        }],
+        "links": [
+            "django",
+            "celery"
+        ],
+        "mountPoints": [{
+            "sourceVolume": "nginx-conf",
+            "containerPath": "/etc/nginx/nginx.conf",
+            "readOnly": true
+        }]
+    }]
 }
