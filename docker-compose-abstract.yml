@@ -13,7 +13,6 @@ services:
     environment:
      - DATABASE_URL=postgres://postgres@db/postgres
      - REDIS_URL=redis://redis:6379/0
-     - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
      - SECRET_KEY=somesecretvalue
      - DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION}
      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}

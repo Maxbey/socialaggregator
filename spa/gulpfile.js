@@ -217,7 +217,7 @@ gulp.task('s3deploy', function() {
   var publisher = awspublish.create({
     region: process.env.AWS_REGION,
     params: {
-      Bucket: process.env.AWS_BUCKET
+      Bucket: process.env.AWS_CLOUDFRONT_BUCKET
     }
   });
 
