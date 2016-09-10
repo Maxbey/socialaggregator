@@ -7,10 +7,30 @@ SocialAggregator is a small project, created to improve skills of working with D
 ## Demo
 http://d1yufmp7734ayp.cloudfront.net/
 
+(email sending is not working)
+
 ## API documentation
 http://docs.socialaggregator-api.surge.sh/
 
 ## Deployment on Amazon Web Services
+### AWS Access
+To provide access to your aws account you must define several env variables:
+ - **AWS_ACCESS_KEY_ID**
+ - **AWS_SECRET_ACCESS_KEY**
+
+### Social auth credentials
+#### [Facebook](http://psa.matiasaguirre.net/docs/backends/facebook.html)
+ - **SOCIAL_AUTH_FACEBOOK_KEY**
+ - **SOCIAL_AUTH_FACEBOOK_SECRET**
+
+#### [GitHub](http://psa.matiasaguirre.net/docs/backends/github.html)
+ - **SOCIAL_AUTH_GITHUB_KEY**
+ - **SOCIAL_AUTH_GITHUB_SECRET**
+
+#### [Twitter](http://psa.matiasaguirre.net/docs/backends/twitter.html)
+ - **SOCIAL_AUTH_TWITTER_KEY**
+ - **SOCIAL_AUTH_TWITTER_SECRET**
+
 ### Backend
 In order to deploy the backend in multicontainer Docker environment of [Elastic Beanstalk] (https://aws.amazon.com/elasticbeanstalk/details/) service, you must install and configure [ebs-deploy](https://github.com/briandilley/ebs-deploy).
 
@@ -22,6 +42,10 @@ The behavior of the container is determined by the **`CONTAINER_BEHAVIOUR`** env
 
 #### Environment variables
 To deploy the backend application you must define a set of env variables:
+
+##### AWS configuration
+ - **AWS_BEANSTALK_BUCKET_NAME**
+
 ##### Django configuration
  - **DJANGO_CONFIGURATION=Production**
  - **DJANGO_SETTINGS_MODULE=app.settings.settings**
@@ -46,7 +70,10 @@ Next, you must perform: `ebs-deploy deploy -e yourenvname`
 To deploy the frontend application it is recommended to use [S3](https://aws.amazon.com/s3/details/) and [CloudFront](https://aws.amazon.com/cloudfront/) services.
 #### Environment variables
 To build and deploy the front-end application you must define a set of env variables:
+##### Linking with backend
  - **BACKEND_HOST**
+
+##### AWS configuration
  - **AWS_REGION**
  - **AWS_CLOUDFRONT_BUCKET**
  - **AWS_CLOUDFRONT_DISTRIBUTION**
