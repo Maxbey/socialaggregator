@@ -15,7 +15,10 @@ http://docs.socialaggregator-api.surge.sh/
 In order to deploy the backend in multicontainer Docker environment of [Elastic Beanstalk] (https://aws.amazon.com/elasticbeanstalk/details/) service, you must install and configure [ebs-deploy](https://github.com/briandilley/ebs-deploy).
 
 #### Docker
-For backend deployment used [maxbey/socialaggregator_django](https://hub.docker.com/r/maxbey/socialaggregator_django/) image.
+For backend deployment used [maxbey/socialaggregator_django](https://hub.docker.com/r/maxbey/socialaggregator_django/) image, which is also located in `socialaggregator/Dockerfile` and can be manually changed by you.
+
+Note that the **container has two scenarios**: launch gunicorn workers or run celery workers.
+The behavior of the container is determined by the **`CONTAINER_BEHAVIOUR`** environment variable.
 
 #### Environment variables
 To deploy the backend application you must define a set of env variables:
@@ -52,7 +55,6 @@ To build and deploy the front-end application you must define a set of env varia
 To build the front-end app you must perform:
  - `npm install`
  - `npm run-script compile`
- - `gulp config && gulp`
 
 #### Deploy
 For frontend deployment written special gulp task that uses [gulp-awspublish](https://www.npmjs.com/package/gulp-awspublish) and [gulp-cloudfront-invalidate-aws-publish](https://www.npmjs.com/package/gulp-cloudfront-invalidate-aws-publish) npm packages.
