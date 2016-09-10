@@ -34,11 +34,9 @@ To deploy the backend application you must define a set of env variables:
  - **`AWS_BEANSTALK_BUCKET_NAME`**
 
 ##### Django configuration
- - **`DJANGO_CONFIGURATION=Production`**
- - **`DJANGO_SETTINGS_MODULE=app.settings.settings`**
  - **`SECRET_KEY`**
 
-For deeper understanding, please read about the [django secret](https://docs.djangoproject.com/en/1.10/ref/settings/#std:setting-SECRET_KEY) and [django-configurations](https://django-configurations.readthedocs.io/en/stable/).
+For deeper understanding, please read about the [django secret](https://docs.djangoproject.com/en/1.10/ref/settings/#std:setting-SECRET_KEY).
 
 ##### Storages
  - **`DATABASE_URL`**
