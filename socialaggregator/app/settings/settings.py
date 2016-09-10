@@ -39,11 +39,6 @@ class Production(EnvWithRealAuth):
         'dsn': BaseSettings.SENTRY_PRIVATE_DSN
     }
 
-    EMAIL_HOST = 'smtp.mailgun.org'
-    EMAIL_HOST_USER = values.Value(
-        environ_prefix='', environ_name='MAILGUN_SMTP_LOGIN')
-    EMAIL_HOST_PASSWORD = values.Value(
-        environ_prefix='', environ_name='MAILGUN_SMTP_PASSWORD')
     DEFAULT_FROM_EMAIL = values.Value(
         environ_name='FRONTEND_URI', environ_prefix='')
 
@@ -83,10 +78,6 @@ class Development(LoggingMixin, EnvWithRealAuth):
     CELERY_RESULT_BACKEND = values.Value(
         environ_prefix='', environ_name='REDIS_URL')
 
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_HOST_USER = values.Value(environ_prefix='')
-    EMAIL_HOST_PASSWORD = values.Value(environ_prefix='')
-
 
 class Test(BaseSettings):
     DEBUG = True
@@ -104,9 +95,6 @@ class Test(BaseSettings):
 
     SOCIAL_AUTH_TWITTER_KEY = ''
     SOCIAL_AUTH_TWITTER_SECRET = ''
-
-    SOCIAL_AUTH_VK_OAUTH2_KEY = ''
-    SOCIAL_AUTH_VK_OAUTH2_SECRET = ''
 
     EMAIL_HOST = ''
     EMAIL_HOST_USER = ''

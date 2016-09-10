@@ -65,8 +65,7 @@ gulp.task('config', function() {
       BACKEND_HOST: process.env.BACKEND_HOST,
       SENTRY_PUBLIC_DSN: process.env.SENTRY_PUBLIC_DSN,
       SOCIAL_AUTH_FACEBOOK_KEY: process.env.SOCIAL_AUTH_FACEBOOK_KEY,
-      SOCIAL_AUTH_GITHUB_KEY: process.env.SOCIAL_AUTH_GITHUB_KEY,
-      SOCIAL_AUTH_VK_OAUTH2_KEY: process.env.SOCIAL_AUTH_VK_OAUTH2_KEY
+      SOCIAL_AUTH_GITHUB_KEY: process.env.SOCIAL_AUTH_GITHUB_KEY
     }
   };
 

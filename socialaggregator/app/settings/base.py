@@ -14,7 +14,7 @@ class BaseSettings(Configuration):
 
     ALLOWED_HOSTS = []
 
-    SENTRY_PRIVATE_DSN = values.Value(environ_prefix='')
+    SENTRY_PRIVATE_DSN = values.Value(environ_prefix='', default='http://public:secret@host:port/db')
 
     INSTALLED_APPS = [
         'django.contrib.admin',
@@ -75,7 +75,6 @@ class BaseSettings(Configuration):
     AUTHENTICATION_BACKENDS = (
         'social.backends.facebook.FacebookOAuth2',
         'social.backends.github.GithubOAuth2',
-        'social.backends.vk.VKOAuth2',
         'social.backends.twitter.TwitterOAuth',
         'allauth.account.auth_backends.AuthenticationBackend',
         'django.contrib.auth.backends.ModelBackend',
@@ -146,4 +145,3 @@ class BaseSettings(Configuration):
 
     SOCIAL_AUTH_FACEBOOK_SCOPE = [
         'email', 'user_friends', 'public_profile', 'user_location']
-    SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['friends', 'photos', 'email', 'photo_big']
