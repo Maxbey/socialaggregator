@@ -4,7 +4,6 @@
   "scripts": {
     "compile": "bower install --allow-root && gulp",
     "bower": "bower install --allow-root",
-    "config": "gulp config",
     "prod": "gulp serve:prod --port $PORT",
     "test": "gulp test && codecov"
   },
