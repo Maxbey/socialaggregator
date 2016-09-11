@@ -46,6 +46,12 @@ For deeper understanding, please read about the [django secret](https://docs.dja
  - **`REDIS_URL`**
 
 Read about [URL-based configurations](https://django-configurations.readthedocs.io/en/stable/values/#url-based-values)
+##### Email sending
+  - **`EMAIL_HOST`**
+  - **`EMAIL_HOST_USER`**
+  - **`EMAIL_HOST_PASSWORD`**
+ 
+Read about [email sending configuration](https://docs.djangoproject.com/en/1.10/ref/settings/#std:setting-EMAIL_HOST) in django.
 
 ##### Social auth credentials
 For deeper understanding, please read about the [python-social-auth](http://psa.matiasaguirre.net/docs/index.html) module.
