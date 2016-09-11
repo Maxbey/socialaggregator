@@ -27,6 +27,9 @@ For backend deployment used [maxbey/socialaggregator_django](https://hub.docker.
 Note that the **container has two scenarios**: launch gunicorn workers or run celery workers.
 The behavior of the container is determined by the **`CONTAINER_BEHAVIOUR`** environment variable.
 
+#### Sentry
+Out of the box project is configured to work with [Sentry](https://sentry.io/welcome/), you just have to specify the DSN, define the env variable **`SENTRY_PRIVATE_DSN`**.
+
 #### Environment variables
 To deploy the backend application you must define a set of env variables:
 
@@ -68,10 +71,19 @@ Next, you must perform: `ebs-deploy deploy -e yourenvname`
 
 ### Frontend
 To deploy the frontend application it is recommended to use [S3](https://aws.amazon.com/s3/details/) and [CloudFront](https://aws.amazon.com/cloudfront/) services.
+
+#### Sentry
+Out of the box project is configured to work with [Sentry](https://sentry.io/welcome/), you just have to specify the DSN, define the env variable **`SENTRY_PUBLIC_DSN`**.
+
 #### Environment variables
 To build and deploy the front-end application you must define a set of env variables:
 ##### Linking with backend
  - **`BACKEND_HOST`**
+
+##### Social auth credentials
+For deeper understanding, please read about the [satellizer](https://github.com/sahat/satellizer) module.
+ - **`SOCIAL_AUTH_FACEBOOK_KEY`**
+ - **`SOCIAL_AUTH_GITHUB_KEY`**
 
 ##### AWS configuration
  - **`AWS_REGION`**
