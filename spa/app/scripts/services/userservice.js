@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name spaApp.UserService
- * @description
- * # UserService
- * Service in the spaApp.
- */
-angular.module('spaApp')
+angular.module('socialAggregator')
   .factory('UserService', function($http, envConfig) {
     var baseUrl = envConfig.BACKEND_HOST + '/api';
 

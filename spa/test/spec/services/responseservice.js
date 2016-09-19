@@ -3,7 +3,7 @@
 describe('Service: ResponseService', function() {
 
   // load the service's module
-  beforeEach(module('spaApp'));
+  beforeEach(module('socialAggregator'));
   // instantiate service
   var ResponseService;
 

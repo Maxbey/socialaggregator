@@ -16,4 +16,4 @@ RUN chown -R myuser.myuser .
 
 USER myuser
 
-CMD bash run.sh
+CMD bash bin/run.sh

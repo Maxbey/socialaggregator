@@ -29,7 +29,7 @@ describe('Service: ToastService', function () {
   };
 
   // load the service's module
-  beforeEach(module('spaApp', function ($provide) {
+  beforeEach(module('socialAggregator', function ($provide) {
     $provide.value('$mdToast', $mdToastMock);
   }));
 

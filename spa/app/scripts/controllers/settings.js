@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name spaApp.controller:SettingsController
- * @description
- * # SettingsController
- * Controller of the spaApp
- */
-angular.module('spaApp')
+angular.module('socialAggregator')
   .controller('SettingsController', function(AuthenticationService, ToastService, UserService, ResponseService, FormService) {
     var vm = this;
 

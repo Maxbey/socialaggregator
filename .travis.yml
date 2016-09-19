@@ -9,8 +9,8 @@ language: python
 
 before_install:
   - cd socialaggregator/requirements/
-  - bash install.sh
+install:
+  - bash ../bin/install.sh
   - cd ../
-
 script:
-  - bash test.sh
+  - bash bin/test.sh

@@ -3,7 +3,7 @@
 describe('Service: UserService', function () {
 
   // load the service's module
-  beforeEach(module('spaApp'));
+  beforeEach(module('socialAggregator'));
   beforeEach(module('stateMock'));
   // instantiate service
   var UserService,

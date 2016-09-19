@@ -4,18 +4,22 @@
   "scripts": {
     "compile": "bower install --allow-root && gulp",
     "bower": "bower install --allow-root",
-    "config": "gulp config",
-    "prod": "gulp serve:prod --port $PORT"
+    "prod": "gulp serve:prod --port $PORT",
+    "test": "gulp test && codecov"
   },
   "devDependencies": {
     "bower": "latest",
+    "codecov": "^1.0.1",
     "eslint": "^3.4.0",
     "eslint-config-angular": "^0.5.0",
     "eslint-config-google": "^0.6.0",
     "eslint-plugin-angular": "^1.3.1",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "2.3.1",
+    "gulp-aws": "0.0.5",
+    "gulp-awspublish": "^3.3.0",
     "gulp-cache": "^0.2.10",
+    "gulp-cloudfront-invalidate-aws-publish": "^0.2.0",
     "gulp-connect": "^2.2.0",
     "gulp-filter": "^2.0.2",
     "gulp-imagemin": "^2.3.0",
@@ -28,6 +32,7 @@
     "gulp-plumber": "^1.0.1",
     "gulp-rev": "^5.0.1",
     "gulp-rev-replace": "^0.4.2",
+    "gulp-s3-deploy": "^1.0.1",
     "gulp-sass": "^2.0.4",
     "gulp-svgmin": "^1.2.2",
     "gulp-uglify": "^1.2.0",

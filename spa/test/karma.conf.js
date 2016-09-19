@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on 2016-07-13
 
-module.exports = function (config) {
+module.exports = function(config) {
   'use strict';
 
   config.set({
@@ -9,6 +9,18 @@ module.exports = function (config) {
 
     frameworks: ['jasmine'],
     reporters: ['coverage', 'mocha'],
+    coverageReporter: {
+      reporters: [
+        {
+          type: 'lcovonly',
+          subdir: '.'
+        },
+        {
+          type: 'json',
+          subdir: '.'
+        },
+      ]
+    },
 
     // list of files / patterns to load in the browser
     files: [
@@ -55,6 +67,5 @@ module.exports = function (config) {
 
 
     colors: true
-  })
-  ;
+  });
 };

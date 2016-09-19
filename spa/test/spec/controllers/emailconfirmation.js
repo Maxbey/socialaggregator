@@ -3,7 +3,7 @@
 describe('Controller: EmailConfirmationController', function () {
 
   // load the controller's module
-  beforeEach(module('spaApp'));
+  beforeEach(module('socialAggregator'));
 
   beforeEach(module('authenticationServiceMock'));
 

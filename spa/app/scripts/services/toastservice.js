@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name spaApp.ToastService
- * @description
- * # ToastService
- * Service in the spaApp.
- */
-angular.module('spaApp')
+angular.module('socialAggregator')
   .factory('ToastService', function($mdToast) {
     var delay = 3000,
       position = 'bottom left',

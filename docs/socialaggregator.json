@@ -1,7 +1,882 @@
-curl -s --user 'api:key-916af78da93c83f967bb9332cc74febe' \
-    https://api.mailgun.net/v3/YOUR_DOMAIN_NAME/messages \
-    -F from='Excited User <mailgun@app6c2cfa22e00642cab3f46ef1d5fa9146>' \
-    -F to=YOU@app6c2cfa22e00642cab3f46ef1d5fa9146 \
-    -F to=bar@example.com \
-    -F subject='Hello' \
-    -F text='Testing some Mailgun awesomness!'
+{
+    "info": {
+        "version": "",
+        "title": "Socialaggregator API"
+    },
+    "paths": {
+        "/api/auth/registration/": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully registered"
+                    },
+                    "400": {
+                        "description": "Registration error",
+                        "schema": {
+                            "$ref": "#/definitions/RegistrationError"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "registration payload",
+                        "in": "body",
+                        "description": "Registration data",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RegistrationPayload"
+                        }
+                    }
+                ],
+                "summary": "Registration",
+                "description": "Endpoint for store new users."
+            }
+        },
+        "/api/auth/confirm_email/": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Email successfully confirmed"
+                    },
+                    "404": {
+                        "description": "Confirmation not found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "confirmation payload",
+                        "in": "body",
+                        "description": "Email confirmation key data",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/EmailConfirmationPayload"
+                        }
+                    }
+                ],
+                "summary": "Email confirmation",
+                "description": "Endpoint for user`s email confirmation."
+            }
+        },
+        "/api/auth/password/confirm/": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password has been reset"
+                    },
+                    "400": {
+                        "description": "Wrong reset url"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "Credential payload",
+                        "in": "body",
+                        "description": "New credentials",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PasswordConfirmPayload"
+                        }
+                    }
+                ],
+                "summary": "Password confirm",
+                "description": "Endpoint to set a new password after a reset of the old."
+            }
+        },
+        "/api/auth/password/reset/": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password reset e-mail has been sent"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "ResetPayload",
+                        "in": "body",
+                        "description": "E-mail address which will receive email with instructions",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PasswordResetPayload"
+                        }
+                    }
+                ],
+                "summary": "Reset email",
+                "description": "Endpoint for sending email with reset instructions."
+            }
+        },
+        "/api/auth/password/change/": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password successfully changed"
+                    },
+                    "400": {
+                        "description": "Invalid old password"
+                    },
+                    "401": {
+                        "description": "Authentication error",
+                        "schema": {
+                            "$ref": "#/definitions/Unathorized"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "ChangePayload",
+                        "in": "body",
+                        "description": "New credentials",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PasswordChangePayload"
+                        }
+                    }
+                ],
+                "summary": "Change password",
+                "description": "Endpoint for user`s password changing."
+            }
+        },
+        "/api/auth/login/": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully logged in",
+                        "schema": {
+                            "$ref": "#/definitions/Token"
+                        }
+                    },
+                    "400": {
+                        "description": "Wrong credentials",
+                        "schema": {
+                            "$ref": "#/definitions/LoginError"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "login credentials",
+                        "in": "body",
+                        "description": "User credentials",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LoginPayload"
+                        }
+                    }
+                ],
+                "summary": "Sign In",
+                "description": "Endpoint for signing in to the app."
+            }
+        },
+        "/api/auth/logout/": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Logged out"
+                    }
+                },
+                "parameters": [],
+                "summary": "Sign Out",
+                "description": "Endpoint for signing out from the app."
+            }
+        },
+        "/api/social_auth/login/social/token/facebook/": {
+            "post": {
+                "tags": [
+                    "social_auth",
+                    "social_account"
+                ],
+                "summary": "Facebook OAuth2",
+                "description": "Endpoint for authorization via facebook by following OAuth protocol. Also can be used to add additional accounts for aggregation.",
+                "responses": {
+                    "201": {
+                        "description": "Successfully logged in",
+                        "schema": {
+                            "$ref": "#/definitions/Token"
+                        }
+                    },
+                    "400": {
+                        "description": "Account already in use",
+                        "schema": {
+                            "$ref": "#/definitions/AccountBindingError"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "OAuth2 payload",
+                        "in": "body",
+                        "description": "OAuth2 credentials",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/OAuth2Payload"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/social_auth/login/social/token/github/": {
+            "post": {
+                "tags": [
+                    "social_auth",
+                    "social_account"
+                ],
+                "summary": "Github OAuth2",
+                "responses": {
+                    "201": {
+                        "description": "Successfully logged in",
+                        "schema": {
+                            "$ref": "#/definitions/Token"
+                        }
+                    },
+                    "400": {
+                        "description": "Account already in use",
+                        "schema": {
+                            "$ref": "#/definitions/AccountBindingError"
+                        }
+                    }
+                },
+                "description": "Endpoint for authorization via github by following OAuth2 protocol. Also can be used to add additional accounts for aggregation.",
+                "parameters": [
+                    {
+                        "name": "OAuth2 payload",
+                        "in": "body",
+                        "description": "OAuth2 credentials",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/OAuth2Payload"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/social_auth/login/social/token/twitter/": {
+            "post": {
+                "tags": [
+                    "social_auth",
+                    "social_account"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully logged in",
+                        "schema": {
+                            "$ref": "#/definitions/Token"
+                        }
+                    },
+                    "400": {
+                        "description": "Account already in use",
+                        "schema": {
+                            "$ref": "#/definitions/AccountBindingError"
+                        }
+                    }
+                },
+                "summary": "Twitter OAuth",
+                "description": "Endpoint for authorization via twitter by following OAuth protocol. Also can be used to add additional accounts for aggregation.",
+                "parameters": [
+                    {
+                        "name": "OAuth2 payload",
+                        "in": "body",
+                        "description": "OAuth2 credentials",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/OAuthPayload"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/user/": {
+            "put": {
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User object",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication error",
+                        "schema": {
+                            "$ref": "#/definitions/Unathorized"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "User to model to update",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserBody"
+                        }
+                    }
+                ],
+                "summary": "Update user details",
+                "description": "Update user record in the database."
+            },
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User object",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication error",
+                        "schema": {
+                            "$ref": "#/definitions/Unathorized"
+                        }
+                    }
+                },
+                "parameters": [],
+                "summary": "Retrieve user details",
+                "description": "Return details of authenticated user."
+            }
+        },
+        "/api/social_account/": {
+            "get": {
+                "tags": [
+                    "social_account"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of social accounts",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/UserSocialAuth"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication error",
+                        "schema": {
+                            "$ref": "#/definitions/Unathorized"
+                        }
+                    }
+                },
+                "parameters": [],
+                "description": "Endpoint for fetching all social accounts of an authorized user",
+                "summary": "List of social accounts"
+            }
+        },
+        "/api/social_account/{id}/": {
+            "delete": {
+                "tags": [
+                    "social_account"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successfully removed"
+                    },
+                    "401": {
+                        "description": "Authentication error",
+                        "schema": {
+                            "$ref": "#/definitions/Unathorized"
+                        }
+                    },
+                    "404": {
+                        "description": "Account not found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "id of social account",
+                        "in": "path",
+                        "name": "id"
+                    }
+                ],
+                "description": "Endpoint for removing social accounts",
+                "summary": "Destroy account"
+            }
+        },
+        "/api/social_person/": {
+            "get": {
+                "tags": [
+                    "social_person"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of user`s friends and followers",
+                        "schema": {
+                            "$ref": "#/definitions/Pagination"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication error",
+                        "schema": {
+                            "$ref": "#/definitions/Unathorized"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "in": "query",
+                        "description": "Page number for pagination"
+                    },
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "in": "query",
+                        "description": "Filter social persons by name"
+                    }
+                ],
+                "description": "Endpoint for fetching list of user`s friends and followers",
+                "summary": "List of friends and followers"
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/UserBody"
+                },
+                {
+                    "properties": {
+                        "id": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "id"
+                    ]
+                }
+            ]
+        },
+        "UserBody": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Should be a valid email address"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "username"
+            ]
+        },
+        "Unathorized": {
+            "type": "object",
+            "properties": {
+                "detail": {
+                    "type": "string",
+                    "enum": [
+                        "Authentication credentials were not provided",
+                        "Invalid token"
+                    ]
+                }
+            },
+            "required": [
+                "detail"
+            ]
+        },
+        "InvalidModel": {
+            "type": "object",
+            "properties": {
+                "field": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "This field is required.",
+                            "Some validation error"
+                        ]
+                    }
+                }
+            }
+        },
+        "RegistrationPayload": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "Should be a valid email address"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "password1": {
+                    "type": "string",
+                    "description": "Password"
+                },
+                "password2": {
+                    "type": "string",
+                    "description": "Password confirmation"
+                }
+            }
+        },
+        "RegistrationError": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "A user is already registered with this e-mail address."
+                        ]
+                    }
+                }
+            }
+        },
+        "LoginPayload": {
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "Should be a valid email address"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password"
+                }
+            }
+        },
+        "LoginError": {
+            "properties": {
+                "non_field_errors": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Unable to log in with provided credentials."
+                        ]
+                    }
+                }
+            }
+        },
+        "Token": {
+            "properties": {
+                "key": {
+                    "type": "string"
+                }
+            }
+        },
+        "SocialPerson": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "uid": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "avatar_url": {
+                    "type": "string",
+                    "description": "CDN link"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "provider": {
+                    "type": "string",
+                    "enum": [
+                        "facebook",
+                        "github",
+                        "twitter"
+                    ]
+                },
+                "social_person_type": {
+                    "type": "string",
+                    "enum": [
+                        "friend",
+                        "follower"
+                    ]
+                }
+            }
+        },
+        "UserSocialAuth": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "uid": {
+                    "type": "integer"
+                },
+                "provider": {
+                    "type": "string",
+                    "enum": [
+                        "facebook",
+                        "github",
+                        "twitter"
+                    ]
+                },
+                "social_data": {
+                    "type": "object",
+                    "$ref": "#/definitions/SocialData"
+                }
+            }
+        },
+        "SocialData": {
+            "type": "object",
+            "properties": {
+                "avatar_url": {
+                    "type": "string",
+                    "description": "CDN link"
+                },
+                "counts": {
+                    "type": "object",
+                    "$ref": "#/definitions/Counts"
+                },
+                "social_relations": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "friends",
+                            "followers"
+                        ]
+                    }
+                },
+                "user_info": {
+                    "type": "object",
+                    "$ref": "#/definitions/UserInfo"
+                }
+            }
+        },
+        "UserInfo": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name"
+            ]
+        },
+        "Counts": {
+            "type": "object",
+            "properties": {
+                "friends": {
+                    "type": "integer"
+                },
+                "followers": {
+                    "type": "integer"
+                }
+            }
+        },
+        "OAuth2Payload": {
+            "type": "object",
+            "properties": {
+                "clientId": {
+                    "type": "string",
+                    "description": "Cunsumer id"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "redirectUri": {
+                    "type": "string",
+                    "description": "Auth callback uri"
+                }
+            },
+            "required": [
+                "code"
+            ]
+        },
+        "OAuthPayload": {
+            "type": "object",
+            "properties": {
+                "oauth_token": {
+                    "type": "string"
+                },
+                "oauth_verifier": {
+                    "type": "string"
+                },
+                "redirect_state": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "oauth_token",
+                "oauth_verifier",
+                "redirect_state"
+            ]
+        },
+        "EmailConfirmationPayload": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "PasswordConfirmPayload": {
+            "type": "object",
+            "properties": {
+                "uid": {
+                    "type": "string",
+                    "description": "Encoded"
+                },
+                "token": {
+                    "type": "string",
+                    "description": "Unique token for password resetting."
+                },
+                "new_password1": {
+                    "type": "string"
+                },
+                "new_password2": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "uid",
+                "token",
+                "new_password1",
+                "new_password2"
+            ]
+        },
+        "PasswordResetPayload": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "email"
+            ]
+        },
+        "PasswordChangePayload": {
+            "type": "object",
+            "properties": {
+                "new_password1": {
+                    "type": "string"
+                },
+                "new_password2": {
+                    "type": "string"
+                },
+                "old_password": {
+                    "type": "string"
+                }
+            }
+        },
+        "AccountBindingError": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "This PROVIDER account is already in use."
+                ]
+            }
+        },
+        "Pagination": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "next": {
+                    "type": "string",
+                    "description": "url to next page"
+                },
+                "previous": {
+                    "type": "string",
+                    "description": "url to previous page"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SocialPerson"
+                    }
+                }
+            }
+        }
+    },
+    "host": "ec2-52-38-201-172.us-west-2.compute.amazonaws.com",
+    "swagger": "2.0",
+    "securityDefinitions": {
+        "token": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization"
+        }
+    }
+}

@@ -1,15 +1,7 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name spaApp
- * @description
- * # spaApp
- *
- * Main module of the application.
- */
 angular
-  .module('spaApp', [
+  .module('socialAggregator', [
     'ngConstants',
     'ngAnimate',
     'ngAria',
@@ -144,20 +136,6 @@ angular
     $authProvider.github({
       clientId: envConfig.SOCIAL_AUTH_GITHUB_KEY,
       url: base + '/api/social_auth/login/social/token/github/'
-    });
-
-    $authProvider.oauth2({
-      name: 'vk',
-      url: base + '/api/social_auth/login/social/token/vk/',
-      redirectUri: window.location.origin + '/',
-      clientId: envConfig.SOCIAL_AUTH_VK_OAUTH2_KEY,
-      authorizationEndpoint: 'http://oauth.vk.com/authorize',
-      scope: 'friends, photos, email, photo_big',
-      display: 'popup',
-      responseType: 'code',
-      requiredUrlParams: ['response_type', 'client_id', 'redirect_uri', 'display', 'scope', 'v'],
-      scopeDelimiter: ',',
-      v: '5.52'
     });
 
     $authProvider.twitter({

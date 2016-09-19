@@ -12,6 +12,8 @@ var process = require('process');
 var karma = require('karma');
 var argv = require('yargs').argv;
 
+var awspublish = require('gulp-awspublish');
+var cloudfront = require('gulp-cloudfront-invalidate-aws-publish');
 var gulpNgConstant = require('gulp-ng-constant');
 
 var yeoman = {
@@ -24,7 +26,7 @@ var paths = {
   styles: [yeoman.app + '/styles/**/*.scss'],
   test: ['test/spec/**/*.js'],
   testRequire: [
-    
+
 
     './test/mock/**/*.js',
     './test/spec/**/*.js'
@@ -57,44 +59,43 @@ var styles = lazypipe()
 // Tasks //
 ///////////
 
-gulp.task('config', function () {
+gulp.task('config', function() {
   var config = {
     envConfig: {
       BACKEND_HOST: process.env.BACKEND_HOST,
       SENTRY_PUBLIC_DSN: process.env.SENTRY_PUBLIC_DSN,
       SOCIAL_AUTH_FACEBOOK_KEY: process.env.SOCIAL_AUTH_FACEBOOK_KEY,
-      SOCIAL_AUTH_GITHUB_KEY: process.env.SOCIAL_AUTH_GITHUB_KEY,
-      SOCIAL_AUTH_VK_OAUTH2_KEY: process.env.SOCIAL_AUTH_VK_OAUTH2_KEY
+      SOCIAL_AUTH_GITHUB_KEY: process.env.SOCIAL_AUTH_GITHUB_KEY
     }
   };
 
   return gulpNgConstant({
-    constants: config,
-    stream: true
-  })
+      constants: config,
+      stream: true
+    })
     .pipe(gulp.dest('app/scripts/'));
 
 });
 
-gulp.task('styles', function () {
+gulp.task('styles', function() {
   return gulp.src(paths.styles)
     .pipe(styles());
 });
 
-gulp.task('lint:scripts', function () {
+gulp.task('lint:scripts', function() {
   return gulp.src(paths.scripts)
     .pipe(lintScripts());
 });
 
-gulp.task('clean:tmp', function (cb) {
+gulp.task('clean:tmp', function(cb) {
   rimraf('./.tmp', cb);
 });
 
-gulp.task('start:client', ['start:server', 'styles'], function () {
+gulp.task('start:client', ['start:server', 'styles'], function() {
   openURL('http://localhost:9000');
 });
 
-gulp.task('start:server', function () {
+gulp.task('start:server', function() {
   $.connect.server({
     root: [yeoman.app, '.tmp'],
     livereload: true,
@@ -103,7 +104,7 @@ gulp.task('start:server', function () {
   });
 });
 
-gulp.task('start:server:test', function () {
+gulp.task('start:server:test', function() {
   $.connect.server({
     root: ['test', yeoman.app, '.tmp'],
     livereload: true,
@@ -111,7 +112,7 @@ gulp.task('start:server:test', function () {
   });
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', function() {
   $.watch(paths.styles)
     .pipe($.plumber())
     .pipe(styles())
@@ -133,14 +134,12 @@ gulp.task('watch', function () {
   gulp.watch('bower.json', ['bower']);
 });
 
-gulp.task('serve', function (cb) {
-  runSequence('clean:tmp',
-    ['lint:scripts'],
-    ['start:client'],
+gulp.task('serve', function(cb) {
+  runSequence('clean:tmp', ['lint:scripts'], ['start:client'],
     'watch', cb);
 });
 
-gulp.task('serve:prod', ['build', 'config'], function () {
+gulp.task('serve:prod', ['build', 'config'], function() {
   $.connect.server({
     root: [yeoman.dist],
     host: '0.0.0.0',
@@ -149,7 +148,7 @@ gulp.task('serve:prod', ['build', 'config'], function () {
   });
 });
 
-gulp.task('test', function (done) {
+gulp.task('test', function(done) {
   new karma.Server({
     configFile: __dirname + '/test/karma.conf.js',
     singleRun: true
@@ -157,7 +156,7 @@ gulp.task('test', function (done) {
 });
 
 // inject bower components
-gulp.task('bower', function () {
+gulp.task('bower', function() {
   return gulp.src(paths.views.main)
     .pipe(wiredep({
       ignorePath: '..'
@@ -169,31 +168,35 @@ gulp.task('bower', function () {
 // Build //
 ///////////
 
-gulp.task('clean:dist', function (cb) {
+gulp.task('clean:dist', function(cb) {
   rimraf('./dist', cb);
 });
 
-gulp.task('client:build', ['svg', 'html', 'styles'], function () {
+gulp.task('client:build', ['svg', 'html', 'styles'], function() {
   var jsFilter = $.filter('**/*.js');
   var cssFilter = $.filter('**/*.css');
 
   return gulp.src(paths.views.main)
-    .pipe($.useref({searchPath: [yeoman.app, '.tmp']}))
+    .pipe($.useref({
+      searchPath: [yeoman.app, '.tmp']
+    }))
     .pipe(jsFilter)
     .pipe($.ngAnnotate())
     .pipe(jsFilter.restore())
     .pipe(cssFilter)
-    .pipe($.minifyCss({cache: true}))
+    .pipe($.minifyCss({
+      cache: true
+    }))
     .pipe(cssFilter.restore())
     .pipe(gulp.dest(yeoman.dist));
 });
 
-gulp.task('html', function () {
+gulp.task('html', function() {
   return gulp.src(yeoman.app + '/views/**/*')
     .pipe(gulp.dest(yeoman.dist + '/views'));
 });
 
-gulp.task('images', function () {
+gulp.task('images', function() {
   return gulp.src(yeoman.app + '/images/**/*')
     .pipe($.cache($.imagemin({
       optimizationLevel: 5,
@@ -203,24 +206,51 @@ gulp.task('images', function () {
     .pipe(gulp.dest(yeoman.dist + '/images'));
 });
 
-gulp.task('svg', function () {
+gulp.task('svg', function() {
   console.log(paths.svg);
   return gulp.src(paths.svg)
     .pipe(gulp.dest(yeoman.dist + '/svg/'));
 });
 
-gulp.task('copy:extras', function () {
-  return gulp.src(yeoman.app + '/*/.*', {dot: true})
+gulp.task('s3deploy', function() {
+  var publisher = awspublish.create({
+    region: process.env.AWS_REGION,
+    params: {
+      Bucket: process.env.AWS_CLOUDFRONT_BUCKET
+    }
+  });
+
+  var headers = {
+    'Cache-Control': 'max-age=315360000, no-transform, public'
+  };
+
+  var cfSettings = {
+    distribution: process.env.AWS_CLOUDFRONT_DISTRIBUTION,
+    indexRootPaths: true
+  };
+
+  return gulp.src('./dist/**')
+    .pipe(awspublish.gzip())
+    .pipe(publisher.publish(headers))
+    .pipe(cloudfront(cfSettings))
+    .pipe(publisher.cache())
+    .pipe(awspublish.reporter());
+});
+
+gulp.task('copy:extras', function() {
+  return gulp.src(yeoman.app + '/*/.*', {
+      dot: true
+    })
     .pipe(gulp.dest(yeoman.dist));
 });
 
-gulp.task('copy:fonts', function () {
+gulp.task('copy:fonts', function() {
   return gulp.src(yeoman.app + '/fonts/**/*')
     .pipe(gulp.dest(yeoman.dist + '/fonts'));
 });
 
-gulp.task('build', ['clean:dist'], function () {
-  runSequence(['images', 'copy:extras', 'copy:fonts', 'client:build']);
+gulp.task('build', ['clean:dist'], function() {
+  runSequence(['images', 'copy:extras', 'copy:fonts', 'config', 'client:build']);
 });
 
 gulp.task('default', ['build']);

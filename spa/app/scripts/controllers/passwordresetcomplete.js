@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name spaApp.controller:PasswordResetCompleteController
- * @description
- * # PasswordResetCompleteController
- * Controller of the spaApp
- */
-angular.module('spaApp')
+angular.module('socialAggregator')
   .controller('PasswordResetCompleteController', function(AuthenticationService, ToastService, $stateParams, $state, ResponseService, FormService) {
     var vm = this;
 
